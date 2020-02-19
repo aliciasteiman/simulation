@@ -3,8 +3,6 @@
 
 ### High Level Design Ideas
 
-
-
 ### CRC Card Classes
 
 ```java
