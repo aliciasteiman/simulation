@@ -1,6 +1,6 @@
 # Simulation Design Plan
-### Team Number
-### Names
+### 2
+### Sanya Kochhar, Alicia Steiman, Jessica Su
 
 
 ## Design Overview

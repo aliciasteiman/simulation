@@ -3,7 +3,7 @@ simulation
 
 This project implements a cellular automata simulator.
 
-Names:
+Names: Sanya Kocchar, Alicia Steiman, Jessica Su
 
 ### Timeline
 
