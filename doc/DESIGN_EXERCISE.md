@@ -15,7 +15,7 @@
 ```
 
 ```java
- public class Grid {
+ public class cellsociety.Grid {
      public void setRules (SimulationBuilder sb);
      public void updateGrid ();
      public void endSimulation ();
@@ -54,7 +54,7 @@
 
  * Move to the next generation: update all cells in a simulation from their current state to their next state
  ```java
- Grid grid = new Grid();
+ cellsociety.Grid grid = new cellsociety.Grid();
  grid.updateGrid();
  ```
 
