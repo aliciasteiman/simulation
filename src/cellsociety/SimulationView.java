@@ -26,7 +26,7 @@ public class SimulationView {
         myModel = model;
         pane = new GridPane();
         pane.setAlignment(Pos.CENTER);
-        myGrid = new Grid("test/testing");
+        myGrid = new Grid("test/GOLtest");
         myCells = myGrid.createGrid();
     }
 

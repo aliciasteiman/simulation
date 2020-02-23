@@ -25,8 +25,6 @@ public class Grid {
         allCells = new ArrayList<>();
         NUM_ROWS = Integer.parseInt(initialStates.get(0).substring(0,1));
         NUM_COLS = Integer.parseInt(initialStates.get(0).substring(2));
-        System.out.println(NUM_ROWS);
-        System.out.println(NUM_COLS);
 
         for (int row = 1; row <= NUM_ROWS; row++) {
             String rowConfig = initialStates.get(row);
@@ -42,10 +40,8 @@ public class Grid {
                 }
                 cellsRow.add(cell);
             }
-            System.out.println(cellsRow);
             allCells.add(cellsRow);
         }
-        System.out.println(allCells);
         return allCells;
     }
 

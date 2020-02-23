@@ -8,6 +8,7 @@ public class Main extends Application {
     public static final String TITLE = "Simulation";
     public static final int DISPLAY_WIDTH = 300;
     public static final int DISPLAY_HEIGHT = 400;
+
     @Override
     public void start(Stage stage) throws Exception {
         SimulationModel model = new SimulationModel();
