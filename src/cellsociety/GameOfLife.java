@@ -12,7 +12,19 @@ public class GameOfLife extends SimulationModel {
     }
 
     @Override
-    public List<List<Cell>> updateGrid() {
+    public List<List<Cell>> updateCells() {
+        List<List<Cell>> updatedGrid = new ArrayList<>();
+        for (int r = 0; r < mySimulationGrid.getRows(); r++) {
+            List<Cell> updatedRow = new ArrayList<>();
+            for (int c = 0; c < mySimulationGrid.getCols(); c++) {
+                Cell thisCell = mySimulationGrid.getCell(r, c);
+                int numLiveNeighbors = mySimulationGrid.countAliveNeighbors(getNeighbors(r,c));
+                boolean isAlive = thisCell.getStatus() && (numLiveNeighbors == 2 || numLiveNeighbors == 3);
+                updatedRow.add(new Cell(isAlive));
+            }
+            updatedGrid.add(updatedRow);
+        }
+        return updatedGrid;
     }
 
     @Override

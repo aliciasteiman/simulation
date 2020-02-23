@@ -13,8 +13,12 @@ public abstract class SimulationModel {
         mySimulationCells = mySimulationGrid.createGrid();
     }
 
-    public abstract List<List<Cell>> updateGrid();
+    public abstract List<List<Cell>> updateCells();
 
     public abstract List<Cell> getNeighbors(int row, int col);
 
+    public void step() {
+        mySimulationCells = updateCells();
+
+    }
 }
