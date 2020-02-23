@@ -49,11 +49,11 @@ public class Grid {
         return allCells;
     }
 
-    private int getRows() {
+    public int getRows() {
         return NUM_ROWS;
     }
 
-    private int getCols() {
+    public int getCols() {
         return NUM_COLS;
     }
 }
