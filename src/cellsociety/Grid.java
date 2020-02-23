@@ -19,6 +19,7 @@ public class Grid {
         while (input.hasNext()) {
             initialStates.add(input.nextLine());
         }
+        createGrid();
     }
 
     public List<List<Cell>> createGrid() {

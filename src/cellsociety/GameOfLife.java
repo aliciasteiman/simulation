@@ -12,7 +12,7 @@ public class GameOfLife extends SimulationModel {
     }
 
     @Override
-    public List<List<Cell>> updateCells() {
+    public Grid updateCells() {
         List<List<Cell>> updatedGrid = new ArrayList<>();
         for (int r = 0; r < mySimulationGrid.getRows(); r++) {
             List<Cell> updatedRow = new ArrayList<>();
