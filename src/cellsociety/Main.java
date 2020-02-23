@@ -1,7 +1,10 @@
 package cellsociety;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.stage.Stage;
+
+import java.util.concurrent.TimeUnit;
 
 
 public class Main extends Application {
@@ -11,7 +14,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        SimulationModel model = new SimulationModel();
+        SimulationModel model = new GameOfLife("test/GOLtest");
         SimulationView display = new SimulationView(model);
         stage.setTitle(TITLE);
         stage.setScene(display.makeScene(DISPLAY_WIDTH, DISPLAY_HEIGHT));

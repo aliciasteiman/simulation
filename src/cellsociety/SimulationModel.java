@@ -17,8 +17,6 @@ public abstract class SimulationModel {
 
     public abstract List<Cell> getNeighbors(int row, int col);
 
-    public void step() {
-        mySimulationCells = updateCells();
+    public abstract void updateCell(Cell c);
 
-    }
 }

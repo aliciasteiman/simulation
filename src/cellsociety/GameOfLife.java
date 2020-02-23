@@ -19,11 +19,12 @@ public class GameOfLife extends SimulationModel {
             for (int c = 0; c < mySimulationGrid.getCols(); c++) {
                 Cell thisCell = mySimulationGrid.getCell(r, c);
                 int numLiveNeighbors = mySimulationGrid.countAliveNeighbors(getNeighbors(r,c));
-                boolean isAlive = thisCell.getStatus() && (numLiveNeighbors == 2 || numLiveNeighbors == 3);
+                boolean isAlive = ((thisCell.getStatus() && numLiveNeighbors == 2) || numLiveNeighbors == 3);
                 updatedRow.add(new Cell(isAlive));
             }
             updatedGrid.add(updatedRow);
         }
+        mySimulationGrid.updateAllCells(updatedGrid);
         return updatedGrid;
     }
 
@@ -41,5 +42,14 @@ public class GameOfLife extends SimulationModel {
             }
         }
         return myNeighbors;
+    }
+
+    @Override
+    public void updateCell(Cell c) {
+        if (c.getStatus()==true) {
+            c.getShape().getStyleClass().add("alive-cell");
+        } else {
+            c.getShape().getStyleClass().add("dead-cell");
+        }
     }
 }

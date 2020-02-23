@@ -45,6 +45,10 @@ public class Grid {
         return allCells;
     }
 
+    public void updateAllCells(List<List<Cell>> cells) {
+        allCells = cells;
+    }
+
     public int getRows() {
         return NUM_ROWS;
     }
