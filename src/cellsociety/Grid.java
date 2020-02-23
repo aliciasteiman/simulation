@@ -52,4 +52,19 @@ public class Grid {
     public int getCols() {
         return NUM_COLS;
     }
+
+    public Cell getCell(int row, int col) {
+        return allCells.get(row).get(col);
+    }
+
+    public int countAliveNeighbors(List<Cell> neighbors) {
+        int count  = 0;
+        for (Cell cell : neighbors) {
+            if (cell.getStatus() == true) {
+                count += 1;
+            }
+        }
+        return count;
+    }
+
 }
