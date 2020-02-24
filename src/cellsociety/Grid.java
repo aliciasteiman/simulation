@@ -15,8 +15,11 @@ public class Grid {
     public Grid(String file) {
         initialStates = new ArrayList<>();
         Scanner input = new Scanner(Grid.class.getClassLoader().getResourceAsStream(file));
+        String[] header = input.next().split(" ");
+        NUM_ROWS = Integer.parseInt(header[0]);
+        NUM_COLS = Integer.parseInt(header[1]);
 
-        while (input.hasNext()) {
+        while (input.hasNextLine()) {
             initialStates.add(input.nextLine());
         }
         createGrid();
@@ -24,8 +27,6 @@ public class Grid {
 
     public List<List<Cell>> createGrid() {
         allCells = new ArrayList<>();
-        NUM_ROWS = Integer.parseInt(initialStates.get(0).substring(0,1));
-        NUM_COLS = Integer.parseInt(initialStates.get(0).substring(2));
 
         for (int row = 1; row <= NUM_ROWS; row++) {
             String rowConfig = initialStates.get(row);

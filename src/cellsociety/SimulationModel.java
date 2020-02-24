@@ -8,6 +8,7 @@ public abstract class SimulationModel {
     protected Grid mySimulationGrid;
 
     public SimulationModel(String file) {
+
         mySimulationGrid = new Grid(file);
     }
 
