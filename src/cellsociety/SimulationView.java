@@ -55,8 +55,8 @@ public class SimulationView {
         c.setShape(new Rectangle(cell_width, cell_height));
         myModel.updateCellStyle(c);
         pane.add(c.getShape(), col, row);
-
     }
+
     public void updateGridAppearance() {
         for (int row = 0; row < myGrid.getRows(); row++) {
             for (int col = 0; col < myGrid.getCols(); col++) {
@@ -87,7 +87,7 @@ public class SimulationView {
      */
 
     public void setAnimation() {
-        KeyFrame frame = new KeyFrame(Duration.seconds(5.0/60), e -> step());
+        KeyFrame frame = new KeyFrame(Duration.seconds(5.0/60), e -> step()); //what should the Duration.seconds be?
         Timeline myAnimation = new Timeline();
         myAnimation.setCycleCount(Timeline.INDEFINITE);
         myAnimation.getKeyFrames().add(frame);
@@ -103,6 +103,5 @@ public class SimulationView {
         userButtons.getChildren().add(startButton);
         return userButtons;
     }
-
 
 }
