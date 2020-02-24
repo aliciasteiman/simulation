@@ -9,7 +9,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class SimulationView {
@@ -18,7 +17,6 @@ public class SimulationView {
     private int myCols;
     private int myRows;
     private Grid myGrid;
-    private List<List<Cell>> myCells;
     private double cell_width;
     private double cell_height;
     private Button startButton;
@@ -29,8 +27,7 @@ public class SimulationView {
         myModel = model;
         pane = new GridPane();
         pane.setAlignment(Pos.CENTER);
-        myGrid = new Grid("test/GOLtest");
-        myCells = myGrid.createGrid();
+        myGrid = myModel.getMySimulationGrid();
     }
 
     public Scene makeScene(int width, int height) {
@@ -48,22 +45,22 @@ public class SimulationView {
     }
 
     public void updateCellAppearance(int row, int col) {
-        Cell c = myCells.get(row).get(col);
+        Cell c = myGrid.getCell(row, col);
         c.setShape(new Rectangle(cell_width, cell_height));
         myModel.updateCell(c);
         pane.add(c.getShape(), col, row);
 
     }
     public void updateGridAppearance() {
-        for (int row = 0; row < myRows; row++) {
-            for (int col = 0; col < myCols; col++) {
+        for (int row = 0; row < myGrid.getRows(); row++) {
+            for (int col = 0; col < myGrid.getCols(); col++) {
                 updateCellAppearance(row, col);
             }
         }
     }
 
     public void step() {
-        myCells = myModel.updateCells();
+        myGrid = myModel.updateCells();
         updateGridAppearance();
     }
 

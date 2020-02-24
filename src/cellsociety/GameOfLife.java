@@ -12,7 +12,7 @@ public class GameOfLife extends SimulationModel {
     }
 
     @Override
-    public List<List<Cell>> updateCells() {
+    public Grid updateCells() {
         List<List<Cell>> updatedGrid = new ArrayList<>();
         for (int r = 0; r < mySimulationGrid.getRows(); r++) {
             List<Cell> updatedRow = new ArrayList<>();
@@ -25,7 +25,7 @@ public class GameOfLife extends SimulationModel {
             updatedGrid.add(updatedRow);
         }
         mySimulationGrid.updateAllCells(updatedGrid);
-        return updatedGrid;
+        return mySimulationGrid;
     }
 
     @Override
@@ -50,6 +50,13 @@ public class GameOfLife extends SimulationModel {
             c.getShape().getStyleClass().add("alive-cell");
         } else {
             c.getShape().getStyleClass().add("dead-cell");
+        }
+    }
+
+    @Override
+    public void setCellFromFile(int row, int col, char ch) {
+        if (ch == '1') {
+            mySimulationGrid.getCell(row-1, col).setStatus(true);
         }
     }
 }
