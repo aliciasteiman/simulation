@@ -1,19 +1,16 @@
 package cellsociety;
 
-import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.stage.Stage;
-
-import java.util.concurrent.TimeUnit;
 
 
 public class Main extends Application {
     public static final String TITLE = "Simulation";
-    public static final int DISPLAY_WIDTH = 300;
-    public static final int DISPLAY_HEIGHT = 400;
+    public static final int DISPLAY_WIDTH = 400;
+    public static final int DISPLAY_HEIGHT = 500;
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         SimulationModel model = new GameOfLife("test/GOLtest");
         SimulationView display = new SimulationView(model);
         stage.setTitle(TITLE);
