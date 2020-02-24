@@ -56,7 +56,7 @@ public class GameOfLife extends SimulationModel {
     @Override
     public void setCellFromFile(int row, int col, char ch) {
         if (ch == '1') {
-            mySimulationGrid.getCell(row-1, col).setStatus(true);
+            mySimulationGrid.getCell(row, col).setStatus(true);
         }
     }
 }
