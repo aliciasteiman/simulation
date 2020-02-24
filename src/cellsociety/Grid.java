@@ -2,7 +2,6 @@ package cellsociety;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Grid {
     private int NUM_ROWS;

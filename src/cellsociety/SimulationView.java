@@ -1,6 +1,8 @@
 package cellsociety;
 
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -10,6 +12,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
+
+import java.security.Key;
 import java.util.concurrent.TimeUnit;
 
 public class SimulationView {
@@ -65,6 +70,7 @@ public class SimulationView {
         updateGridAppearance();
     }
 
+    /*
     public void runAnimation() {
         AnimationTimer runAnimation = new AnimationTimer() {
             private long lastUpdate = 0;
@@ -78,16 +84,25 @@ public class SimulationView {
         };
         startButton.setOnAction(l -> runAnimation.start());
     }
+     */
+
+    public void setAnimation() {
+        KeyFrame frame = new KeyFrame(Duration.seconds(5.0/60), e -> step());
+        Timeline myAnimation = new Timeline();
+        myAnimation.setCycleCount(Timeline.INDEFINITE);
+        myAnimation.getKeyFrames().add(frame);
+        startButton.setOnAction(l -> myAnimation.play());
+    }
 
     public Node addButtons() {
         HBox userButtons = new HBox();
         startButton = new Button("Start");
         startButton.setMaxSize(50,20);
-        runAnimation();
+        //runAnimation();
+        setAnimation();
         userButtons.getChildren().add(startButton);
         return userButtons;
     }
-
 
 
 }
