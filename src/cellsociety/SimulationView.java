@@ -1,5 +1,7 @@
 package cellsociety;
 
+import javafx.animation.AnimationTimer;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -8,9 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
-
-import java.util.List;
-
+import java.util.concurrent.TimeUnit;
 
 public class SimulationView {
     private SimulationModel myModel;
@@ -18,7 +18,9 @@ public class SimulationView {
     private int myCols;
     private int myRows;
     private Grid myGrid;
-    private List<List<Cell>> myCells;
+    private double cell_width;
+    private double cell_height;
+    private Button startButton;
 
     public static final String CELL_STYLESHEET = "cell.css";
 
@@ -26,8 +28,7 @@ public class SimulationView {
         myModel = model;
         pane = new GridPane();
         pane.setAlignment(Pos.CENTER);
-        myGrid = new Grid("test/GOLtest");
-        myCells = myGrid.createGrid();
+        myGrid = myModel.getMySimulationGrid();
     }
 
     public Scene makeScene(int width, int height) {
@@ -36,37 +37,57 @@ public class SimulationView {
         scene.getStylesheets().add(CELL_STYLESHEET);
         myCols = myGrid.getCols();
         myRows = myGrid.getRows();
-        updateGridAppearance(width/ myRows, (height-100)/ myCols);
+        cell_width = width/ myRows;
+        cell_height = (height-100)/ myCols;
+        updateGridAppearance();
         root.setCenter(pane);
         root.setBottom(addButtons());
         return scene;
     }
 
-    public void updateCellAppearance(int row, int col, double cell_width, double cell_height) {
-        Cell c = myCells.get(row).get(col);
+    public void updateCellAppearance(int row, int col) {
+        Cell c = myGrid.getCell(row, col);
         c.setShape(new Rectangle(cell_width, cell_height));
-        if (c.getStatus()==true) {
-            c.getShape().getStyleClass().add("alive-cell");
-        } else {
-            c.getShape().getStyleClass().add("dead-cell");
-        }
+        myModel.updateCellStyle(c);
         pane.add(c.getShape(), col, row);
 
     }
-    public void updateGridAppearance(double cell_width, double cell_height) {
-        for (int row = 0; row < myRows; row++) {
-            for (int col = 0; col < myCols; col++) {
-                updateCellAppearance(row, col, cell_width, cell_height);
+    public void updateGridAppearance() {
+        for (int row = 0; row < myGrid.getRows(); row++) {
+            for (int col = 0; col < myGrid.getCols(); col++) {
+                updateCellAppearance(row, col);
             }
         }
     }
 
+    public void step() {
+        myGrid = myModel.updateCells();
+        updateGridAppearance();
+    }
+
+    public void runAnimation() {
+        AnimationTimer runAnimation = new AnimationTimer() {
+            private long lastUpdate = 0;
+            @Override
+            public void handle(long now) {
+                if ((now - lastUpdate) >= TimeUnit.MILLISECONDS.toNanos(500)) {
+                    step();
+                    lastUpdate = now;
+                }
+            }
+        };
+        startButton.setOnAction(l -> runAnimation.start());
+    }
+
     public Node addButtons() {
         HBox userButtons = new HBox();
-        Button startButton = new Button("Start");
+        startButton = new Button("Start");
         startButton.setMaxSize(50,20);
+        runAnimation();
         userButtons.getChildren().add(startButton);
         return userButtons;
     }
+
+
 
 }
