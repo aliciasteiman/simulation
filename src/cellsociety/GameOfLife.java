@@ -45,7 +45,7 @@ public class GameOfLife extends SimulationModel {
     }
 
     @Override
-    public void updateCell(Cell c) {
+    public void updateCellStyle(Cell c) {
         if (c.getStatus()==true) {
             c.getShape().getStyleClass().add("alive-cell");
         } else {

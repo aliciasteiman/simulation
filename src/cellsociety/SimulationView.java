@@ -47,7 +47,7 @@ public class SimulationView {
     public void updateCellAppearance(int row, int col) {
         Cell c = myGrid.getCell(row, col);
         c.setShape(new Rectangle(cell_width, cell_height));
-        myModel.updateCell(c);
+        myModel.updateCellStyle(c);
         pane.add(c.getShape(), col, row);
 
     }

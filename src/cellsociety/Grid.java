@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Grid {
-
-
     private int NUM_ROWS;
     private int NUM_COLS;
     private List<List<Cell>> allCells;
@@ -18,6 +16,9 @@ public class Grid {
         initGrid();
     }
 
+    /**
+     * Initializes the Grid to have all empty cells at first.
+     */
     public void initGrid() {
         for (int r = 0; r < NUM_ROWS; r++) {
             ArrayList<Cell> row = new ArrayList<>();
