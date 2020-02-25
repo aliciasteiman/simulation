@@ -26,6 +26,8 @@ public class SimulationView {
     private double cell_width;
     private double cell_height;
     private Button startButton;
+    private Button saveButton;
+    private Timeline myAnimation;
 
     public static final String CELL_STYLESHEET = "cell.css";
 
@@ -42,8 +44,8 @@ public class SimulationView {
         scene.getStylesheets().add(CELL_STYLESHEET);
         myCols = myGrid.getCols();
         myRows = myGrid.getRows();
-        cell_width = width/ myRows;
-        cell_height = (height-100)/ myCols;
+        cell_width = width / myRows;
+        cell_height = (height - 100) / myCols;
         updateGridAppearance();
         root.setCenter(pane);
         root.setBottom(addButtons());
@@ -87,21 +89,28 @@ public class SimulationView {
      */
 
     public void setAnimation() {
-        KeyFrame frame = new KeyFrame(Duration.seconds(5.0/60), e -> step()); //what should the Duration.seconds be?
-        Timeline myAnimation = new Timeline();
+        KeyFrame frame = new KeyFrame(Duration.seconds(10.0 / 60), e -> step()); //what should the Duration.seconds be?
+        myAnimation = new Timeline();
         myAnimation.setCycleCount(Timeline.INDEFINITE);
         myAnimation.getKeyFrames().add(frame);
-        startButton.setOnAction(l -> myAnimation.play());
+        //startButton.setOnAction(l -> myAnimation.play());
+        myAnimation.play();
     }
 
     public Node addButtons() {
         HBox userButtons = new HBox();
         startButton = new Button("Start");
-        startButton.setMaxSize(50,20);
+        startButton.setMaxSize(50, 20);
         //runAnimation();
-        setAnimation();
+        //setAnimation(); //why do we need this line?
+        startButton.setOnMouseClicked(e -> setAnimation());
+
+        saveButton = new Button("Save");
+        saveButton.setMaxSize(50, 20);
+        saveButton.setOnMouseClicked(e -> myModel.saveCurrentConfig(myGrid));
+
         userButtons.getChildren().add(startButton);
+        userButtons.getChildren().add(saveButton);
         return userButtons;
     }
-
 }

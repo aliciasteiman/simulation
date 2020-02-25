@@ -1,6 +1,9 @@
 package cellsociety;
 
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -75,6 +78,28 @@ public abstract class SimulationModel {
         }
     }
 
+    public void saveCurrentConfig(Grid grid) {
+        File file = new File("data/checkCurrConfig.txt");
+        FileWriter fr = null;
+        try {
+            fr = new FileWriter(file);
+            fr.write(mySimulationGrid.getRows() + " " + mySimulationGrid.getCols() + "\n");
+            for (List<Cell> lst : grid.getAllCells()) {
+                for (Cell c : lst) {
+                    if (c.getStatus() == true) {
+                        fr.write(1 + " ");
+                    }
+                    else {
+                        fr.write(0 + " ");
+                    }
+                }
+                fr.write("\n");
+            }
+            fr.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 
