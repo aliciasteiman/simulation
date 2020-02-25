@@ -7,6 +7,9 @@ public class GameOfLife extends SimulationModel {
 
     private List<Cell> myNeighbors;
 
+    public static final String ALIVE_STYLE = "alive-cell";
+    public static final String DEAD_STYLE = "dead-cell";
+
     public GameOfLife(String file) {
         super(file);
     }
@@ -47,9 +50,9 @@ public class GameOfLife extends SimulationModel {
     @Override
     public void updateCellStyle(Cell c) {
         if (c.getStatus()==true) {
-            c.getShape().getStyleClass().add("alive-cell");
+            c.getShape().getStyleClass().add(ALIVE_STYLE);
         } else {
-            c.getShape().getStyleClass().add("dead-cell");
+            c.getShape().getStyleClass().add(DEAD_STYLE);
         }
     }
 
