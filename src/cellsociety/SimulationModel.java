@@ -97,7 +97,7 @@ public abstract class SimulationModel {
             }
             fr.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); //need to change this... look at nanobrowser example
         }
     }
 

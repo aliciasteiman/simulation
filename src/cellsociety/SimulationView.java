@@ -27,6 +27,7 @@ public class SimulationView {
     private double cell_height;
     private Button startButton;
     private Button saveButton;
+    private Button pauseButton;
     private Timeline myAnimation;
 
     public static final String CELL_STYLESHEET = "cell.css";
@@ -89,7 +90,7 @@ public class SimulationView {
      */
 
     public void setAnimation() {
-        KeyFrame frame = new KeyFrame(Duration.seconds(10.0 / 60), e -> step()); //what should the Duration.seconds be?
+        KeyFrame frame = new KeyFrame(Duration.seconds(20.0 / 60), e -> step()); //what should the Duration.seconds be?
         myAnimation = new Timeline();
         myAnimation.setCycleCount(Timeline.INDEFINITE);
         myAnimation.getKeyFrames().add(frame);
@@ -102,14 +103,19 @@ public class SimulationView {
         startButton = new Button("Start");
         startButton.setMaxSize(50, 20);
         //runAnimation();
-        //setAnimation(); //why do we need this line?
+        //setAnimation(); //why do we need this line? ok we don't if we have the one after
         startButton.setOnMouseClicked(e -> setAnimation());
+
+        pauseButton = new Button("Pause");
+        pauseButton.setMaxSize(80, 20);
+        pauseButton.setOnMouseClicked(e -> myAnimation.pause());
 
         saveButton = new Button("Save");
         saveButton.setMaxSize(50, 20);
         saveButton.setOnMouseClicked(e -> myModel.saveCurrentConfig(myGrid));
 
         userButtons.getChildren().add(startButton);
+        userButtons.getChildren().add(pauseButton);
         userButtons.getChildren().add(saveButton);
         return userButtons;
     }
