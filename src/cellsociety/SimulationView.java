@@ -15,6 +15,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 public class SimulationView {
 
@@ -32,13 +33,14 @@ public class SimulationView {
     private Button saveButton;
     private Button pauseButton;
     private Button stepButton;
-    private Button quitButton;
     private int BUTTON_SPACING;
 
     public static final String RESOURCE_PACKAGE = "resources.";
     public static final String buttonNamesFile = "ButtonNames";
     public static final String CELL_STYLESHEET = "resources/style.css";
 
+    private int WIDTH;
+    private int HEIGHT;
 
     public SimulationView(SimulationModel model) {
         myModel = model;
