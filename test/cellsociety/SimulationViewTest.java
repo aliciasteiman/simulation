@@ -28,7 +28,7 @@ class SimulationViewTest extends DukeApplicationTest {
 
     @Override
     public void start (Stage stage) {
-        myModel = new GameOfLife("test/GOLtest.txt");
+        myModel = new GameOfLife("test/GOLconfig.txt");
         myView = new SimulationView(myModel);
         myScene = myView.makeScene(400,600);
         stage.setScene(myScene);

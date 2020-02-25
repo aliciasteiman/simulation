@@ -62,14 +62,14 @@ public abstract class SimulationModel {
      */
     public void readGridFromFile(String file) {
         Scanner input = new Scanner(Grid.class.getClassLoader().getResourceAsStream(file));
-        String[] header = input.nextLine().split(" ");
+        String[] header = input.nextLine().split(",");
         int num_rows = Integer.parseInt(header[0]);
         int num_cols = Integer.parseInt(header[1]);
         mySimulationGrid = new Grid(num_rows, num_cols);
         int row = 0;
         while (input.hasNextLine()) {
             String rowConfig = input.nextLine();
-            String cells = rowConfig.replaceAll("\\s", "");
+            String cells = rowConfig.replaceAll(",", "");
             for (int col = 0; col < num_cols; col++) {
                 char ch = cells.charAt(col);
                 setCellFromFile(row, col, ch);
@@ -79,18 +79,18 @@ public abstract class SimulationModel {
     }
 
     public void saveCurrentConfig(Grid grid) {
-        File file = new File("data/checkCurrConfig.txt");
+        File file = new File("data/new.csv");
         FileWriter fr = null;
         try {
             fr = new FileWriter(file);
-            fr.write(mySimulationGrid.getRows() + " " + mySimulationGrid.getCols() + "\n");
+            fr.write(mySimulationGrid.getRows() + "," + mySimulationGrid.getCols() + "\n");
             for (List<Cell> lst : grid.getAllCells()) {
                 for (Cell c : lst) {
                     if (c.getStatus() == true) {
-                        fr.write(1 + " ");
+                        fr.write(1 + ",");
                     }
                     else {
-                        fr.write(0 + " ");
+                        fr.write(0 + ",");
                     }
                 }
                 fr.write("\n");

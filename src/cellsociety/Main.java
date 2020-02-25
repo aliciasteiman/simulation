@@ -11,7 +11,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        SimulationModel model = new GameOfLife("test/GOLtest.txt");
+        SimulationModel model = new GameOfLife("test/GOLconfig.csv");
         SimulationView display = new SimulationView(model);
         stage.setTitle(TITLE);
         stage.setScene(display.makeScene(DISPLAY_WIDTH, DISPLAY_HEIGHT));
