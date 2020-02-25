@@ -28,7 +28,7 @@ class SimulationViewTest extends DukeApplicationTest {
 
     @Override
     public void start (Stage stage) {
-        myModel = new GameOfLife("test/GOLconfig.txt");
+        myModel = new GameOfLife("test/GOLconfig.csv");
         myView = new SimulationView(myModel);
         myScene = myView.makeScene(400,600);
         stage.setScene(myScene);
@@ -36,7 +36,7 @@ class SimulationViewTest extends DukeApplicationTest {
 
         myStartButton = lookup("#startCommand").query();
         myPauseButton = lookup("#pauseCommand").query();
-        mySaveButton = lookup("#pauseAndSaveCommand").query();
+        mySaveButton = lookup("#saveCommand").query();
         myStepButton = lookup("#stepCommand").query();
 
         for (int r = 0; r < NUM_ROWS; r++) {

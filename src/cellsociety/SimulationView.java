@@ -32,6 +32,7 @@ public class SimulationView {
     private Button saveButton;
     private Button pauseButton;
     private Button stepButton;
+    private Button quitButton;
     private int BUTTON_SPACING;
 
     public static final String RESOURCE_PACKAGE = "resources.";
