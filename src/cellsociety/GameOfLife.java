@@ -85,6 +85,8 @@ public class GameOfLife extends SimulationModel {
     }
 
     /**
+     * Used in readGridFromFile() in SimulationModel to set the status of a Cell to true/false depending
+     * on its character representation in the configuration file
      * @param row - the row that the cell is on
      * @param col - the column that the cell is on
      * @param ch  - the character that corresponds to the value that cell will take
