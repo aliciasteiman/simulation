@@ -95,7 +95,7 @@ public abstract class SimulationModel {
             fr.write(mySimulationGrid.getRows() + "," + mySimulationGrid.getCols() + "\n");
             for (List<Cell> lst : grid.getAllCells()) {
                 for (Cell c : lst) {
-                    if (c.getStatus() == true) {
+                    if (c.getStatus()) {
                         fr.write(1 + ",");
                     }
                     else {

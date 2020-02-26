@@ -10,14 +10,28 @@ public class Cell {
 
     private Shape myShape;
     private boolean isAlive;
+    private int myRow;
+    private int myCol;
 
     /**
-     * Constructor for a Cell object, sets the status of a Cell (dead, alive)
+     * Constructor for a Cell object, sets the status of a Cell (dead, alive) and its position (row, col)
      * @param bool
      */
-    public Cell(boolean bool) {
+    public Cell(int row, int col, boolean bool) {
+        myRow = row;
+        myCol = col;
         isAlive = bool;
     }
+
+    /**
+     * Returns row position of a Cell
+     */
+    public int getRow() { return myRow; }
+
+    /**
+     * Returns column position of a Cell
+     */
+    public int getCol() { return myCol; }
 
     /**
      * Sets the shape of a cell (such as rectangle, circle, hexagon, etc.)

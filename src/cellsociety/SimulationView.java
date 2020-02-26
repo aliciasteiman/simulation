@@ -24,6 +24,7 @@ public class SimulationView {
 
     private SimulationModel myModel;
     private Timeline myAnimation;
+    private Scene myScene;
     private GridPane pane;
     private int myCols;
     private int myRows;
@@ -58,7 +59,6 @@ public class SimulationView {
         myModel = model;
         pane = new GridPane();
         pane.setAlignment(Pos.CENTER);
-        myGrid = myModel.getMySimulationGrid();
         myResources = ResourceBundle.getBundle(RESOURCE_PACKAGE + buttonNamesFile);
     }
 
@@ -70,8 +70,9 @@ public class SimulationView {
      */
     public Scene makeScene(int width, int height) {
         BorderPane root = new BorderPane();
-        Scene scene = new Scene(root, width, height);
-        scene.getStylesheets().add(CELL_STYLESHEET);
+        myScene = new Scene(root, width, height);
+        myScene.getStylesheets().add(CELL_STYLESHEET);
+        myGrid = myModel.getMySimulationGrid();
         myCols = myGrid.getCols();
         myRows = myGrid.getRows();
         CELL_HEIGHT = (height - 100) / myCols;
@@ -81,7 +82,7 @@ public class SimulationView {
         root.setCenter(pane);
         root.setBottom(addButtons());
         root.setTop(makeConfigurationsMenu());
-        return scene;
+        return myScene;
     }
 
     /**
