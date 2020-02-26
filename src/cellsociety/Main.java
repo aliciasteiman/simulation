@@ -13,10 +13,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        SimulationModel model = new GameOfLife("test/GOLconfig.csv");
+        SimulationModel model = new GameOfLife("GOLconfigurations/blinkerConfig.csv");
         SimulationView display = new SimulationView(model);
 
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in); //will eventually change to be an interface feature
         System.out.println("Enter width: ");
         DISPLAY_WIDTH = scanner.nextInt();
         System.out.println("Enter height: ");
