@@ -116,7 +116,7 @@ class GoLSimulationViewTest extends DukeApplicationTest {
 
     /**
      * Testing Step and Save buttons. After a single step, save will
-     * load the current configuration to new.csv. 
+     * load the current configuration to new.csv.
      */
     @Test
     void testStepAndSaveButtons() {
