@@ -23,7 +23,7 @@ public class GameOfLife extends SimulationModel {
                 Cell thisCell = mySimulationGrid.getCell(r, c);
                 int numLiveNeighbors = mySimulationGrid.countAliveNeighbors(getNeighbors(r,c));
                 boolean isAlive = ((thisCell.getStatus() && numLiveNeighbors == 2) || numLiveNeighbors == 3);
-                updatedRow.add(new Cell(isAlive));
+                updatedRow.add(new Cell(r, c, isAlive));
             }
             updatedGrid.add(updatedRow);
         }
@@ -49,7 +49,7 @@ public class GameOfLife extends SimulationModel {
 
     @Override
     public void updateCellStyle(Cell c) {
-        if (c.getStatus()==true) {
+        if (c.getStatus()) {
             c.getShape().getStyleClass().add(ALIVE_STYLE);
         } else {
             c.getShape().getStyleClass().add(DEAD_STYLE);
