@@ -87,7 +87,7 @@ public abstract class SimulationModel {
      * Translates the current grid (upon hitting save) into a .csv file that the user can later access
      * @param grid
      */
-    public void saveCurrentConfig(Grid grid) {
+    public File saveCurrentConfig(Grid grid) {
         File file = new File("data/new.csv");
         FileWriter fr = null;
         try {
@@ -108,6 +108,7 @@ public abstract class SimulationModel {
         } catch (IOException e) {
             e.printStackTrace(); //need to change this... look at nanobrowser example
         }
+        return file;
     }
 
 
