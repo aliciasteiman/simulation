@@ -1,9 +1,11 @@
 package cellsociety;
 
 import javafx.stage.Stage;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,13 +60,16 @@ class GameOfLifeTest  extends DukeApplicationTest {
         assertEquals(myModel.mySimulationGrid.getCell(2,0), middleCellNeighbors.get(7));
     }
 
-    /** Runs an update on some of the given initial configs to see if the create the expected format  */
-//    @Test
-//    void testSaveCurrentConfig() {
-//
-//    }
+    /** Checks that the initial block configuration equals the saved file of the block configuration  */
+    @Test
+    void testSaveCurrConfig() {
+        SimulationModel sm = new GameOfLife("GOLconfigurations/blockConfig.csv");
+        Grid g = sm.getMySimulationGrid();
+        File f = sm.saveCurrentConfig(g);
+        File f1 = new File("data/GOLconfigurations/blockConfig.csv");
+        Assertions.assertThat(f1).hasSameContentAs(f);
+    }
 
-    // save current config
     /** Check if cell at a particular i,j position is updated to alive if passed in a '1' */
     @Test
     void testSetCellFromFile() {

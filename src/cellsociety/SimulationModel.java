@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Represents the functionality of the simulation (each type of simulation extends this class)
+ * Reads in an initial configuration for a simulation and specifies how to update cells/grid
+ */
 public abstract class SimulationModel {
     protected Grid mySimulationGrid;
 
@@ -60,7 +64,7 @@ public abstract class SimulationModel {
      * Initializes a grid based on what's read in from a file
      * @param file - CSV file that contains initial states for the grid
      */
-    public void readGridFromFile(String file) {
+    private void readGridFromFile(String file) {
         Scanner input = new Scanner(Grid.class.getClassLoader().getResourceAsStream(file));
         String[] header = input.nextLine().split(",");
         int num_rows = Integer.parseInt(header[0]);
@@ -78,7 +82,12 @@ public abstract class SimulationModel {
         }
     }
 
-    public void saveCurrentConfig(Grid grid) {
+    /**
+     * When user hits save button, this method is called
+     * Translates the current grid (upon hitting save) into a .csv file that the user can later access
+     * @param grid
+     */
+    public File saveCurrentConfig(Grid grid) {
         File file = new File("data/new.csv");
         FileWriter fr = null;
         try {
@@ -99,6 +108,7 @@ public abstract class SimulationModel {
         } catch (IOException e) {
             e.printStackTrace(); //need to change this... look at nanobrowser example
         }
+        return file;
     }
 
 
