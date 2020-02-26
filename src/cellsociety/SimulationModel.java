@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Represents the functionality of the simulation (each type of simulation extends this class)
+ * Reads in an initial configuration for a simulation and specifies how to update cells/grid
+ */
 public abstract class SimulationModel {
     protected Grid mySimulationGrid;
 
@@ -78,6 +82,11 @@ public abstract class SimulationModel {
         }
     }
 
+    /**
+     * When user hits save button, this method is called
+     * Translates the current grid (upon hitting save) into a .csv file that the user can later access
+     * @param grid
+     */
     public void saveCurrentConfig(Grid grid) {
         File file = new File("data/new.csv");
         FileWriter fr = null;

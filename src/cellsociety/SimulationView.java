@@ -44,6 +44,9 @@ public class SimulationView {
     public static final String buttonNamesFile = "ButtonNames";
     public static final String CELL_STYLESHEET = "resources/style.css";
 
+    public static final int FRAMES_PER_SECOND = 60;
+    public static final double SECOND_DELAY = 20.0 / FRAMES_PER_SECOND;
+
     private int WIDTH;
     private int HEIGHT;
 
@@ -59,6 +62,12 @@ public class SimulationView {
         myResources = ResourceBundle.getBundle(RESOURCE_PACKAGE + buttonNamesFile);
     }
 
+    /**
+     * Returns scene for the simulation so it can be added to the stage in Main
+     * @param width
+     * @param height
+     * @return scene
+     */
     public Scene makeScene(int width, int height) {
         BorderPane root = new BorderPane();
         Scene scene = new Scene(root, width, height);
@@ -75,16 +84,22 @@ public class SimulationView {
         return scene;
     }
 
-
-    public void updateCellAppearance(int row, int col) {
+    /**
+     * Updates the color of a cell based on its new status (i.e. alive vs. dead)
+     * @param row - row position of the cell
+     * @param col - column position of the cell
+     */
+    private void updateCellAppearance(int row, int col) {
         Cell c = myGrid.getCell(row, col);
         c.setShape(new Rectangle(CELL_WIDTH, CELL_HEIGHT));
         c.getShape().setId("cell" + row + col);
         myModel.updateCellStyle(c);
         pane.add(c.getShape(), col, row);
-
     }
 
+    /**
+     * Loops through through each cell in the grid and updates the individual cell using the helper method
+     */
     public void updateGridAppearance() {
         for (int row = 0; row < myGrid.getRows(); row++) {
             for (int col = 0; col < myGrid.getCols(); col++) {
@@ -93,20 +108,31 @@ public class SimulationView {
         }
     }
 
+    /**
+     * In each "step" of the simulation, the grid appearance is updated to reflect changes between
+     * cell generations.
+     */
     public void step() {
         myGrid = myModel.updateCells();
         updateGridAppearance();
     }
 
-
+    /**
+     * Sets the animation for the simulation, where the step (updating the cells) occurs indefinitely
+     */
     public void setAnimation() {
-        KeyFrame frame = new KeyFrame(Duration.seconds(20.0 / 60), e -> step()); //what should the Duration.seconds be?
+        KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> step());
         myAnimation = new Timeline();
         myAnimation.setCycleCount(Timeline.INDEFINITE);
         myAnimation.getKeyFrames().add(frame);
         myAnimation.play();
     }
 
+    /**
+     * Initializes an HBox of buttons and sets their alignment
+     * Initializes a start, pause, save, and step button and adds them to the HBox (root)
+     * @return userButtons -- HBox of buttons
+     */
     public Node addButtons() {
         HBox userButtons = new HBox();
         userButtons.setAlignment(Pos.CENTER);
@@ -125,6 +151,13 @@ public class SimulationView {
         return userButtons;
     }
 
+    /**
+     * Helper method to create a button given an identifying name and setting an event to occur on action
+     * e.g. start button "Start" starts the animation when clicked on
+     * @param name -- identifier in the .properties file
+     * @param handler -- action the button should perform
+     * @return b -- Button
+     */
     private Button makeButton(String name, EventHandler<ActionEvent> handler) {
         Button b = new Button();
         b.setText(myResources.getString(name));
@@ -134,6 +167,10 @@ public class SimulationView {
         return b;
     }
 
+    /**
+     * Creates a drop down menu that contains all possible simulations that a user can select/run
+     * @return result -- HBox
+     */
     private Node makeConfigurationsMenu() {
         HBox result = new HBox();
         myConfigurations = new ComboBox<>();
