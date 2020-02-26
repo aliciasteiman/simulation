@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GridTest {
 
-
     /**
      * Tests that the Grid constructor creates a Grid with the right number of rows and columns.
      * Also checks that all cells in the initialGrid are set to "false" = dead.
