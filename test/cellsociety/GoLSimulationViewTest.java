@@ -9,6 +9,7 @@ import util.DukeApplicationTest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -111,6 +112,34 @@ class GoLSimulationViewTest extends DukeApplicationTest {
         getCellsFromGrid();
         assertEquals("alive-cell", cell_1_1.getStyleClass().toString());
         assertEquals("alive-cell", cell_1_2.getStyleClass().toString());
+    }
+
+    /**
+     * Testing Step and Save buttons. After a single step, save will
+     * load the current configuration to new.csv. 
+     */
+    @Test
+    void testStepAndSaveButtons() {
+        myModel = new GameOfLife("GOLConfigurations/blinkerConfig.csv");
+        javafxRun(() -> start(new Stage()));
+
+        clickOn(myStepButton);
+        clickOn(mySaveButton);
+
+        String[] expectedOutput = {"0,0,0,0,0,", "0,0,1,0,0,", "0,0,1,0,0,","0,0,1,0,0,","0,0,0,0,0,"};
+        Scanner input = new Scanner(Grid.class.getClassLoader().getResourceAsStream("new.csv"));
+        int i = 0;
+        while (input.hasNext()) {
+            String line = input.nextLine();
+            String[] components = line.split(",");
+            if (components.length > 2) {
+                System.out.println(line);
+                System.out.println(expectedOutput[i]);
+                //assertEquals(0, expectedOutput[i].compareTo(line));
+                i++;
+            }
+        }
+
     }
 
     /**
