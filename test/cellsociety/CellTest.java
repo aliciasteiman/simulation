@@ -11,6 +11,9 @@ class CellTest {
     Cell cellDead = new Cell(false);
     Cell cellAlive = new Cell(true);
 
+    /**
+     * Testing the getStatus method for the Cell class.
+     */
     @Test
     void testGetStatus() {
         //test for Cell that is dead
@@ -19,6 +22,9 @@ class CellTest {
         assertEquals(cellAlive.getStatus(), true);
     }
 
+    /**
+     * Testing the setStatus method for the Cell class.
+     */
     @Test
     void testSetStatus() {
         //setting the dead cell to be alive
@@ -29,6 +35,9 @@ class CellTest {
         assertEquals(cellAlive.getStatus(), false);
     }
 
+    /**
+     * Testing the setShape method for the Cell class.
+     */
     @Test
     void testSetShape() {
         //test for Cell that is Rectangular shape
@@ -36,6 +45,9 @@ class CellTest {
         assertTrue(cellDead.getShape() instanceof javafx.scene.shape.Rectangle);
     }
 
+    /**
+     * Testing the getShape method for Cell class.
+     */
     @Test
     void testGetShape() {
         //test for Cell that is Circular shape

@@ -43,6 +43,10 @@ class GoLSimulationViewTest extends DukeApplicationTest {
         getCellsFromGrid();
     }
 
+    /**
+     * Test that the initial appearance of the Grid matches the text file
+     * passed into the SimulationModel.
+     */
     @Test
     void testGridAppearance() {
         //for initial configuration, testing the appearance of the four corners
@@ -63,6 +67,9 @@ class GoLSimulationViewTest extends DukeApplicationTest {
         assertEquals("alive-cell", cell_9_9.getStyleClass().toString());
     }
 
+    /**
+     * Test that the step() method works properly and updates the appearance of the Grid.
+     */
     @Test
     void testStepAndUpdateGrid() {
         //making sure that after a single step, the grid updates according to the rules of the simulation
@@ -84,6 +91,9 @@ class GoLSimulationViewTest extends DukeApplicationTest {
         assertEquals("dead-cell", cell_3_4.getStyleClass().toString());
     }
 
+    /**
+     * Test for common Game of Life configurations.
+     */
     @Test
     void GameOfLifeBlockTest() {
         myModel = new GameOfLife("GOLConfigurations/blockConfig.csv");
@@ -103,28 +113,11 @@ class GoLSimulationViewTest extends DukeApplicationTest {
         assertEquals("alive-cell", cell_1_2.getStyleClass().toString());
     }
 
-    @Test
-    void GameOfLifeBlinkerTest() {
-        myModel = new GameOfLife("GOLconfigurations/blinkerConfig.csv");
-        javafxRun(() -> start(new Stage()));
-        javafxRun(() -> myView.updateGridAppearance());
-        getCellsFromGrid();
-
-        //initial config - HORIZONTAL
-        Rectangle cell_2_1 = myGrid.get(2).get(1);
-        assertEquals("alive-cell", cell_2_1.getStyleClass().toString());
-        Rectangle cell_2_2 = myGrid.get(2).get(2);
-        assertEquals("alive-cell", cell_2_2.getStyleClass().toString());
-        Rectangle cell_2_3 = myGrid.get(2).get(3);
-        assertEquals("alive-cell", cell_2_3.getStyleClass().toString());
-
-        //after step - VERTICAL
-        javafxRun(() -> myView.step());
-        getCellsFromGrid();
-        assertEquals("alive-cell", cell_2_2.getStyleClass().toString());
-    }
-
-    public void getCellsFromGrid() {
+    /**
+     * Helper method that finds the new cells by query after
+     * the grid appearance gets updated.
+     */
+    private void getCellsFromGrid() {
         for (int r = 0; r < NUM_ROWS; r++) {
             List<Rectangle> row = new ArrayList<>();
             for (int c = 0; c < NUM_COLS; c++) {
