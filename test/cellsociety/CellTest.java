@@ -8,8 +8,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CellTest {
 
-    Cell cellDead = new Cell(false);
-    Cell cellAlive = new Cell(true);
+    Cell cellDead = new Cell(0, 0, false);
+    Cell cellAlive = new Cell(0, 0, true);
 
     @Test
     void testGetStatus() {

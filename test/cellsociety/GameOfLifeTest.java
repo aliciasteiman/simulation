@@ -20,6 +20,7 @@ class GameOfLifeTest {
     void getNeighbors() {
 //        ArrayList<Cell> expected1 = new ArrayList<>(List.of(Cell()));
 //        expected1.
+
     }
 
 
