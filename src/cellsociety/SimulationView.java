@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -15,8 +16,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.util.ResourceBundle;
-import java.util.Scanner;
 
+/**
+ * Class used to display the viewer for a Simulation
+ */
 public class SimulationView {
 
     private SimulationModel myModel;
@@ -35,6 +38,8 @@ public class SimulationView {
     private Button stepButton;
     private int BUTTON_SPACING;
 
+    private ComboBox myConfigurations;
+
     public static final String RESOURCE_PACKAGE = "resources.";
     public static final String buttonNamesFile = "ButtonNames";
     public static final String CELL_STYLESHEET = "resources/style.css";
@@ -42,6 +47,10 @@ public class SimulationView {
     private int WIDTH;
     private int HEIGHT;
 
+    /**
+     * Constructs the view of a given SimulationModel
+     * @param model -- e.g. GameOfLife
+     */
     public SimulationView(SimulationModel model) {
         myModel = model;
         pane = new GridPane();
@@ -62,6 +71,7 @@ public class SimulationView {
         updateGridAppearance();
         root.setCenter(pane);
         root.setBottom(addButtons());
+        root.setTop(makeConfigurationsMenu());
         return scene;
     }
 
@@ -103,16 +113,9 @@ public class SimulationView {
         userButtons.setSpacing(BUTTON_SPACING);
 
         startButton = makeButton("startCommand", e -> setAnimation());
-        //startButton.setOnMouseClicked(e -> setAnimation());
-
         pauseButton = makeButton("pauseCommand", e -> myAnimation.pause());
-        //pauseButton.setOnMouseClicked(e -> myAnimation.pause());
-
         saveButton = makeButton("saveCommand", e -> myModel.saveCurrentConfig(myGrid));
-        //saveButton.setOnMouseClicked(e -> myModel.saveCurrentConfig(myGrid));
-
         stepButton = makeButton("stepCommand", e -> step());
-        //stepButton.setOnMouseClicked(e -> step());
 
         userButtons.getChildren().add(startButton);
         userButtons.getChildren().add(pauseButton);
@@ -131,4 +134,14 @@ public class SimulationView {
         return b;
     }
 
+    private Node makeConfigurationsMenu() {
+        HBox result = new HBox();
+        myConfigurations = new ComboBox<>();
+        myConfigurations.setId("ConfigurationsMenu");
+        myConfigurations.setPromptText(myResources.getString("ConfigurationsMenu"));
+        result.getChildren().add(myConfigurations);
+        SimulationModel newModel = new GameOfLife("GOLconfigurations/blinkerConfig.csv");
+        //myConfigurations.getItems().add(makeButton("blinkerConfig", e -> ?);
+        return result;
+    }
 }

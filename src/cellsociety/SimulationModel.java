@@ -60,7 +60,7 @@ public abstract class SimulationModel {
      * Initializes a grid based on what's read in from a file
      * @param file - CSV file that contains initial states for the grid
      */
-    public void readGridFromFile(String file) {
+    private void readGridFromFile(String file) {
         Scanner input = new Scanner(Grid.class.getClassLoader().getResourceAsStream(file));
         String[] header = input.nextLine().split(",");
         int num_rows = Integer.parseInt(header[0]);
