@@ -14,15 +14,17 @@ import java.util.Scanner;
  */
 public abstract class SimulationModel {
     protected Grid mySimulationGrid;
+    private String file;
 
     /**
      * Constructor for the abstract class SimulationModel.
      * It will have subclasses as all the kinds of simulations.
      * Upon creation, it creates an INITIAL grid configuration based on a file.
-     * @param file - CSV file with starting grid configuration
+     * @param f - CSV file with starting grid configuration
      */
-    public SimulationModel(String file) {
-        readGridFromFile(file);
+    public SimulationModel(String f) {
+        file = f;
+        readGridFromFile();
 
     }
 
@@ -62,9 +64,8 @@ public abstract class SimulationModel {
 
     /**
      * Initializes a grid based on what's read in from a file
-     * @param file - CSV file that contains initial states for the grid
      */
-    private void readGridFromFile(String file) {
+    public void readGridFromFile() {
         Scanner input = new Scanner(Grid.class.getClassLoader().getResourceAsStream(file));
         String[] header = input.nextLine().split(",");
         int num_rows = Integer.parseInt(header[0]);
@@ -76,7 +77,7 @@ public abstract class SimulationModel {
             String cells = rowConfig.replaceAll(",", "");
             for (int col = 0; col < num_cols; col++) {
                 char ch = cells.charAt(col);
-                setCellFromFile(row, col, ch);
+                    setCellFromFile(row, col, ch);
             }
             row++;
         }
