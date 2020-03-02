@@ -201,12 +201,12 @@ public class SimulationView {
         myConfigurations.setId("ConfigurationsMenu");
         myConfigurations.setPromptText(myResources.getString("ConfigurationsMenu"));
         result.getChildren().add(myConfigurations);
-        myConfigurations.getItems().add("GOLconfigurations/blinkerConfig.csv");
-        myConfigurations.getItems().add("GOLconfigurations/blockConfig.csv");
-        myConfigurations.getItems().add("GOLconfigurations/gliderConfig.csv");
-        myConfigurations.getItems().add("GOLconfigurations/middleWeightSpaceshipConfig.csv");
-        myConfigurations.getItems().add("GOLconfigurations/pulsarConfig.csv");
-        myConfigurations.valueProperty().addListener((observableValue, oldValue, selected) -> loadNewConfig((String) selected));
+//        myConfigurations.getItems().add("GOLconfigurations/blinkerConfig.csv");
+//        myConfigurations.getItems().add("GOLconfigurations/blockConfig.csv");
+//        myConfigurations.getItems().add("GOLconfigurations/gliderConfig.csv");
+//        myConfigurations.getItems().add("GOLconfigurations/middleWeightSpaceshipConfig.csv");
+//        myConfigurations.getItems().add("GOLconfigurations/pulsarConfig.csv");
+//        myConfigurations.valueProperty().addListener((observableValue, oldValue, selected) -> loadNewConfig((String) selected));
         return result;
     }
 

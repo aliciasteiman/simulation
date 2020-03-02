@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 
 /**
@@ -15,6 +16,10 @@ import java.util.Scanner;
 public abstract class SimulationModel {
     protected Grid mySimulationGrid;
     private String file;
+    private ResourceBundle myResources;
+
+    public static final String RESOURCE_PACKAGE = "resources.";
+
 
     /**
      * Constructor for the abstract class SimulationModel.
@@ -24,8 +29,8 @@ public abstract class SimulationModel {
      */
     public SimulationModel(String f) {
         file = f;
+        myResources = ResourceBundle.getBundle(RESOURCE_PACKAGE + file);
         readGridFromFile();
-
     }
 
     /**
@@ -66,7 +71,8 @@ public abstract class SimulationModel {
      * Initializes a grid based on what's read in from a file
      */
     public void readGridFromFile() {
-        Scanner input = new Scanner(Grid.class.getClassLoader().getResourceAsStream(file));
+        String f = myResources.getString("FileName");
+        Scanner input = new Scanner(Grid.class.getClassLoader().getResourceAsStream(f));
         String[] header = input.nextLine().split(",");
         int num_rows = Integer.parseInt(header[0]);
         int num_cols = Integer.parseInt(header[1]);
