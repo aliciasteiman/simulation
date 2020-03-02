@@ -204,7 +204,7 @@ public class SimulationView {
 //        myConfigurations.getItems().add("GOLconfigurations/blinkerConfig.csv");
 //        myConfigurations.getItems().add("GOLconfigurations/blockConfig.csv");
 //        myConfigurations.getItems().add("GOLconfigurations/gliderConfig.csv");
-//        myConfigurations.getItems().add("GOLconfigurations/middleWeightSpaceshipConfig.csv");
+//        myConfigurations.getItems().add("GOLconfigurations/mwssConfig.csv");
 //        myConfigurations.getItems().add("GOLconfigurations/pulsarConfig.csv");
 //        myConfigurations.valueProperty().addListener((observableValue, oldValue, selected) -> loadNewConfig((String) selected));
         return result;
