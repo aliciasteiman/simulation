@@ -36,6 +36,7 @@ public class SimulationView {
     private Button saveButton;
     private Button pauseButton;
     private Button stepButton;
+    private Button speedUpButton;
     private int BUTTON_SPACING;
     private ComboBox myConfigurations;
     private BorderPane root;
@@ -44,9 +45,9 @@ public class SimulationView {
     public static final String buttonNamesFile = "ButtonNames";
     public static final String CELL_STYLESHEET = "resources/style.css";
 
-    public static final int FRAMES_PER_SECOND = 60;
-    public static final double SECOND_DELAY = 20.0 / FRAMES_PER_SECOND;
-    public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
+    public final int FRAMES_PER_SECOND = 60;
+    public double SECOND_DELAY = 20.0;
+    public double SPEED = SECOND_DELAY / FRAMES_PER_SECOND;
 
     /**
      * Constructs the view of a given SimulationModel
@@ -103,7 +104,7 @@ public class SimulationView {
         Cell c = myGrid.getCell(row, col);
         c.setShape(new Rectangle(CELL_WIDTH, CELL_HEIGHT));
         c.getShape().setId("cell" + row + col);
-        KeyFrame userClickFrame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> allowUserClick(c));
+        KeyFrame userClickFrame = new KeyFrame(Duration.seconds(SPEED), e -> allowUserClick(c));
         myAnimation.getKeyFrames().add(userClickFrame);
         //myAnimation.play();
         myModel.updateCellStyle(c);
@@ -145,7 +146,8 @@ public class SimulationView {
      * Sets the animation for the simulation, where the step (updating the cells) occurs indefinitely
      */
     public void setAnimation() {
-        KeyFrame frame = new KeyFrame(Duration.seconds(SECOND_DELAY), e -> step());
+        KeyFrame frame = new KeyFrame(Duration.seconds(SPEED), e -> step());
+        System.out.println(SPEED);
         myAnimation = new Timeline();
         myAnimation.setCycleCount(Timeline.INDEFINITE);
         myAnimation.getKeyFrames().add(frame);
@@ -166,14 +168,21 @@ public class SimulationView {
         pauseButton = makeButton("pauseCommand", e -> myAnimation.pause());
         saveButton = makeButton("saveCommand", e -> myModel.saveCurrentConfig(myGrid));
         stepButton = makeButton("stepCommand", e -> step());
+        //speedUpButton = makeButton("speedUpCommand", e -> changeSpeed(-5));
 
         userButtons.getChildren().add(startButton);
         userButtons.getChildren().add(pauseButton);
         userButtons.getChildren().add(saveButton);
         userButtons.getChildren().add(stepButton);
+        //userButtons.getChildren().add(speedUpButton);
 
         return userButtons;
     }
+
+//    private void changeSpeed(int speed) {
+//        SECOND_DELAY += speed;
+//        setAnimation();
+//    }
 
     /**
      * Helper method to create a button given an identifying name and setting an event to occur on action
