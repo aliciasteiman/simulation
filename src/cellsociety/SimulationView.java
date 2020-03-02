@@ -201,10 +201,13 @@ public class SimulationView {
         myConfigurations.setId("ConfigurationsMenu");
         myConfigurations.setPromptText(myResources.getString("ConfigurationsMenu"));
         result.getChildren().add(myConfigurations);
+
         myConfigurations.getItems().add("GoL_Blinker");
         myConfigurations.getItems().add("GoL_Block");
         myConfigurations.getItems().add("GoL_Glider");
-        myConfigurations.valueProperty().addListener((observableValue, oldValue, selected) -> loadNewConfig((String) selected));
+
+       myConfigurations.valueProperty().addListener((observableValue, oldValue, selected) -> loadNewConfig((String) selected));
+
         return result;
     }
 
