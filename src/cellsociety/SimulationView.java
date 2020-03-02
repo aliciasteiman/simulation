@@ -205,9 +205,9 @@ public class SimulationView {
         myConfigurations.getItems().add("GoL_Blinker");
         myConfigurations.getItems().add("GoL_Block");
         myConfigurations.getItems().add("GoL_Glider");
-
-       myConfigurations.valueProperty().addListener((observableValue, oldValue, selected) -> loadNewConfig((String) selected));
-
+        myConfigurations.getItems().add("GoL_MWSS");
+        myConfigurations.getItems().add("GoL_Pulsar");
+        myConfigurations.valueProperty().addListener((observableValue, oldValue, selected) -> loadNewConfig((String) selected));
         return result;
     }
 
