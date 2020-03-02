@@ -22,7 +22,7 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) {
-        SimulationModel model = new GameOfLife("GOLconfigurations/gliderConfig.csv");
+        SimulationModel model = new GameOfLife("GOLconfigurations/middleWeightSpaceshipConfig.csv");
         SimulationView display = new SimulationView(model);
 
         Scanner scanner = new Scanner(System.in); //will eventually change to be an interface feature

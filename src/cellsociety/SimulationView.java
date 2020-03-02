@@ -9,12 +9,12 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-
 import java.util.ResourceBundle;
 
 /**
@@ -31,15 +31,14 @@ public class SimulationView {
     private Grid myGrid;
     private double CELL_WIDTH;
     private double CELL_HEIGHT;
-
     private ResourceBundle myResources;
     private Button startButton;
     private Button saveButton;
     private Button pauseButton;
     private Button stepButton;
     private int BUTTON_SPACING;
-
     private ComboBox myConfigurations;
+    private BorderPane root;
 
     public static final String RESOURCE_PACKAGE = "resources.";
     public static final String buttonNamesFile = "ButtonNames";
@@ -47,9 +46,7 @@ public class SimulationView {
 
     public static final int FRAMES_PER_SECOND = 60;
     public static final double SECOND_DELAY = 20.0 / FRAMES_PER_SECOND;
-
-    private int WIDTH;
-    private int HEIGHT;
+    public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
 
     /**
      * Constructs the view of a given SimulationModel
@@ -57,8 +54,6 @@ public class SimulationView {
      */
     public SimulationView(SimulationModel model) {
         myModel = model;
-        pane = new GridPane();
-        pane.setAlignment(Pos.CENTER);
         myResources = ResourceBundle.getBundle(RESOURCE_PACKAGE + buttonNamesFile);
     }
 
@@ -69,20 +64,34 @@ public class SimulationView {
      * @return scene
      */
     public Scene makeScene(int width, int height) {
-        BorderPane root = new BorderPane();
+        root = new BorderPane();
+        BUTTON_SPACING = width/15;
+        handleRootSetUp();
         myScene = new Scene(root, width, height);
         myScene.getStylesheets().add(CELL_STYLESHEET);
+
+        myAnimation = new Timeline();
+        myAnimation.setCycleCount(Timeline.INDEFINITE);
+
+        handleGridSetUp(width, height);
+        return myScene;
+    }
+
+    private void handleRootSetUp() {
+        pane = new GridPane();
+        pane.setAlignment(Pos.CENTER);
+        root.setCenter(pane);
+        root.setBottom(addButtons());
+        root.setTop(makeConfigurationsMenu());
+    }
+
+    private void handleGridSetUp(int width, int height) {
         myGrid = myModel.getMySimulationGrid();
         myCols = myGrid.getCols();
         myRows = myGrid.getRows();
         CELL_HEIGHT = (height - 100) / myCols;
         CELL_WIDTH = width/ myRows;
-        BUTTON_SPACING = width/15;
         updateGridAppearance();
-        root.setCenter(pane);
-        root.setBottom(addButtons());
-        root.setTop(makeConfigurationsMenu());
-        return myScene;
     }
 
     /**
@@ -94,8 +103,22 @@ public class SimulationView {
         Cell c = myGrid.getCell(row, col);
         c.setShape(new Rectangle(CELL_WIDTH, CELL_HEIGHT));
         c.getShape().setId("cell" + row + col);
+        KeyFrame userClickFrame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> allowUserClick(c));
+        myAnimation.getKeyFrames().add(userClickFrame);
+        //myAnimation.play();
         myModel.updateCellStyle(c);
         pane.add(c.getShape(), col, row);
+    }
+
+    private void allowUserClick(Cell c) {
+        EventHandler<MouseEvent> userClick = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                c.setStatus(! c.getStatus());
+                myModel.updateCellStyle(c);
+            }
+        };
+        c.getShape().addEventFilter(MouseEvent.MOUSE_CLICKED, userClick);
     }
 
     /**
@@ -178,8 +201,20 @@ public class SimulationView {
         myConfigurations.setId("ConfigurationsMenu");
         myConfigurations.setPromptText(myResources.getString("ConfigurationsMenu"));
         result.getChildren().add(myConfigurations);
-        SimulationModel newModel = new GameOfLife("GOLconfigurations/blinkerConfig.csv");
-        //myConfigurations.getItems().add(makeButton("blinkerConfig", e -> ?);
+        myConfigurations.getItems().add("GOLconfigurations/blinkerConfig.csv");
+        myConfigurations.getItems().add("GOLconfigurations/blockConfig.csv");
+        myConfigurations.getItems().add("GOLconfigurations/gliderConfig.csv");
+        myConfigurations.getItems().add("GOLconfigurations/middleWeightSpaceshipConfig.csv");
+        myConfigurations.getItems().add("GOLconfigurations/pulsarConfig.csv");
+        myConfigurations.valueProperty().addListener((observableValue, oldValue, selected) -> loadNewConfig((String) selected));
         return result;
+    }
+
+    private void loadNewConfig(String file) {
+        pane.getChildren().clear();
+        myAnimation.pause();
+        SimulationModel newModel = new GameOfLife(file);
+        myModel = newModel;
+        handleGridSetUp(500,500);
     }
 }
