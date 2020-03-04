@@ -23,7 +23,9 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         //SimulationModel model = new GameOfLife("GoL_Blinker");
-        SimulationModel model = new SpreadingOfFire("SoF_Test");
+        //SimulationModel model = new SpreadingOfFire("SoF_Test");
+        SimulationModel model = new Percolate("");
+
         SimulationView display = new SimulationView(model);
 
         Scanner scanner = new Scanner(System.in); //will eventually change to be an interface feature
