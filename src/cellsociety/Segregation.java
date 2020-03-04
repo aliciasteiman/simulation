@@ -6,29 +6,12 @@ import java.util.Random;
 
 public class Segregation extends SimulationModel {
     private List<Cell> myNeighbors;
+    private List<String> openPos;
 
-    private final double prob = Double.parseDouble(myResources.getString("SatisfiedThreshold"));
+    private final double threshold = Double.parseDouble(myResources.getString("SatisfiedThreshold"));
 
     public Segregation(String f) {
         super(f);
-    }
-
-    public String findRandEmptySpot() {
-        List<String> openPos = new ArrayList<>();
-        for (int r = 0; r < mySimulationGrid.getRows(); r++) {
-            for (int c = 0; c < mySimulationGrid.getCols(); c++) {
-                if (mySimulationGrid.getCell(r,c).getStatus().equals("empty")) {
-                    String pos = Integer.toString(r) + "," + Integer.toString(c);
-                    openPos.add(pos);
-                }
-            }
-        }
-        if (openPos.size()>0) {
-            Random rand = new Random();
-            int randIndex = rand.nextInt(openPos.size());
-            return openPos.get(randIndex);
-        }
-        return "";
     }
 
     @Override
@@ -37,21 +20,49 @@ public class Segregation extends SimulationModel {
         for (int i = 0; i < mySimulationGrid.getRows(); i++) {
             for (int j = 0; j < mySimulationGrid.getCols(); j++) {
                 Cell currCell = mySimulationGrid.getCell(i, j);
-                int numNeighbors = getNeighbors(i,j).size();
-                String currStatus = currCell.getStatus();
-                int numSimilarNeighbors = mySimulationGrid.countAliveNeighbors(getNeighbors(i, j), currStatus);
-                double percent = numSimilarNeighbors/numNeighbors;
-                String newSpot = findRandEmptySpot();
                 Cell newCell = new Cell(i, j, currCell.getStatus());
-                if (! currStatus.equals("empty") && percent < prob && newSpot != "") {
-                    int row = Integer.parseInt(newSpot.split(",")[0]);
-                    int col = Integer.parseInt(newSpot.split(",")[1]);
-                    updatedGrid.setCell(row, col, newCell);
+                if (! isSatisfied(currCell)) {
+                    newCell = moveCell(currCell, findOpenSpot());
                 }
+                updatedGrid.setCell(newCell.getRow(), newCell.getCol(), newCell);
             }
         }
         mySimulationGrid = updatedGrid;
         return updatedGrid;
+    }
+
+    private boolean isSatisfied(Cell c) {
+        int similarNeighbors = mySimulationGrid.countAliveNeighbors(getNeighbors(c.getRow(), c.getCol()), c.getStatus());
+        if ((double) similarNeighbors/myNeighbors.size() >= threshold) {
+            return true;
+        }
+        return false;
+    }
+
+    private Cell moveCell(Cell c, List<Integer> openSpot) {
+        Cell movedCell = new Cell(openSpot.get(0), openSpot.get(1), c.getStatus());
+        return movedCell;
+    }
+
+    private List<Integer> findOpenSpot() {
+        List<List<Integer>> openSpots = new ArrayList<>();
+        for (int i = 0; i < mySimulationGrid.getRows(); i++) {
+            for (int j = 0; j < mySimulationGrid.getCols(); j++) {
+                Cell c = mySimulationGrid.getCell(i, j);
+                if (c.getStatus().equals("empty")) {
+                    List<Integer> position = new ArrayList<>();
+                    position.add(c.getRow());
+                    position.add(c.getCol());
+                    openSpots.add(position);
+                }
+            }
+        }
+        if (openSpots.size() > 0) {
+            Random rand = new Random();
+            int randPos = rand.nextInt(openSpots.size());
+            return openSpots.get(randPos);
+        }
+        return null;
     }
 
     @Override
