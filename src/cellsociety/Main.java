@@ -26,6 +26,7 @@ public class Main extends Application {
         //SimulationModel model = new SpreadingOfFire("SoF_Test");
         //SimulationModel model = new Percolate("Percolate_Test");
         //SimulationModel model = new Segregation("MOS_Test");
+
         SimulationModel model = new SimulationModel();
         SimulationView display = new SimulationView(model);
 
