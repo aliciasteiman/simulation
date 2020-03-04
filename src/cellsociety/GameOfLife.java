@@ -43,7 +43,7 @@ public class GameOfLife extends SimulationModel {
             }
             updatedGrid.add(updatedRow);
         }
-        mySimulationGrid.updateAllCells(updatedGrid);
+        mySimulationGrid.updateAllCells(updatedGrid); //TODO: change to reflect change in GRID
         return mySimulationGrid;
     }
 

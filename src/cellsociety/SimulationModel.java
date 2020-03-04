@@ -83,7 +83,7 @@ public abstract class SimulationModel {
             String cells = rowConfig.replaceAll(",", "");
             for (int col = 0; col < num_cols; col++) {
                 char ch = cells.charAt(col);
-                    setCellFromFile(row, col, ch);
+                setCellFromFile(row, col, ch);
             }
             row++;
         }
@@ -95,14 +95,14 @@ public abstract class SimulationModel {
      * @param grid
      */
     public File saveCurrentConfig(Grid grid) {
-        File file = new File("data/new.csv");
+        File file = new File("data/new.csv"); //needs to access user inputted file name
         FileWriter fr = null;
         try {
             fr = new FileWriter(file);
             fr.write(mySimulationGrid.getRows() + "," + mySimulationGrid.getCols() + "\n");
-            for (List<Cell> lst : grid.getAllCells()) {
-                for (Cell c : lst) {
-                    if (c.getStatus()) {
+            for (int i = 0; i < grid.getRows(); i++) {
+                for (int j = 0; j < grid.getCols(); j++) {
+                    if (grid.getCell(i, j).getStatus()) {
                         fr.write(1 + ",");
                     }
                     else {

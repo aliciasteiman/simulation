@@ -35,7 +35,7 @@ public class Grid {
      */
     public void updateAllCells(List<List<Cell>> cells) {
         allCells = cells;
-    }
+    } //TODO: need to change this
 
     /**
      * @return NUM_ROWS - number of rows in a Grid
@@ -75,13 +75,6 @@ public class Grid {
             }
         }
         return count;
-    }
-
-    /**
-     * @return allCells - List<List<Cell>> representing all Cell objects in a Grid
-     */
-    public List<List<Cell>> getAllCells() {
-        return allCells;
     }
 
 }

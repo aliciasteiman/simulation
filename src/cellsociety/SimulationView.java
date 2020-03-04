@@ -147,7 +147,6 @@ public class SimulationView {
      */
     public void setAnimation() {
         KeyFrame frame = new KeyFrame(Duration.seconds(SPEED), e -> step());
-        System.out.println(SPEED);
         myAnimation = new Timeline();
         myAnimation.setCycleCount(Timeline.INDEFINITE);
         myAnimation.getKeyFrames().add(frame);
