@@ -30,14 +30,6 @@ public class Grid {
     }
 
     /**
-     * Sets allCells equal to an updated List<List<Cell>> so that the Grid updates correctly
-     * @param cells - each Cell object's state is updated
-     */
-    public void updateAllCells(List<List<Cell>> cells) {
-        allCells = cells;
-    } //TODO: need to change this
-
-    /**
      * @return NUM_ROWS - number of rows in a Grid
      */
     public int getRows() {
@@ -59,6 +51,10 @@ public class Grid {
      */
     public Cell getCell(int row, int col) {
         return allCells.get(row).get(col);
+    }
+
+    public void setCell(int row, int col, Cell c) {
+        allCells.get(row).set(col, c);
     }
 
     /**

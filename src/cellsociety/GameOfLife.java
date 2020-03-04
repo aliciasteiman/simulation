@@ -32,19 +32,19 @@ public class GameOfLife extends SimulationModel {
      */
     @Override
     public Grid updateCells() {
-        List<List<Cell>> updatedGrid = new ArrayList<>();
-        for (int r = 0; r < mySimulationGrid.getRows(); r++) {
-            List<Cell> updatedRow = new ArrayList<>();
-            for (int c = 0; c < mySimulationGrid.getCols(); c++) {
-                Cell thisCell = mySimulationGrid.getCell(r, c);
-                int numLiveNeighbors = mySimulationGrid.countAliveNeighbors(getNeighbors(r,c));
-                boolean isAlive = ((thisCell.getStatus() && numLiveNeighbors == 2) || numLiveNeighbors == 3);
-                updatedRow.add(new Cell(r, c, isAlive));
+        Grid updatedGrid = new Grid(mySimulationGrid.getRows(), mySimulationGrid.getCols());
+        for (int i = 0; i < mySimulationGrid.getRows(); i++) {
+            for (int j = 0; j < mySimulationGrid.getCols(); j++) {
+                Cell currCell = mySimulationGrid.getCell(i, j);
+                int numLiveNeighbors = mySimulationGrid.countAliveNeighbors(getNeighbors(i, j));
+                boolean isAlive = ((currCell.getStatus() && numLiveNeighbors == 2) || numLiveNeighbors == 3);
+                Cell newCell = new Cell(i, j, isAlive);
+                updatedGrid.setCell(i, j, newCell);
             }
-            updatedGrid.add(updatedRow);
         }
-        mySimulationGrid.updateAllCells(updatedGrid); //TODO: change to reflect change in GRID
-        return mySimulationGrid;
+
+        mySimulationGrid = updatedGrid;
+        return updatedGrid;
     }
 
     /**

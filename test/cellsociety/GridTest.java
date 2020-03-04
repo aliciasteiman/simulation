@@ -17,9 +17,9 @@ class GridTest {
         Grid g = new Grid(5, 10); //initialize a grid with 5 rows and 10 columns
         assertEquals(10, g.getCols());
         assertEquals(5, g.getRows());
-        for (List<Cell> cells : g.getAllCells()) {
-            for (Cell c : cells) {
-                assertFalse(c.getStatus()); //checks that every cell is initialized to empty ("dead")
+        for (int r = 0; r < g.getRows();r++) {
+            for (int c = 0; c < g.getCols();c++) {
+                assertFalse(g.getCell(r,c).getStatus());
             }
         }
     }
