@@ -46,8 +46,30 @@
     -fx-stroke: gray;
     -fx-stroke-width: 0.5;
 }
+
 .PERC-full-cell {
     -fx-fill: teal;
+    -fx-stroke-type: outside;
+    -fx-stroke: gray;
+    -fx-stroke-width: 0.5;
+}
+
+.MOS-empty-cell {
+    -fx-fill: white;
+    -fx-stroke-type: outside;
+    -fx-stroke: gray;
+    -fx-stroke-width: 0.5;
+}
+
+.MOS-agent1-cell {
+    -fx-fill: red;
+    -fx-stroke-type: outside;
+    -fx-stroke: gray;
+    -fx-stroke-width: 0.5;
+}
+
+.MOS-agent2-cell {
+    -fx-fill: blue;
     -fx-stroke-type: outside;
     -fx-stroke: gray;
     -fx-stroke-width: 0.5;
