@@ -15,14 +15,6 @@ public class Segregation extends SimulationModel {
     }
 
     public String findRandEmptySpot() {
-        for (int r = 0; r < mySimulationGrid.getRows(); r++) {
-            for (int c = 0; c < mySimulationGrid.getCols(); c++) {
-                if (mySimulationGrid.getCell(r,c).getStatus().equals("empty")) {
-                    String pos = Integer.toString(r) + "," + Integer.toString(c);
-                    openPos.add(pos);
-                }
-            }
-        }
         if (openPos.size()>0) {
             Random rand = new Random();
             int randIndex = rand.nextInt(openPos.size());
@@ -31,10 +23,22 @@ public class Segregation extends SimulationModel {
         return "";
     }
 
+    public void findInitialEmpty() {
+        for (int r = 0; r < mySimulationGrid.getRows(); r++) {
+            for (int c = 0; c < mySimulationGrid.getCols(); c++) {
+                if (mySimulationGrid.getCell(r,c).getStatus().equals("empty")) {
+                    String pos = Integer.toString(r) + "," + Integer.toString(c);
+                    openPos.add(pos);
+                }
+            }
+        }
+    }
+
     @Override
     public Grid updateCells() {
         Grid updatedGrid = new Grid(mySimulationGrid.getRows(), mySimulationGrid.getCols());
         openPos = new ArrayList<>();
+        findInitialEmpty();
         for (int i = 0; i < mySimulationGrid.getRows(); i++) {
             for (int j = 0; j < mySimulationGrid.getCols(); j++) {
                 Cell currCell = mySimulationGrid.getCell(i, j);
@@ -44,7 +48,7 @@ public class Segregation extends SimulationModel {
                 double percent = numSimilarNeighbors/numNeighbors;
                 String newSpot = findRandEmptySpot();
                 Cell newCell = new Cell(i, j, currCell.getStatus());
-                if (! currStatus.equals("empty") && percent < prob && newSpot != "") {
+                if (! currStatus.equals("empty") && percent < prob && !newSpot.equals("")) {
                     int row = Integer.parseInt(newSpot.split(",")[0]);
                     int col = Integer.parseInt(newSpot.split(",")[1]);
                     updatedGrid.setCell(row, col, newCell);
