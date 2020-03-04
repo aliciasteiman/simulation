@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GoLSimulationViewTest extends DukeApplicationTest {
 
-    private SimulationModel myModel = new GameOfLife("test/GOLconfig.csv");;
+    private SimulationModel myModel = new GameOfLife("GoL_Test");;
     private SimulationView myView;
     private Scene myScene;
     private Button myStartButton;
@@ -97,7 +97,7 @@ class GoLSimulationViewTest extends DukeApplicationTest {
      */
     @Test
     void GameOfLifeBlockTest() {
-        myModel = new GameOfLife("GOLConfigurations/blockConfig.csv");
+        myModel = new GameOfLife("GOL_Block");
         javafxRun(() -> start(new Stage()));
 
         getCellsFromGrid();

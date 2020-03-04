@@ -16,9 +16,10 @@ class GameOfLifeTest  extends DukeApplicationTest {
     private SimulationModel myModel;
     private Cell myFirstCell;
 
+
     @Override
     public void start (Stage stage) {
-        myModel = new GameOfLife("test/GOLconfig.csv");
+        myModel = new GameOfLife("GoL_Test");
     }
 
     /** Tests to check if the correct neighbors are returned for:
@@ -63,7 +64,7 @@ class GameOfLifeTest  extends DukeApplicationTest {
     /** Checks that the initial block configuration equals the saved file of the block configuration  */
     @Test
     void testSaveCurrConfig() {
-        SimulationModel sm = new GameOfLife("GOLconfigurations/blockConfig.csv");
+        SimulationModel sm = new GameOfLife("GOL_Block");
         Grid g = sm.getMySimulationGrid();
         File f = sm.saveCurrentConfig(g);
         File f1 = new File("data/GOLconfigurations/blockConfig.csv");
