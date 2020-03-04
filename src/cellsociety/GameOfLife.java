@@ -12,8 +12,8 @@ public class GameOfLife extends SimulationModel {
 
     private List<Cell> myNeighbors;
 
-    public static final String ALIVE_STYLE = "alive-cell";
-    public static final String DEAD_STYLE = "dead-cell";
+    public static final String ALIVE_STYLE = "GOL-alive-cell";
+    public static final String DEAD_STYLE = "GOL-dead-cell";
 
     /**
      * Constructor for a GameOfLife simulation; calls super
@@ -36,13 +36,15 @@ public class GameOfLife extends SimulationModel {
         for (int i = 0; i < mySimulationGrid.getRows(); i++) {
             for (int j = 0; j < mySimulationGrid.getCols(); j++) {
                 Cell currCell = mySimulationGrid.getCell(i, j);
-                int numLiveNeighbors = mySimulationGrid.countAliveNeighbors(getNeighbors(i, j));
-                boolean isAlive = ((currCell.getStatus() && numLiveNeighbors == 2) || numLiveNeighbors == 3);
-                Cell newCell = new Cell(i, j, isAlive);
+                int numLiveNeighbors = mySimulationGrid.countAliveNeighbors(getNeighbors(i, j), "alive");
+                boolean isAlive = ((currCell.getStatus().equals("alive") && numLiveNeighbors == 2) || numLiveNeighbors == 3);
+                Cell newCell = new Cell(i, j, "dead");
+                if (isAlive) {
+                    newCell = new Cell(i, j, "alive");
+                }
                 updatedGrid.setCell(i, j, newCell);
             }
         }
-
         mySimulationGrid = updatedGrid;
         return updatedGrid;
     }
@@ -61,7 +63,7 @@ public class GameOfLife extends SimulationModel {
         int[] indexR = {-1, 0, 1, -1, 1, -1, 0, 1};
         int[] indexC = {1, 1, 1, 0, 0, -1, -1, -1};
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < indexR.length; i++) {
             int currR = row + indexR[i];
             int currC = col + indexC[i];
             if (currR < mySimulationGrid.getRows() && currC < mySimulationGrid.getCols() && currR >= 0 && currC >= 0) {
@@ -77,7 +79,7 @@ public class GameOfLife extends SimulationModel {
      */
     @Override
     public void updateCellStyle(Cell c) {
-        if (c.getStatus()) {
+        if (c.getStatus().equals("alive")) {
             c.getShape().getStyleClass().add(ALIVE_STYLE);
         } else {
             c.getShape().getStyleClass().add(DEAD_STYLE);
@@ -94,7 +96,7 @@ public class GameOfLife extends SimulationModel {
     @Override
     public void setCellFromFile(int row, int col, char ch) {
         if (ch == '1') {
-            mySimulationGrid.getCell(row, col).setStatus(true);
+            mySimulationGrid.getCell(row, col).setStatus("alive");
         }
     }
 }

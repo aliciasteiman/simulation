@@ -1,13 +1,35 @@
-.dead-cell {
+.GOL-dead-cell {
     -fx-fill: white;
     -fx-stroke-type: outside;
     -fx-stroke: gray;
     -fx-stroke-width: 0.5;
 }
 
-.alive-cell {
+.GOL-alive-cell {
     -fx-fill: black;
     -fx-stroke-type: outside;
     -fx-stroke: gray;
     -fx-stroke-width: 0.5;
 }
+
+.SOF-empty-cell {
+    -fx-fill: yellow;
+    -fx-stroke-type: outside;
+    -fx-stroke: gray;
+    -fx-stroke-width: 0.5;
+}
+
+.SOF-tree-cell {
+    -fx-fill: green;
+    -fx-stroke-type: outside;
+    -fx-stroke: gray;
+    -fx-stroke-width: 0.5;
+}
+
+.SOF-burning-cell {
+    -fx-fill: red;
+    -fx-stroke-type: outside;
+    -fx-stroke: gray;
+    -fx-stroke-width: 0.5;
+}
+

@@ -9,18 +9,18 @@ import javafx.scene.shape.Shape;
 public class Cell {
 
     private Shape myShape;
-    private boolean isAlive;
+    private String myState;
     private int myRow;
     private int myCol;
 
     /**
      * Constructor for a Cell object, sets the status of a Cell (dead, alive) and its position (row, col)
-     * @param bool
+     * @param
      */
-    public Cell(int row, int col, boolean bool) {
+    public Cell(int row, int col, String state) {
         myRow = row;
         myCol = col;
-        isAlive = bool;
+        myState = state;
     }
 
     /**
@@ -52,15 +52,15 @@ public class Cell {
     /**
      * Returns status of Cell (isAlive = true/false)
      */
-    public boolean getStatus() {
-        return isAlive;
+    public String getStatus() {
+        return myState;
     }
 
     /**
      * Allows for the status of a Cell to be changed
      * @param newStatus
      */
-    public void setStatus(boolean newStatus) {
-        isAlive = newStatus;
+    public void setStatus(String newStatus) {
+        myState = newStatus;
     }
 }

@@ -14,12 +14,12 @@ import java.util.Scanner;
  * Reads in an initial configuration for a simulation and specifies how to update cells/grid
  */
 public abstract class SimulationModel {
+
     protected Grid mySimulationGrid;
     private String file;
-    private ResourceBundle myResources;
 
+    protected ResourceBundle myResources;
     public static final String RESOURCE_PACKAGE = "resources.";
-
 
     /**
      * Constructor for the abstract class SimulationModel.
@@ -102,7 +102,7 @@ public abstract class SimulationModel {
             fr.write(mySimulationGrid.getRows() + "," + mySimulationGrid.getCols() + "\n");
             for (int i = 0; i < grid.getRows(); i++) {
                 for (int j = 0; j < grid.getCols(); j++) {
-                    if (grid.getCell(i, j).getStatus()) {
+                    if (grid.getCell(i, j).getStatus().equals("alive")) {
                         fr.write(1 + ",");
                     }
                     else {

@@ -104,23 +104,23 @@ public class SimulationView {
         Cell c = myGrid.getCell(row, col);
         c.setShape(new Rectangle(CELL_WIDTH, CELL_HEIGHT));
         c.getShape().setId("cell" + row + col);
-        KeyFrame userClickFrame = new KeyFrame(Duration.seconds(SPEED), e -> allowUserClick(c));
-        myAnimation.getKeyFrames().add(userClickFrame);
+        //KeyFrame userClickFrame = new KeyFrame(Duration.seconds(SPEED), e -> allowUserClick(c));
+        //myAnimation.getKeyFrames().add(userClickFrame);
         //myAnimation.play();
         myModel.updateCellStyle(c);
         pane.add(c.getShape(), col, row);
     }
 
-    private void allowUserClick(Cell c) {
-        EventHandler<MouseEvent> userClick = new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent e) {
-                c.setStatus(! c.getStatus());
-                myModel.updateCellStyle(c);
-            }
-        };
-        c.getShape().addEventFilter(MouseEvent.MOUSE_CLICKED, userClick);
-    }
+//    private void allowUserClick(Cell c) {
+//        EventHandler<MouseEvent> userClick = new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent e) {
+//                c.setStatus(! c.getStatus());
+//                myModel.updateCellStyle(c);
+//            }
+//        };
+//        c.getShape().addEventFilter(MouseEvent.MOUSE_CLICKED, userClick);
+//    }
 
     /**
      * Loops through through each cell in the grid and updates the individual cell using the helper method

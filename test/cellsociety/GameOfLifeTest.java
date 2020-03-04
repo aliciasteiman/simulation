@@ -85,7 +85,7 @@ class GameOfLifeTest  extends DukeApplicationTest {
                 {1,1,1,0,0,0,1,1,1}};
         for (int r = 0; r < myModel.mySimulationGrid.getRows(); r++) {
             for (int c = 0; c < myModel.mySimulationGrid.getCols(); c++) {
-                if (myModel.mySimulationGrid.getCell(r,c).getStatus()) {
+                if (myModel.mySimulationGrid.getCell(r,c).getStatus().equals("alive")) {
                     assertEquals(expectedArray[r][c], 1);
                 } else{
                     assertEquals(expectedArray[r][c], 0);

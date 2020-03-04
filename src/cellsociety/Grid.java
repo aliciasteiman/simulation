@@ -23,7 +23,7 @@ public class Grid {
         for (int r = 0; r < NUM_ROWS; r++) {
             ArrayList<Cell> row = new ArrayList<>();
             for (int c = 0; c < NUM_COLS; c++) {
-                row.add(new Cell(r, c, false));
+                row.add(new Cell(r, c, ""));
             }
             allCells.add(row);
         }
@@ -63,10 +63,10 @@ public class Grid {
      * @param neighbors
      * @return count - represents the number of alive neighbors
      */
-    public int countAliveNeighbors(List<Cell> neighbors) {
+    public int countAliveNeighbors(List<Cell> neighbors, String status) {
         int count  = 0;
         for (Cell cell : neighbors) {
-            if (cell.getStatus()) {
+            if (cell.getStatus().equals(status)) {
                 count += 1;
             }
         }

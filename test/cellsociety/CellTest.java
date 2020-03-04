@@ -8,8 +8,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CellTest {
 
-    Cell cellDead = new Cell(0, 0, false);
-    Cell cellAlive = new Cell(0, 0, true);
+    Cell cellDead = new Cell(0, 0, "dead");
+    Cell cellAlive = new Cell(0, 0, "alive");
 
     /**
      * Testing the getStatus method for the Cell class.
@@ -17,9 +17,9 @@ class CellTest {
     @Test
     void testGetStatus() {
         //test for Cell that is dead
-        assertEquals(cellDead.getStatus(), false);
+        assertEquals(cellDead.getStatus(), "dead");
         //test for Cell that is alive
-        assertEquals(cellAlive.getStatus(), true);
+        assertEquals(cellAlive.getStatus(), "alive");
     }
 
     /**
@@ -28,11 +28,11 @@ class CellTest {
     @Test
     void testSetStatus() {
         //setting the dead cell to be alive
-        cellDead.setStatus(true);
-        assertEquals(cellDead.getStatus(), true);
+        cellDead.setStatus("alive");
+        assertEquals(cellDead.getStatus(), "alive");
         //setting the alive cell to be dead
-        cellAlive.setStatus(false);
-        assertEquals(cellAlive.getStatus(), false);
+        cellAlive.setStatus("dead");
+        assertEquals(cellAlive.getStatus(), "dead");
     }
 
     /**

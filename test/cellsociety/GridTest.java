@@ -19,7 +19,7 @@ class GridTest {
         assertEquals(5, g.getRows());
         for (int r = 0; r < g.getRows();r++) {
             for (int c = 0; c < g.getCols();c++) {
-                assertFalse(g.getCell(r,c).getStatus());
+                assertTrue(g.getCell(r,c).getStatus().equals(null));
             }
         }
     }
