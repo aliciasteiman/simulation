@@ -1,15 +1,22 @@
 package cellsociety;
 
-import java.util.ArrayList;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
-import java.util.Random;
 
-public class Percolate extends SimulationModel {
+public class Percolate implements Simulation {
+    private Grid mySimulationGrid;
 
-    private List<Cell> myNeighbors;
+    public Percolate() {
 
-    public Percolate(String f) {
-        super(f);
+    }
+
+    @Override
+    public Grid getGrid() { return mySimulationGrid; }
+
+    @Override
+    public void setGrid(Grid g) {
+        mySimulationGrid = g;
     }
 
     @Override
@@ -18,7 +25,7 @@ public class Percolate extends SimulationModel {
         for (int i = 0; i < mySimulationGrid.getRows(); i++) {
             for (int j = 0; j < mySimulationGrid.getCols(); j++) {
                 Cell currCell = mySimulationGrid.getCell(i, j);
-                int numFullNeighbors = mySimulationGrid.countAliveNeighbors(getNeighbors(i, j), "full");
+                int numFullNeighbors = mySimulationGrid.countNeighbors(getNeighbors(i, j), "full");
                 Cell newCell = new Cell(i, j, currCell.getStatus());
                 if (currCell.getStatus().equals("open") && numFullNeighbors >= 1) {
                     newCell = new Cell(i, j, "full");
@@ -32,18 +39,10 @@ public class Percolate extends SimulationModel {
 
     @Override
     public List<Cell> getNeighbors(int row, int col) {
-        myNeighbors = new ArrayList<>();
+
         int[] indexR = {1, -1, 0, 0};
         int[] indexC = {0, 0, 1, -1};
-
-        for (int i = 0; i < indexR.length; i++) {
-            int currR = row + indexR[i];
-            int currC = col + indexC[i];
-            if (currR < mySimulationGrid.getRows() && currC < mySimulationGrid.getCols() && currR >= 0 && currC >= 0) {
-                myNeighbors.add(mySimulationGrid.getCell(currR, currC));
-            }
-        }
-        return myNeighbors;
+        return mySimulationGrid.getSpecifiedNeighbors(row, col, indexR, indexC, mySimulationGrid);
     }
 
     @Override
@@ -58,16 +57,30 @@ public class Percolate extends SimulationModel {
         }
     }
 
+
     @Override
-    public void setCellFromFile(int row, int col, char ch) {
+    public void setCellFromFile(int row, int col, char ch, Grid g ) {
         if (ch == '0') {
-            mySimulationGrid.getCell(row, col).setStatus("blocked");
+            g.getCell(row, col).setStatus("blocked");
         }
         if (ch == '1') {
-            mySimulationGrid.getCell(row, col).setStatus("open");
+            g.getCell(row, col).setStatus("open");
         }
         if (ch == '2') {
-            mySimulationGrid.getCell(row, col).setStatus("full");
+            g.getCell(row, col).setStatus("full");
+        }
+    }
+
+    @Override
+    public void writeCellToFile(FileWriter fr, int row, int col, Grid g) throws IOException {
+        String currStatus = g.getCell(row, col).getStatus();
+        if (currStatus.equals("blocked")) {
+            fr.write(0 + ",");
+        }
+        else if (currStatus.equals("open")) {
+            fr.write(1 + ",");
+        } else {
+            fr.write(2 + ",");
         }
     }
 }

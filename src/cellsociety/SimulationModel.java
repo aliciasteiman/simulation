@@ -1,124 +1,64 @@
 package cellsociety;
 
-
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Scanner;
 
-/**
- * Represents the functionality of the simulation (each type of simulation extends this class)
- * Reads in an initial configuration for a simulation and specifies how to update cells/grid
- */
-public abstract class SimulationModel {
+public class SimulationModel {
+    private Simulation mySimulation;
+    private CSVConfiguration simConfig;
+    private ResourceBundle myResources;
+    private String myFile;
 
-    protected Grid mySimulationGrid;
-    private String file;
-
-    protected ResourceBundle myResources;
     public static final String RESOURCE_PACKAGE = "resources.";
 
-    /**
-     * Constructor for the abstract class SimulationModel.
-     * It will have subclasses as all the kinds of simulations.
-     * Upon creation, it creates an INITIAL grid configuration based on a file.
-     * @param f - CSV file with starting grid configuration
-     */
-    public SimulationModel(String f) {
-        file = f;
+    public SimulationModel() {
+
+    }
+
+
+    public Grid initSimulation(String file) {
         myResources = ResourceBundle.getBundle(RESOURCE_PACKAGE + file);
-        readGridFromFile();
+        String simName = myResources.getString("SimulationType");
+        determineSimulation(simName);
+        determineFileType();
+        Grid newGrid = initializeConfig(myFile, mySimulation);
+        mySimulation.setGrid(newGrid);
+        return newGrid;
     }
 
-    /**
-     * Updates the cell configuration on the grid based on the rules of a certain simulation.
-     * @return a Grid object with the updated cell states.
-     */
-    public abstract Grid updateCells();
-
-    /**
-     * Returns all the neighbors of a certain cell in the Grid.
-     * @param row - the current row the cell is on
-     * @param col - the current column the cell is on
-     */
-    public abstract List<Cell> getNeighbors(int row, int col);
-
-    /**
-     * Updates the APPEARANCE of a single cell based on is status
-     * @param c - the cell to be updated
-     */
-    public abstract void updateCellStyle(Cell c);
-
-    /**
-     * Sets the cell to the desired state based on the values read in from a CSV file
-     * @param row - the row that the cell is on
-     * @param col - the column that the cell is on
-     * @param ch - the character that corresponds to the value that cell will take
-     */
-    public abstract void setCellFromFile(int row, int col, char ch);
-
-    /**
-     * Returns the Grid object that represents the current state of the simulation
-     */
-    public Grid getMySimulationGrid() {
-        return mySimulationGrid;
-    }
-
-    /**
-     * Initializes a grid based on what's read in from a file
-     */
-    public void readGridFromFile() {
-        String f = myResources.getString("FileName");
-        Scanner input = new Scanner(Grid.class.getClassLoader().getResourceAsStream(f));
-        String[] header = input.nextLine().split(",");
-        int num_rows = Integer.parseInt(header[0]);
-        int num_cols = Integer.parseInt(header[1]);
-        mySimulationGrid = new Grid(num_rows, num_cols);
-        int row = 0;
-        while (input.hasNextLine()) {
-            String rowConfig = input.nextLine();
-            String cells = rowConfig.replaceAll(",", "");
-            for (int col = 0; col < num_cols; col++) {
-                char ch = cells.charAt(col);
-                setCellFromFile(row, col, ch);
-            }
-            row++;
+    public void determineSimulation(String simName) {
+        if (simName.equals("GameOfLife")) {
+            mySimulation = new GameOfLife();
+        }
+        if (simName.equals("Percolation")) {
+            mySimulation = new Percolate();
+        }
+        if (simName.equals("Schelling's Model of Segregation")) {
+            mySimulation = new Segregation();
+        }
+        if (simName.equals("Spreading of Fire")){
+            mySimulation = new SpreadingOfFire();
         }
     }
 
-    /**
-     * When user hits save button, this method is called
-     * Translates the current grid (upon hitting save) into a .csv file that the user can later access
-     * @param grid
-     */
-    public File saveCurrentConfig(Grid grid) {
-        File file = new File("data/new.csv"); //needs to access user inputted file name
-        FileWriter fr = null;
-        try {
-            fr = new FileWriter(file);
-            fr.write(mySimulationGrid.getRows() + "," + mySimulationGrid.getCols() + "\n");
-            for (int i = 0; i < grid.getRows(); i++) {
-                for (int j = 0; j < grid.getCols(); j++) {
-                    if (grid.getCell(i, j).getStatus().equals("alive")) {
-                        fr.write(1 + ",");
-                    }
-                    else {
-                        fr.write(0 + ",");
-                    }
-                }
-                fr.write("\n");
-            }
-            fr.close();
-        } catch (IOException e) {
-            e.printStackTrace(); //need to change this... look at nanobrowser example
-        }
-        return file;
+    public void determineFileType() {
+        myFile = myResources.getString("FileName");
+        simConfig = new CSVConfiguration();
     }
 
+    public Grid updateGrid() {
+        return mySimulation.updateCells();
+    }
 
+    public void updateCell(Cell c) {
+        mySimulation.updateCellStyle(c);
+    }
 
+    public Grid initializeConfig(String f, Simulation sim) {
+        return simConfig.readConfigFromFile(f, sim);
+    }
 
+    public File writeConfig(Grid g) {
+        return simConfig.saveCurrentConfig(mySimulation, g);
+    }
 }

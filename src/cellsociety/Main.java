@@ -25,8 +25,8 @@ public class Main extends Application {
         //SimulationModel model = new GameOfLife("GoL_Blinker");
         //SimulationModel model = new SpreadingOfFire("SoF_Test");
         //SimulationModel model = new Percolate("Percolate_Test");
-        SimulationModel model = new Segregation("MOS_Test");
-
+        //SimulationModel model = new Segregation("MOS_Test");
+        SimulationModel model = new SimulationModel();
         SimulationView display = new SimulationView(model);
 
         Scanner scanner = new Scanner(System.in); //will eventually change to be an interface feature

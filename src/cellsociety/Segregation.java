@@ -1,17 +1,19 @@
 package cellsociety;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Segregation extends SimulationModel {
-    private List<Cell> myNeighbors;
+public class Segregation implements Simulation {
+    private Grid mySimulationGrid;
     private List<String> openPos;
 
-    private final double prob = Double.parseDouble(myResources.getString("SatisfiedThreshold"));
+    private final double prob = 0.50; //Double.parseDouble(myResources.getString("SatisfiedThreshold"));
 
-    public Segregation(String f) {
-        super(f);
+    public Segregation() {
+
     }
 
     public String findRandEmptySpot() {
@@ -35,6 +37,16 @@ public class Segregation extends SimulationModel {
     }
 
     @Override
+    public Grid getGrid() {
+        return mySimulationGrid;
+    }
+
+    @Override
+    public void setGrid(Grid g) {
+        mySimulationGrid = g;
+    }
+
+    @Override
     public Grid updateCells() {
         Grid updatedGrid = new Grid(mySimulationGrid.getRows(), mySimulationGrid.getCols());
         openPos = new ArrayList<>();
@@ -44,7 +56,7 @@ public class Segregation extends SimulationModel {
                 Cell currCell = mySimulationGrid.getCell(i, j);
                 int numNeighbors = getNeighbors(i,j).size();
                 String currStatus = currCell.getStatus();
-                int numSimilarNeighbors = mySimulationGrid.countAliveNeighbors(getNeighbors(i, j), currStatus);
+                int numSimilarNeighbors = mySimulationGrid.countNeighbors(getNeighbors(i, j), currStatus);
                 double percent = numSimilarNeighbors/numNeighbors;
                 String newSpot = findRandEmptySpot();
                 Cell newCell = new Cell(i, j, currCell.getStatus());
@@ -65,18 +77,11 @@ public class Segregation extends SimulationModel {
 
     @Override
     public List<Cell> getNeighbors(int row, int col) {
-        myNeighbors = new ArrayList<>();
+
         int[] indexR = {-1, 0, 1, -1, 1, -1, 0, 1};
         int[] indexC = {1, 1, 1, 0, 0, -1, -1, -1};
 
-        for (int i = 0; i < indexR.length; i++) {
-            int currR = row + indexR[i];
-            int currC = col + indexC[i];
-            if (currR < mySimulationGrid.getRows() && currC < mySimulationGrid.getCols() && currR >= 0 && currC >= 0) {
-                myNeighbors.add(mySimulationGrid.getCell(currR, currC));
-            }
-        }
-        return myNeighbors;
+        return mySimulationGrid.getSpecifiedNeighbors(row, col, indexR, indexC, mySimulationGrid);
     }
 
     @Override
@@ -90,17 +95,31 @@ public class Segregation extends SimulationModel {
         }
     }
 
+
     @Override
-    public void setCellFromFile(int row, int col, char ch) {
+    public void setCellFromFile(int row, int col, char ch, Grid g) {
         if (ch == '0') {
-            mySimulationGrid.getCell(row, col).setStatus("empty");
+            g.getCell(row, col).setStatus("empty");
         }
         if (ch == '1') {
-            mySimulationGrid.getCell(row, col).setStatus("agent1");
+            g.getCell(row, col).setStatus("agent1");
         }
         if (ch == '2') {
-            mySimulationGrid.getCell(row, col).setStatus("agent2");
+            g.getCell(row, col).setStatus("agent2");
         }
 
+    }
+
+    @Override
+    public void writeCellToFile(FileWriter fr, int row, int col, Grid g) throws IOException {
+        String currStatus = g.getCell(row, col).getStatus();
+        if (currStatus.equals("empty")) {
+            fr.write(0 + ",");
+        }
+        else if (currStatus.equals("agent1")) {
+            fr.write(1 + ",");
+        } else {
+            fr.write(2 + ",");
+        }
     }
 }

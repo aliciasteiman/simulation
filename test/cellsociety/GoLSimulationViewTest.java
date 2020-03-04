@@ -9,13 +9,13 @@ import util.DukeApplicationTest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class GoLSimulationViewTest extends DukeApplicationTest {
 
-    private SimulationModel myModel = new GameOfLife("GoL_Test");;
+    //private SimulationModel myModel = new GameOfLife("GoL_Test");
+    private SimulationModel myModel = new SimulationModel();
     private SimulationView myView;
     private Scene myScene;
     private Button myStartButton;
@@ -97,7 +97,7 @@ class GoLSimulationViewTest extends DukeApplicationTest {
      */
     @Test
     void GameOfLifeBlockTest() {
-        myModel = new GameOfLife("GOL_Block");
+        //myModel = new GameOfLife("GOL_Block");
         javafxRun(() -> start(new Stage()));
 
         getCellsFromGrid();

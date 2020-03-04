@@ -1,16 +1,29 @@
 package cellsociety;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class SpreadingOfFire extends SimulationModel {
+public class SpreadingOfFire implements Simulation {
 
+    private Grid mySimulationGrid;
     private List<Cell> myNeighbors;
-    private final double probCatch = Double.parseDouble(myResources.getString("ProbabilityCatch"));
+    private final double probCatch = 0.55; //Double.parseDouble(myResources.getString("ProbabilityCatch"));
 
-    public SpreadingOfFire(String f) {
-        super(f);
+    public SpreadingOfFire() {
+
+    }
+
+    @Override
+    public Grid getGrid() {
+        return mySimulationGrid;
+    }
+
+    @Override
+    public void setGrid(Grid g) {
+        mySimulationGrid = g;
     }
 
     @Override
@@ -19,7 +32,7 @@ public class SpreadingOfFire extends SimulationModel {
         for (int i = 0; i < mySimulationGrid.getRows(); i++) {
             for (int j = 0; j < mySimulationGrid.getCols(); j++) {
                 Cell currCell = mySimulationGrid.getCell(i, j);
-                int numBurningNeighbors = mySimulationGrid.countAliveNeighbors(getNeighbors(i, j), "burning");
+                int numBurningNeighbors = mySimulationGrid.countNeighbors(getNeighbors(i, j), "burning");
                 Random rand = new Random();
                 double randNum = rand.nextDouble();
                 Cell newCell = new Cell(i, j, currCell.getStatus());
@@ -41,14 +54,7 @@ public class SpreadingOfFire extends SimulationModel {
         int[] indexR = {1, -1, 0, 0};
         int[] indexC = {0, 0, 1, -1};
 
-        for (int i = 0; i < indexR.length; i++) {
-            int currR = row + indexR[i];
-            int currC = col + indexC[i];
-            if (currR < mySimulationGrid.getRows() && currC < mySimulationGrid.getCols() && currR >= 0 && currC >= 0) {
-                myNeighbors.add(mySimulationGrid.getCell(currR, currC));
-            }
-        }
-        return myNeighbors;
+        return mySimulationGrid.getSpecifiedNeighbors(row, col, indexR, indexC, mySimulationGrid);
     }
 
     @Override
@@ -62,16 +68,30 @@ public class SpreadingOfFire extends SimulationModel {
         }
     }
 
+
     @Override
-    public void setCellFromFile(int row, int col, char ch) {
+    public void setCellFromFile(int row, int col, char ch, Grid g) {
         if (ch == '0') {
-            mySimulationGrid.getCell(row, col).setStatus("empty");
+            g.getCell(row, col).setStatus("empty");
         }
         if (ch == '1') {
-            mySimulationGrid.getCell(row, col).setStatus("tree");
+            g.getCell(row, col).setStatus("tree");
         }
         if (ch == '2') {
-            mySimulationGrid.getCell(row, col).setStatus("burning");
+            g.getCell(row, col).setStatus("burning");
+        }
+    }
+
+    @Override
+    public void writeCellToFile(FileWriter fr, int row, int col, Grid g) throws IOException {
+        String currStatus = g.getCell(row, col).getStatus();
+        if (currStatus.equals("empty")) {
+            fr.write(0 + ",");
+        }
+        else if (currStatus.equals("tree")) {
+            fr.write(1 + ",");
+        } else {
+            fr.write(2 + ",");
         }
     }
 }

@@ -1,6 +1,7 @@
 package cellsociety;
 
-import java.util.ArrayList;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -8,19 +9,24 @@ import java.util.List;
  * Each grid location is either empty (dead) or occupied by a single cell (alive)
  * A location's neighbors are any cells in the surrounding eight locations
  */
-public class GameOfLife extends SimulationModel {
-
-    private List<Cell> myNeighbors;
-
+public class GameOfLife implements Simulation {
+    protected Grid mySimulationGrid;
     public static final String ALIVE_STYLE = "GOL-alive-cell";
     public static final String DEAD_STYLE = "GOL-dead-cell";
 
     /**
      * Constructor for a GameOfLife simulation; calls super
-     * @param file
      */
-    public GameOfLife(String file) {
-        super(file);
+    public GameOfLife() {
+
+    }
+
+    @Override
+    public Grid getGrid() { return mySimulationGrid; }
+
+    @Override
+    public void setGrid(Grid g) {
+        mySimulationGrid = g;
     }
 
     /**
@@ -36,7 +42,7 @@ public class GameOfLife extends SimulationModel {
         for (int i = 0; i < mySimulationGrid.getRows(); i++) {
             for (int j = 0; j < mySimulationGrid.getCols(); j++) {
                 Cell currCell = mySimulationGrid.getCell(i, j);
-                int numLiveNeighbors = mySimulationGrid.countAliveNeighbors(getNeighbors(i, j), "alive");
+                int numLiveNeighbors = mySimulationGrid.countNeighbors(getNeighbors(i, j), "alive");
                 boolean isAlive = ((currCell.getStatus().equals("alive") && numLiveNeighbors == 2) || numLiveNeighbors == 3);
                 Cell newCell = new Cell(i, j, "dead");
                 if (isAlive) {
@@ -59,18 +65,11 @@ public class GameOfLife extends SimulationModel {
      */
     @Override
     public List<Cell> getNeighbors(int row, int col) {
-        myNeighbors = new ArrayList<>();
         int[] indexR = {-1, 0, 1, -1, 1, -1, 0, 1};
         int[] indexC = {1, 1, 1, 0, 0, -1, -1, -1};
 
-        for (int i = 0; i < indexR.length; i++) {
-            int currR = row + indexR[i];
-            int currC = col + indexC[i];
-            if (currR < mySimulationGrid.getRows() && currC < mySimulationGrid.getCols() && currR >= 0 && currC >= 0) {
-                myNeighbors.add(mySimulationGrid.getCell(currR, currC));
-            }
-        }
-        return myNeighbors;
+        return mySimulationGrid.getSpecifiedNeighbors(row, col, indexR, indexC, mySimulationGrid);
+
     }
 
     /**
@@ -94,9 +93,19 @@ public class GameOfLife extends SimulationModel {
      * @param ch  - the character that corresponds to the value that cell will take
      */
     @Override
-    public void setCellFromFile(int row, int col, char ch) {
+    public void setCellFromFile(int row, int col, char ch, Grid g) {
         if (ch == '1') {
-            mySimulationGrid.getCell(row, col).setStatus("alive");
+            g.getCell(row, col).setStatus("alive");
+        }
+    }
+
+    @Override
+    public void writeCellToFile(FileWriter fr, int row, int col, Grid g) throws IOException {
+        if (g.getCell(row, col).getStatus().equals("alive")) {
+            fr.write(1 + ",");
+        }
+        else {
+            fr.write(0 + ",");
         }
     }
 }
