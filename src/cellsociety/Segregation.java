@@ -7,7 +7,7 @@ import java.util.Random;
 public class Segregation extends SimulationModel {
     private List<Cell> myNeighbors;
 
-    private static final double prob = 0.50;
+    private final double prob = Double.parseDouble(myResources.getString("SatisfiedThreshold"));
 
     public Segregation(String f) {
         super(f);
@@ -17,15 +17,18 @@ public class Segregation extends SimulationModel {
         List<String> openPos = new ArrayList<>();
         for (int r = 0; r < mySimulationGrid.getRows(); r++) {
             for (int c = 0; c < mySimulationGrid.getCols(); c++) {
-                if (mySimulationGrid.getCell(r,c).equals("empty")) {
+                if (mySimulationGrid.getCell(r,c).getStatus().equals("empty")) {
                     String pos = Integer.toString(r) + "," + Integer.toString(c);
                     openPos.add(pos);
                 }
             }
         }
-        Random rand = new Random();
-        int randIndex = rand.nextInt(openPos.size());
-        return openPos.get(randIndex);
+        if (openPos.size()>0) {
+            Random rand = new Random();
+            int randIndex = rand.nextInt(openPos.size());
+            return openPos.get(randIndex);
+        }
+        return "";
     }
 
     @Override
@@ -38,9 +41,9 @@ public class Segregation extends SimulationModel {
                 String currStatus = currCell.getStatus();
                 int numSimilarNeighbors = mySimulationGrid.countAliveNeighbors(getNeighbors(i, j), currStatus);
                 double percent = numSimilarNeighbors/numNeighbors;
+                String newSpot = findRandEmptySpot();
                 Cell newCell = new Cell(i, j, currCell.getStatus());
-                if (! currStatus.equals("empty") && percent < prob) {
-                    String newSpot = findRandEmptySpot();
+                if (! currStatus.equals("empty") && percent < prob && newSpot != "") {
                     int row = Integer.parseInt(newSpot.split(",")[0]);
                     int col = Integer.parseInt(newSpot.split(",")[1]);
                     updatedGrid.setCell(row, col, newCell);

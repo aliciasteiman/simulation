@@ -24,7 +24,8 @@ public class Main extends Application {
     public void start(Stage stage) {
         //SimulationModel model = new GameOfLife("GoL_Blinker");
         //SimulationModel model = new SpreadingOfFire("SoF_Test");
-        SimulationModel model = new Percolate("Percolate_Test");
+        //SimulationModel model = new Percolate("Percolate_Test");
+        SimulationModel model = new Segregation("MOS_Test");
 
         SimulationView display = new SimulationView(model);
 
