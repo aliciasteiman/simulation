@@ -20,7 +20,7 @@ public class Percolate extends SimulationModel {
                 Cell currCell = mySimulationGrid.getCell(i, j);
                 int numFullNeighbors = mySimulationGrid.countAliveNeighbors(getNeighbors(i, j), "full");
                 Cell newCell = new Cell(i, j, currCell.getStatus());
-                if (currCell.getStatus().equals("empty") && numFullNeighbors >= 1) {
+                if (currCell.getStatus().equals("open") && numFullNeighbors >= 1) {
                     newCell = new Cell(i, j, "full");
                 }
                 updatedGrid.setCell(i, j, newCell);

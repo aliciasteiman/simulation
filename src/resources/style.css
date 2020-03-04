@@ -33,3 +33,22 @@
     -fx-stroke-width: 0.5;
 }
 
+.PERC-blocked-cell {
+    -fx-fill: black;
+    -fx-stroke-type: outside;
+    -fx-stroke: gray;
+    -fx-stroke-width: 0.5;
+}
+
+.PERC-open-cell {
+    -fx-fill: white;
+    -fx-stroke-type: outside;
+    -fx-stroke: gray;
+    -fx-stroke-width: 0.5;
+}
+.PERC-full-cell {
+    -fx-fill: teal;
+    -fx-stroke-type: outside;
+    -fx-stroke: gray;
+    -fx-stroke-width: 0.5;
+}
