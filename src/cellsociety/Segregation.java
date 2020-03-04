@@ -39,11 +39,6 @@ public class Segregation extends SimulationModel {
         return false;
     }
 
-    private Cell moveCell(Cell c, List<Integer> openSpot) {
-        Cell movedCell = new Cell(openSpot.get(0), openSpot.get(1), c.getStatus());
-        return movedCell;
-    }
-
     private List<Integer> findOpenSpot() {
         List<List<Integer>> openSpots = new ArrayList<>();
         for (int i = 0; i < mySimulationGrid.getRows(); i++) {
@@ -57,12 +52,14 @@ public class Segregation extends SimulationModel {
                 }
             }
         }
-        if (openSpots.size() > 0) {
-            Random rand = new Random();
-            int randPos = rand.nextInt(openSpots.size());
-            return openSpots.get(randPos);
-        }
-        return null;
+        Random rand = new Random();
+        int randPos = rand.nextInt(openSpots.size());
+        return openSpots.get(randPos);
+    }
+
+    private Cell moveCell(Cell c, List<Integer> openSpot) {
+        Cell movedCell = new Cell(openSpot.get(0), openSpot.get(1), c.getStatus());
+        return movedCell;
     }
 
     @Override
