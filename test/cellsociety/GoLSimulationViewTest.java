@@ -53,19 +53,19 @@ class GoLSimulationViewTest extends DukeApplicationTest {
         //for initial configuration, testing the appearance of the four corners
         //for row 1, col 1 - cell is dead
         Rectangle cell_1_1 = myGrid.get(0).get(0);
-        assertEquals("dead-cell", cell_1_1.getStyleClass().toString());
+        assertEquals("GOL-dead-cell", cell_1_1.getStyleClass().toString());
 
         //for row 1, col 9 - cell is dead
         Rectangle cell_1_9 = myGrid.get(0).get(8);
-        assertEquals("dead-cell", cell_1_9.getStyleClass().toString());
+        assertEquals("GOL-dead-cell", cell_1_9.getStyleClass().toString());
 
         //for row 9, col 1 - cell is alive
         Rectangle cell_9_1 = myGrid.get(8).get(0);
-        assertEquals("alive-cell", cell_9_1.getStyleClass().toString());
+        assertEquals("GOL-alive-cell", cell_9_1.getStyleClass().toString());
 
         //for row, col 9 - cell is alive
         Rectangle cell_9_9 = myGrid.get(8).get(8);
-        assertEquals("alive-cell", cell_9_9.getStyleClass().toString());
+        assertEquals("GOL-alive-cell", cell_9_9.getStyleClass().toString());
     }
 
     /**
@@ -79,17 +79,17 @@ class GoLSimulationViewTest extends DukeApplicationTest {
         //a cell that is alive and has two alive neighbors should show the alive-cell style
         //cell in row 9, col 1 is alive and has two alive neighbors
         Rectangle cell_9_1 = myGrid.get(8).get(0);
-        assertEquals("alive-cell", cell_9_1.getStyleClass().toString());
+        assertEquals("GOL-alive-cell", cell_9_1.getStyleClass().toString());
 
         //a cell that has three alive neighbors should be alive
         //cell in row 1, col 2 should come back from dead because it has 3 alive neighbors
         Rectangle cell_1_2 = myGrid.get(0).get(1);
-        assertEquals("alive-cell", cell_1_2.getStyleClass().toString());
+        assertEquals("GOL-alive-cell", cell_1_2.getStyleClass().toString());
 
         //otherwise, a cell should be dead
         //cell in row 3, col 4 has 5 alive neighbors
         Rectangle cell_3_4 = myGrid.get(2).get(3);
-        assertEquals("dead-cell", cell_3_4.getStyleClass().toString());
+        assertEquals("GOL-dead-cell", cell_3_4.getStyleClass().toString());
     }
 
     /**
@@ -103,15 +103,15 @@ class GoLSimulationViewTest extends DukeApplicationTest {
         getCellsFromGrid();
         //initial config - BLOCK IN MIDDLE
         Rectangle cell_1_1 = myGrid.get(1).get(1);
-        assertEquals("alive-cell", cell_1_1.getStyleClass().toString());
+        assertEquals("GOL-alive-cell", cell_1_1.getStyleClass().toString());
         Rectangle cell_1_2 = myGrid.get(1).get(2);
-        assertEquals("alive-cell", cell_1_2.getStyleClass().toString());
+        assertEquals("GOL-alive-cell", cell_1_2.getStyleClass().toString());
 
         //after step - MAKING SURE IT DOESN'T CHANGE
         javafxRun(() -> myView.step());
         getCellsFromGrid();
-        assertEquals("alive-cell", cell_1_1.getStyleClass().toString());
-        assertEquals("alive-cell", cell_1_2.getStyleClass().toString());
+        assertEquals("GOL-alive-cell", cell_1_1.getStyleClass().toString());
+        assertEquals("GOL-alive-cell", cell_1_2.getStyleClass().toString());
     }
 
     /**
