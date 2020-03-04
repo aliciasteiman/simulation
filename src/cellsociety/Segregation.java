@@ -6,6 +6,7 @@ import java.util.Random;
 
 public class Segregation extends SimulationModel {
     private List<Cell> myNeighbors;
+    private List<String> openPos;
 
     private final double prob = Double.parseDouble(myResources.getString("SatisfiedThreshold"));
 
@@ -14,7 +15,6 @@ public class Segregation extends SimulationModel {
     }
 
     public String findRandEmptySpot() {
-        List<String> openPos = new ArrayList<>();
         for (int r = 0; r < mySimulationGrid.getRows(); r++) {
             for (int c = 0; c < mySimulationGrid.getCols(); c++) {
                 if (mySimulationGrid.getCell(r,c).getStatus().equals("empty")) {
@@ -34,6 +34,7 @@ public class Segregation extends SimulationModel {
     @Override
     public Grid updateCells() {
         Grid updatedGrid = new Grid(mySimulationGrid.getRows(), mySimulationGrid.getCols());
+        openPos = new ArrayList<>();
         for (int i = 0; i < mySimulationGrid.getRows(); i++) {
             for (int j = 0; j < mySimulationGrid.getCols(); j++) {
                 Cell currCell = mySimulationGrid.getCell(i, j);
@@ -47,6 +48,10 @@ public class Segregation extends SimulationModel {
                     int row = Integer.parseInt(newSpot.split(",")[0]);
                     int col = Integer.parseInt(newSpot.split(",")[1]);
                     updatedGrid.setCell(row, col, newCell);
+                    openPos.add(Integer.toString(i)+","+Integer.toString(j));
+                    int rem = openPos.indexOf(Integer.toString(row)+","+Integer.toString(col));
+                    openPos.remove(rem);
+
                 }
             }
         }
