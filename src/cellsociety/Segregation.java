@@ -2,10 +2,7 @@ package cellsociety;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 
 public class Segregation extends Simulation {
@@ -13,9 +10,16 @@ public class Segregation extends Simulation {
     private List<List<Integer>> openSpots;
     private Grid mySimulationGrid;
     private List<Cell> myNeighbors;
-    private final double threshold = 0.3; //Double.parseDouble(myResources.getString("SatisfiedThreshold"));
+    private final double threshold;
+
+    private ResourceBundle myResources;
+    public static final String RESOURCE_PACKAGE = "resources.";
+    private String file = "MOS_Test";
 
     public Segregation() {
+        myResources = ResourceBundle.getBundle(RESOURCE_PACKAGE + file);
+        threshold = Double.parseDouble(myResources.getString("SatisfiedThreshold"));
+        System.out.println(threshold);
     }
 
     @Override
