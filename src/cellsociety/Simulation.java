@@ -3,6 +3,7 @@ package cellsociety;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public abstract class Simulation {
 

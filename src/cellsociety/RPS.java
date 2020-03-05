@@ -2,13 +2,19 @@ package cellsociety;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
-public class Percolate extends Simulation {
-
+public class RPS extends Simulation {
+    private final int threshold = 3;
     private Grid mySimulationGrid;
-    public Percolate() {
+    private HashMap<String, String> relations;
 
+    public RPS() {
+        relations = new HashMap<>();
+        relations.put("rock", "paper");
+        relations.put("paper", "scissors");
+        relations.put("scissors", "rock");
     }
 
     @Override
@@ -25,10 +31,11 @@ public class Percolate extends Simulation {
         for (int i = 0; i < mySimulationGrid.getRows(); i++) {
             for (int j = 0; j < mySimulationGrid.getCols(); j++) {
                 Cell currCell = mySimulationGrid.getCell(i, j);
-                int numFullNeighbors = mySimulationGrid.countNeighbors(getNeighbors(i, j), "full");
+                String winningState = relations.get(currCell.getStatus());
+                int numWinningNeighbors = mySimulationGrid.countNeighbors(getNeighbors(i, j), winningState);
                 Cell newCell = new Cell(i, j, currCell.getStatus());
-                if (currCell.getStatus().equals("open") && numFullNeighbors >= 1) {
-                    newCell = new Cell(i, j, "full");
+                if (numWinningNeighbors >= threshold) {
+                    newCell = new Cell(i, j, winningState);
                 }
                 updatedGrid.setCell(i, j, newCell);
             }
@@ -40,20 +47,20 @@ public class Percolate extends Simulation {
     @Override
     public List<Cell> getNeighbors(int row, int col) {
 
-        int[] indexR = {1, -1, 0, 0};
-        int[] indexC = {0, 0, 1, -1};
+        int[] indexR = {-1, 0, 1, -1, 1, -1, 0, 1};
+        int[] indexC = {1, 1, 1, 0, 0, -1, -1, -1};
         return mySimulationGrid.getSpecifiedNeighbors(row, col, indexR, indexC, mySimulationGrid);
     }
 
     @Override
     public void updateCellStyle(Cell c) {
-        if (c.getStatus().equals("blocked")) {
-            c.getShape().getStyleClass().add("PERC-blocked-cell");
-        } else if (c.getStatus().equals("open")) {
-            c.getShape().getStyleClass().add("PERC-open-cell");
+        if (c.getStatus().equals("rock")) {
+            c.getShape().getStyleClass().add("RPS-rock-cell");
+        } else if (c.getStatus().equals("paper")) {
+            c.getShape().getStyleClass().add("RPS-paper-cell");
         }
         else {
-            c.getShape().getStyleClass().add("PERC-full-cell");
+            c.getShape().getStyleClass().add("RPS-scissors-cell");
         }
     }
 
@@ -61,23 +68,23 @@ public class Percolate extends Simulation {
     @Override
     public void setCellFromFile(int row, int col, char ch, Grid g ) {
         if (ch == '0') {
-            g.getCell(row, col).setStatus("blocked");
+            g.getCell(row, col).setStatus("rock");
         }
         if (ch == '1') {
-            g.getCell(row, col).setStatus("open");
+            g.getCell(row, col).setStatus("paper");
         }
         if (ch == '2') {
-            g.getCell(row, col).setStatus("full");
+            g.getCell(row, col).setStatus("scissors");
         }
     }
 
     @Override
     public void writeCellToFile(FileWriter fr, int row, int col, Grid g) throws IOException {
         String currStatus = g.getCell(row, col).getStatus();
-        if (currStatus.equals("blocked")) {
+        if (currStatus.equals("rock")) {
             fr.write(0 + ",");
         }
-        else if (currStatus.equals("open")) {
+        else if (currStatus.equals("paper")) {
             fr.write(1 + ",");
         } else {
             fr.write(2 + ",");

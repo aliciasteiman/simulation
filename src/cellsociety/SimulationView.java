@@ -72,7 +72,7 @@ public class SimulationView {
         myAnimation = new Timeline();
         myAnimation.setCycleCount(Timeline.INDEFINITE);
 
-        myGrid = simulationModel.initSimulation("GOL_Pulsar");
+        myGrid = simulationModel.initSimulation("RPS");
         handleGridSetUp(width, height);
         return myScene;
     }

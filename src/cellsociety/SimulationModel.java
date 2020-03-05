@@ -4,17 +4,14 @@ import java.io.File;
 import java.util.ResourceBundle;
 
 public class SimulationModel {
+
     private Simulation mySimulation;
     private CSVConfiguration simConfig;
     private ResourceBundle myResources;
-
-
     public static final String RESOURCE_PACKAGE = "resources.";
 
     public SimulationModel() {
-
     }
-
 
     public Grid initSimulation(String file) {
         myResources = ResourceBundle.getBundle(RESOURCE_PACKAGE + file);
@@ -38,6 +35,9 @@ public class SimulationModel {
         }
         if (simName.equals("Spreading of Fire")){
             mySimulation = new SpreadingOfFire();
+        }
+        if (simName.equals("Rock Paper Scissors")){
+            mySimulation = new RPS();
         }
     }
 
