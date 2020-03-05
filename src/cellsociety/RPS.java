@@ -13,8 +13,8 @@ public class RPS extends Simulation {
     public RPS() {
         relations = new HashMap<>();
         relations.put("rock", "paper");
-        relations.put("paper", "scissor");
-        relations.put("scissor", "rock");
+        relations.put("paper", "scissors");
+        relations.put("scissors", "rock");
     }
 
     @Override
@@ -43,19 +43,19 @@ public class RPS extends Simulation {
         mySimulationGrid = updatedGrid;
         return mySimulationGrid;
     }
-// here, want to get which neighbors are of which type
+
     @Override
     public List<Cell> getNeighbors(int row, int col) {
 
-        int[] indexR = {1, -1, 0, 0};
-        int[] indexC = {0, 0, 1, -1};
+        int[] indexR = {-1, 0, 1, -1, 1, -1, 0, 1};
+        int[] indexC = {1, 1, 1, 0, 0, -1, -1, -1};
         return mySimulationGrid.getSpecifiedNeighbors(row, col, indexR, indexC, mySimulationGrid);
     }
 
     @Override
     public void updateCellStyle(Cell c) {
         if (c.getStatus().equals("rock")) {
-            c.getShape().getStyleClass().add("RPS-rock-call");
+            c.getShape().getStyleClass().add("RPS-rock-cell");
         } else if (c.getStatus().equals("paper")) {
             c.getShape().getStyleClass().add("RPS-paper-cell");
         }

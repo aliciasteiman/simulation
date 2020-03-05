@@ -76,7 +76,7 @@
 }
 
 .RPS-rock-cell {
-    -fx-fill: brown;
+    -fx-fill: gray;
     -fx-stroke-type: outside;
     -fx-stroke: gray;
     -fx-stroke-width: 0.5;
