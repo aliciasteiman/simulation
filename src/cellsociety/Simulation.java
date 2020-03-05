@@ -4,7 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-public interface Simulation {
+public abstract class Simulation {
 
     public abstract Grid getGrid();
     public abstract void setGrid(Grid g);
@@ -36,4 +36,20 @@ public interface Simulation {
     public abstract void setCellFromFile(int row, int col, char ch, Grid g);
 
     public abstract void writeCellToFile(FileWriter fr, int row, int col, Grid g) throws IOException;
+
+    /*
+        Instead of abstract setCellFromFile, maybe shared setCellFromFile that
+        operates on different state structures for each simulation?
+
+        //each simulation type will have a structure with all of its states
+        //assumption = the different states in the file will be denoted by
+        '0','1','2', etc.
+        public void setCellFromFile(int row, int col, char ch, Grid g) {
+            for (int i = 0; i < numStates; i++) {
+                if ch == (char) i {
+                     g.getCell(row, col).setStatus(myStates.get(i));
+                }
+            }
+        }
+     */
 }

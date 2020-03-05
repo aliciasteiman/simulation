@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class SpreadingOfFire implements Simulation {
+public class SpreadingOfFire extends Simulation {
 
     private Grid mySimulationGrid;
     private List<Cell> myNeighbors;

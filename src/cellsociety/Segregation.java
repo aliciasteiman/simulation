@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Segregation implements Simulation {
+public class Segregation extends Simulation {
     private Grid mySimulationGrid;
     private List<String> openPos;
 

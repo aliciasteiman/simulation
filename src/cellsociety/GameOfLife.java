@@ -9,13 +9,13 @@ import java.util.List;
  * Each grid location is either empty (dead) or occupied by a single cell (alive)
  * A location's neighbors are any cells in the surrounding eight locations
  */
-public class GameOfLife implements Simulation {
+public class GameOfLife extends Simulation {
     protected Grid mySimulationGrid;
     public static final String ALIVE_STYLE = "GOL-alive-cell";
     public static final String DEAD_STYLE = "GOL-dead-cell";
 
     /**
-     * Constructor for a GameOfLife simulation; calls super
+     * Constructor for a GameOfLife simulation
      */
     public GameOfLife() {
 

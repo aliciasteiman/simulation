@@ -4,7 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-public class Percolate implements Simulation {
+public class Percolate extends Simulation {
     private Grid mySimulationGrid;
 
     public Percolate() {
