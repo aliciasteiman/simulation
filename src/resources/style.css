@@ -74,3 +74,25 @@
     -fx-stroke: gray;
     -fx-stroke-width: 0.5;
 }
+
+.RPS-rock-cell {
+    -fx-fill: brown;
+    -fx-stroke-type: outside;
+    -fx-stroke: gray;
+    -fx-stroke-width: 0.5;
+}
+
+.RPS-paper-cell {
+    -fx-fill: white;
+    -fx-stroke-type: outside;
+    -fx-stroke: gray;
+    -fx-stroke-width: 0.5;
+}
+
+.RPS-scissors-cell {
+    -fx-fill: navy;
+    -fx-stroke-type: outside;
+    -fx-stroke: gray;
+    -fx-stroke-width: 0.5;
+}
+
