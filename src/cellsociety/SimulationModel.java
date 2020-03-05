@@ -39,6 +39,9 @@ public class SimulationModel {
         if (simName.equals("Spreading of Fire")){
             mySimulation = new SpreadingOfFire();
         }
+        if (simName.equals("Rock Paper Scissors")){
+            mySimulation = new RPS();
+        }
     }
 
     public void determineFileType() {
