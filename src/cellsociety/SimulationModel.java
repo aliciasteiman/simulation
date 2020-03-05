@@ -118,7 +118,4 @@ public abstract class SimulationModel {
         return file;
     }
 
-
-
-
 }

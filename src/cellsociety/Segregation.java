@@ -100,6 +100,5 @@ public class Segregation extends SimulationModel {
         if (ch == '2') {
             mySimulationGrid.getCell(row, col).setStatus("agent2");
         }
-
     }
 }
