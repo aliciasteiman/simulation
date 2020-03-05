@@ -9,7 +9,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -21,8 +20,7 @@ import java.util.ResourceBundle;
  * Class used to display the viewer for a Simulation
  */
 public class SimulationView {
-
-    private SimulationModel myModel;
+    private SimulationModel simulationModel;
     private Timeline myAnimation;
     private Scene myScene;
     private GridPane pane;
@@ -54,7 +52,7 @@ public class SimulationView {
      * @param model -- e.g. GameOfLife
      */
     public SimulationView(SimulationModel model) {
-        myModel = model;
+        simulationModel = model;
         myResources = ResourceBundle.getBundle(RESOURCE_PACKAGE + buttonNamesFile);
     }
 
@@ -74,6 +72,7 @@ public class SimulationView {
         myAnimation = new Timeline();
         myAnimation.setCycleCount(Timeline.INDEFINITE);
 
+        myGrid = simulationModel.initSimulation("SoF_Test");
         handleGridSetUp(width, height);
         return myScene;
     }
@@ -87,7 +86,6 @@ public class SimulationView {
     }
 
     private void handleGridSetUp(int width, int height) {
-        myGrid = myModel.getMySimulationGrid();
         myCols = myGrid.getCols();
         myRows = myGrid.getRows();
         CELL_HEIGHT = (height - 100) / myCols;
@@ -107,7 +105,7 @@ public class SimulationView {
         //KeyFrame userClickFrame = new KeyFrame(Duration.seconds(SPEED), e -> allowUserClick(c));
         //myAnimation.getKeyFrames().add(userClickFrame);
         //myAnimation.play();
-        myModel.updateCellStyle(c);
+        simulationModel.updateCell(c);
         pane.add(c.getShape(), col, row);
     }
 
@@ -138,7 +136,7 @@ public class SimulationView {
      * cell generations.
      */
     public void step() {
-        myGrid = myModel.updateCells();
+        myGrid = simulationModel.updateGrid();
         updateGridAppearance();
     }
 
@@ -165,7 +163,7 @@ public class SimulationView {
 
         startButton = makeButton("startCommand", e -> setAnimation());
         pauseButton = makeButton("pauseCommand", e -> myAnimation.pause());
-        saveButton = makeButton("saveCommand", e -> myModel.saveCurrentConfig(myGrid));
+        saveButton = makeButton("saveCommand", e -> simulationModel.writeConfig(myGrid));
         stepButton = makeButton("stepCommand", e -> step());
         //speedUpButton = makeButton("speedUpCommand", e -> changeSpeed(-5));
 
@@ -222,8 +220,9 @@ public class SimulationView {
     private void loadNewConfig(String file) {
         pane.getChildren().clear();
         myAnimation.pause();
-        SimulationModel newModel = new GameOfLife(file);
-        myModel = newModel;
+        //SimulationModel newModel = new GameOfLife(file);
+        //myModel = newModel;
+        myGrid = simulationModel.initSimulation(file);
         handleGridSetUp(500,500);
     }
 }

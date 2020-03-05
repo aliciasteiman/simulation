@@ -63,7 +63,7 @@ public class Grid {
      * @param neighbors
      * @return count - represents the number of alive neighbors
      */
-    public int countAliveNeighbors(List<Cell> neighbors, String status) {
+    public int countNeighbors(List<Cell> neighbors, String status) {
         int count  = 0;
         for (Cell cell : neighbors) {
             if (cell.getStatus().equals(status)) {
@@ -71,6 +71,18 @@ public class Grid {
             }
         }
         return count;
+    }
+
+    public List<Cell> getSpecifiedNeighbors(int row, int col, int[] indexR, int[] indexC, Grid g) {
+        List<Cell> myNeighbors = new ArrayList<>();
+        for (int i = 0; i < indexR.length; i++) {
+            int currR = row + indexR[i];
+            int currC = col + indexC[i];
+            if (currR < g.getRows() && currC < g.getCols() && currR >= 0 && currC >= 0) {
+                myNeighbors.add(g.getCell(currR, currC));
+            }
+        }
+        return myNeighbors;
     }
 
 }

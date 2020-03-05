@@ -1,17 +1,29 @@
 package cellsociety;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Segregation extends SimulationModel {
+
+public class Segregation extends Simulation {
+
+    private Grid mySimulationGrid;
     private List<Cell> myNeighbors;
-    private List<String> openPos;
+    private final double threshold = 0.3; //Double.parseDouble(myResources.getString("SatisfiedThreshold"));
 
-    private final double threshold = Double.parseDouble(myResources.getString("SatisfiedThreshold"));
+    public Segregation() {
+    }
 
-    public Segregation(String f) {
-        super(f);
+    @Override
+    public Grid getGrid() {
+        return mySimulationGrid;
+    }
+
+    @Override
+    public void setGrid(Grid g) {
+        mySimulationGrid = g;
     }
 
     @Override
@@ -32,7 +44,7 @@ public class Segregation extends SimulationModel {
     }
 
     private boolean isSatisfied(Cell c) {
-        int similarNeighbors = mySimulationGrid.countAliveNeighbors(getNeighbors(c.getRow(), c.getCol()), c.getStatus());
+        int similarNeighbors = mySimulationGrid.countNeighbors(getNeighbors(c.getRow(), c.getCol()), c.getStatus());
         if ((double) similarNeighbors/myNeighbors.size() >= threshold) {
             return true;
         }
@@ -90,7 +102,7 @@ public class Segregation extends SimulationModel {
     }
 
     @Override
-    public void setCellFromFile(int row, int col, char ch) {
+    public void setCellFromFile(int row, int col, char ch, Grid g) {
         if (ch == '0') {
             mySimulationGrid.getCell(row, col).setStatus("empty");
         }
@@ -99,6 +111,19 @@ public class Segregation extends SimulationModel {
         }
         if (ch == '2') {
             mySimulationGrid.getCell(row, col).setStatus("agent2");
+        }
+    }
+
+    @Override
+    public void writeCellToFile(FileWriter fr, int row, int col, Grid g) throws IOException {
+        String currStatus = g.getCell(row, col).getStatus();
+        if (currStatus.equals("empty")) {
+            fr.write(0 + ",");
+        }
+        else if (currStatus.equals("agent1")) {
+            fr.write(1 + ",");
+        } else {
+            fr.write(2 + ",");
         }
     }
 }
