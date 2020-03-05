@@ -33,10 +33,15 @@ public class Segregation extends Simulation {
             for (int j = 0; j < mySimulationGrid.getCols(); j++) {
                 Cell currCell = mySimulationGrid.getCell(i, j);
                 Cell newCell = new Cell(i, j, currCell.getStatus());
-                if (! isSatisfied(currCell)) {
+                if (! currCell.getStatus().equals("empty") && ! isSatisfied(currCell)) {
                     newCell = moveCell(currCell, findOpenSpot());
+                    updatedGrid.setCell(newCell.getRow(), newCell.getCol(), newCell);
+                    currCell.setStatus("empty");
+                    updatedGrid.setCell(i, j, currCell);
                 }
-                updatedGrid.setCell(newCell.getRow(), newCell.getCol(), newCell);
+                else {
+                    updatedGrid.setCell(i, j, newCell);
+                }
             }
         }
         mySimulationGrid = updatedGrid;
@@ -104,13 +109,13 @@ public class Segregation extends Simulation {
     @Override
     public void setCellFromFile(int row, int col, char ch, Grid g) {
         if (ch == '0') {
-            mySimulationGrid.getCell(row, col).setStatus("empty");
+            g.getCell(row, col).setStatus("empty");
         }
         if (ch == '1') {
-            mySimulationGrid.getCell(row, col).setStatus("agent1");
+            g.getCell(row, col).setStatus("agent1");
         }
         if (ch == '2') {
-            mySimulationGrid.getCell(row, col).setStatus("agent2");
+            g.getCell(row, col).setStatus("agent2");
         }
     }
 
@@ -119,8 +124,7 @@ public class Segregation extends Simulation {
         String currStatus = g.getCell(row, col).getStatus();
         if (currStatus.equals("empty")) {
             fr.write(0 + ",");
-        }
-        else if (currStatus.equals("agent1")) {
+        } else if (currStatus.equals("agent1")) {
             fr.write(1 + ",");
         } else {
             fr.write(2 + ",");

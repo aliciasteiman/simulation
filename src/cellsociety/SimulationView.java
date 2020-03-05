@@ -72,7 +72,8 @@ public class SimulationView {
         myAnimation = new Timeline();
         myAnimation.setCycleCount(Timeline.INDEFINITE);
 
-        myGrid = simulationModel.initSimulation("SoF_Test");
+        //myGrid = simulationModel.initSimulation("SoF_Test");
+        myGrid = simulationModel.initSimulation("MoS_Test");
         handleGridSetUp(width, height);
         return myScene;
     }

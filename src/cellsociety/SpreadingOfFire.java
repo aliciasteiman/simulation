@@ -13,7 +13,6 @@ public class SpreadingOfFire extends Simulation {
     private final double probCatch = 0.55; //Double.parseDouble(myResources.getString("ProbabilityCatch"));
 
     public SpreadingOfFire() {
-
     }
 
     @Override
