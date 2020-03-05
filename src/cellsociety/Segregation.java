@@ -12,13 +12,14 @@ public class Segregation extends Simulation {
     private List<Cell> myNeighbors;
     private final double threshold;
 
-    private ResourceBundle myResources;
-    public static final String RESOURCE_PACKAGE = "resources.";
-    private String file = "MOS_Test";
+//    private ResourceBundle myResources;
+//    public static final String RESOURCE_PACKAGE = "resources.";
+//    private String file = "MOS_Test";
 
-    public Segregation() {
-        myResources = ResourceBundle.getBundle(RESOURCE_PACKAGE + file);
-        threshold = Double.parseDouble(myResources.getString("SatisfiedThreshold"));
+    public Segregation(double thresh) {
+        threshold = thresh;
+//        myResources = ResourceBundle.getBundle(RESOURCE_PACKAGE + file);
+//        threshold = Double.parseDouble(myResources.getString("SatisfiedThreshold"));
     }
 
     @Override

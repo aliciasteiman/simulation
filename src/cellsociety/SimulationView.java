@@ -14,6 +14,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
@@ -24,11 +28,9 @@ public class SimulationView {
     private Timeline myAnimation;
     private Scene myScene;
     private GridPane pane;
-    private int myCols;
-    private int myRows;
     private Grid myGrid;
-    private double CELL_WIDTH;
-    private double CELL_HEIGHT;
+    private double cell_width;
+    private double cell_height;
     private ResourceBundle myResources;
     private Button startButton;
     private Button saveButton;
@@ -36,8 +38,10 @@ public class SimulationView {
     private Button stepButton;
     private Button speedUpButton;
     private int BUTTON_SPACING;
+    private ComboBox mySimulations;
     private ComboBox myConfigurations;
     private BorderPane root;
+    private HBox top;
 
     public static final String RESOURCE_PACKAGE = "resources.";
     public static final String buttonNamesFile = "ButtonNames";
@@ -71,9 +75,6 @@ public class SimulationView {
 
         myAnimation = new Timeline();
         myAnimation.setCycleCount(Timeline.INDEFINITE);
-
-        myGrid = simulationModel.initSimulation("RPS");
-        handleGridSetUp(width, height);
         return myScene;
     }
 
@@ -81,15 +82,14 @@ public class SimulationView {
         pane = new GridPane();
         pane.setAlignment(Pos.CENTER);
         root.setCenter(pane);
-        root.setBottom(addButtons());
         root.setTop(makeConfigurationsMenu());
     }
 
     private void handleGridSetUp(int width, int height) {
-        myCols = myGrid.getCols();
-        myRows = myGrid.getRows();
-        CELL_HEIGHT = (height - 100) / myCols;
-        CELL_WIDTH = width/ myRows;
+        //myCols = myGrid.getCols();
+        //myRows = myGrid.getRows();
+        cell_height = (height - 100) / myGrid.getCols();
+        cell_width = width/ myGrid.getCols();
         updateGridAppearance();
     }
 
@@ -100,7 +100,7 @@ public class SimulationView {
      */
     private void updateCellAppearance(int row, int col) {
         Cell c = myGrid.getCell(row, col);
-        c.setShape(new Rectangle(CELL_WIDTH, CELL_HEIGHT));
+        c.setShape(new Rectangle(cell_width, cell_height));
         c.getShape().setId("cell" + row + col);
         //KeyFrame userClickFrame = new KeyFrame(Duration.seconds(SPEED), e -> allowUserClick(c));
         //myAnimation.getKeyFrames().add(userClickFrame);
@@ -202,27 +202,42 @@ public class SimulationView {
      * @return result -- HBox
      */
     private Node makeConfigurationsMenu() {
-        HBox result = new HBox();
-        myConfigurations = new ComboBox<>();
+        top = new HBox();
+        top.setSpacing(20);
+        mySimulations = new ComboBox<>();
+        mySimulations.setId("SimulationsMenu");
+        mySimulations.setPromptText(myResources.getString("SimulationsMenu"));
+        top.getChildren().add(mySimulations);
+        addSimulationTypes();
+        return top;
+    }
+
+    private void addSimulationTypes() {
+        Map<String, List<String>> simMap = simulationModel.getSimulationsMap();
+        for (String k: simMap.keySet()) {
+            mySimulations.getItems().add(k);
+        }
+        myConfigurations = new ComboBox();
+        top.getChildren().add(myConfigurations);
+        mySimulations.valueProperty().addListener((observableValue, oldValue, selected) -> addConfigsBox(simMap.get((String) selected)));
+    }
+
+    private void addConfigsBox(List<String> configs) {
         myConfigurations.setId("ConfigurationsMenu");
         myConfigurations.setPromptText(myResources.getString("ConfigurationsMenu"));
-        result.getChildren().add(myConfigurations);
-
-        myConfigurations.getItems().add("GoL_Blinker");
-        myConfigurations.getItems().add("GoL_Block");
-        myConfigurations.getItems().add("GoL_Glider");
-        myConfigurations.getItems().add("GoL_MWSS");
-        myConfigurations.getItems().add("GoL_Pulsar");
-        myConfigurations.valueProperty().addListener((observableValue, oldValue, selected) -> loadNewConfig((String) selected));
-        return result;
+        List<Object> list = new ArrayList<>(myConfigurations.getItems());
+        myConfigurations.getItems().removeAll(list);
+        for (String s: configs) {
+            myConfigurations.getItems().add(s);
+        }
+        myConfigurations.valueProperty().addListener((observableValue, oldValue, selected) -> {if (((String) selected)!=null) {loadNewConfig((String) selected);}});
     }
 
     private void loadNewConfig(String file) {
         pane.getChildren().clear();
         myAnimation.pause();
-        //SimulationModel newModel = new GameOfLife(file);
-        //myModel = newModel;
         myGrid = simulationModel.initSimulation(file);
+        root.setBottom(addButtons());
         handleGridSetUp(500,500);
     }
 }

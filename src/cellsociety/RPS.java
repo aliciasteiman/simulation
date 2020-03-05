@@ -6,11 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class RPS extends Simulation {
-    private final int threshold = 3;
+    private int threshold;
     private Grid mySimulationGrid;
     private HashMap<String, String> relations;
 
-    public RPS() {
+    public RPS(int thresh) {
+        threshold = thresh;
         relations = new HashMap<>();
         relations.put("rock", "paper");
         relations.put("paper", "scissors");
