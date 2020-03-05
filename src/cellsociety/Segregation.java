@@ -2,18 +2,23 @@ package cellsociety;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 
 public class Segregation extends Simulation {
 
+    private List<List<Integer>> openSpots;
     private Grid mySimulationGrid;
     private List<Cell> myNeighbors;
-    private final double threshold = 0.3; //Double.parseDouble(myResources.getString("SatisfiedThreshold"));
+    private final double threshold;
+
+    private ResourceBundle myResources;
+    public static final String RESOURCE_PACKAGE = "resources.";
+    private String file = "MOS_Test";
 
     public Segregation() {
+        myResources = ResourceBundle.getBundle(RESOURCE_PACKAGE + file);
+        threshold = Double.parseDouble(myResources.getString("SatisfiedThreshold"));
     }
 
     @Override
@@ -29,14 +34,26 @@ public class Segregation extends Simulation {
     @Override
     public Grid updateCells() {
         Grid updatedGrid = new Grid(mySimulationGrid.getRows(), mySimulationGrid.getCols());
+        openSpots = findOpenSpots(mySimulationGrid);
         for (int i = 0; i < mySimulationGrid.getRows(); i++) {
             for (int j = 0; j < mySimulationGrid.getCols(); j++) {
                 Cell currCell = mySimulationGrid.getCell(i, j);
                 Cell newCell = new Cell(i, j, currCell.getStatus());
-                if (! isSatisfied(currCell)) {
-                    newCell = moveCell(currCell, findOpenSpot());
+                if (! currCell.getStatus().equals("empty") && ! isSatisfied(currCell)) {
+                    newCell = moveCell(newCell, getOpenSpot(openSpots));
+                    updatedGrid.setCell(newCell.getRow(), newCell.getCol(), newCell);
+                    currCell.setStatus("empty");
+                    updatedGrid.setCell(i, j, currCell);
                 }
-                updatedGrid.setCell(newCell.getRow(), newCell.getCol(), newCell);
+                else if (! currCell.getStatus().equals("empty") && isSatisfied(currCell)) {
+                    updatedGrid.setCell(i, j, newCell);
+                }
+                else if (currCell.getStatus().equals("empty") && openSpots.contains(Arrays.asList(currCell.getRow(), currCell.getCol()))) {
+                    updatedGrid.setCell(i, j, newCell);
+                }
+                else {
+                    continue;
+                }
             }
         }
         mySimulationGrid = updatedGrid;
@@ -45,31 +62,43 @@ public class Segregation extends Simulation {
 
     private boolean isSatisfied(Cell c) {
         int similarNeighbors = mySimulationGrid.countNeighbors(getNeighbors(c.getRow(), c.getCol()), c.getStatus());
-        if ((double) similarNeighbors/myNeighbors.size() >= threshold) {
+        int emptyNeighbors = mySimulationGrid.countNeighbors(getNeighbors(c.getRow(), c.getCol()), "empty");
+        int nonEmptyNeighbors = getNeighbors(c.getRow(), c.getCol()).size() - emptyNeighbors;
+        if ((double) similarNeighbors/nonEmptyNeighbors >= threshold) {
             return true;
         }
         return false;
     }
 
-    private List<Integer> findOpenSpot() {
-        List<List<Integer>> openSpots = new ArrayList<>();
-        for (int i = 0; i < mySimulationGrid.getRows(); i++) {
-            for (int j = 0; j < mySimulationGrid.getCols(); j++) {
-                Cell c = mySimulationGrid.getCell(i, j);
+    private List<List<Integer>> findOpenSpots(Grid g) {
+        List<List<Integer>> open = new ArrayList<>();
+        for (int i = 0; i < g.getRows(); i++) {
+            for (int j = 0; j < g.getCols(); j++) {
+                Cell c = g.getCell(i, j);
                 if (c.getStatus().equals("empty")) {
                     List<Integer> position = new ArrayList<>();
                     position.add(c.getRow());
                     position.add(c.getCol());
-                    openSpots.add(position);
+                    open.add(position);
                 }
             }
         }
+        return open;
+    }
+
+    private List<Integer> getOpenSpot(List<List<Integer>> open) {
+        //findOpenSpot();
         Random rand = new Random();
-        int randPos = rand.nextInt(openSpots.size());
-        return openSpots.get(randPos);
+        int randPos = rand.nextInt(open.size());
+        return open.get(randPos);
     }
 
     private Cell moveCell(Cell c, List<Integer> openSpot) {
+        openSpots.remove(openSpot);
+        List<Integer> position = new ArrayList<>();
+        position.add(c.getRow());
+        position.add(c.getCol());
+        openSpots.add(position);
         Cell movedCell = new Cell(openSpot.get(0), openSpot.get(1), c.getStatus());
         return movedCell;
     }
@@ -104,13 +133,13 @@ public class Segregation extends Simulation {
     @Override
     public void setCellFromFile(int row, int col, char ch, Grid g) {
         if (ch == '0') {
-            mySimulationGrid.getCell(row, col).setStatus("empty");
+            g.getCell(row, col).setStatus("empty");
         }
         if (ch == '1') {
-            mySimulationGrid.getCell(row, col).setStatus("agent1");
+            g.getCell(row, col).setStatus("agent1");
         }
         if (ch == '2') {
-            mySimulationGrid.getCell(row, col).setStatus("agent2");
+            g.getCell(row, col).setStatus("agent2");
         }
     }
 
@@ -119,8 +148,7 @@ public class Segregation extends Simulation {
         String currStatus = g.getCell(row, col).getStatus();
         if (currStatus.equals("empty")) {
             fr.write(0 + ",");
-        }
-        else if (currStatus.equals("agent1")) {
+        } else if (currStatus.equals("agent1")) {
             fr.write(1 + ",");
         } else {
             fr.write(2 + ",");

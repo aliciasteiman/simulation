@@ -4,17 +4,15 @@ import java.io.File;
 import java.util.ResourceBundle;
 
 public class SimulationModel {
+
     private Simulation mySimulation;
     private CSVConfiguration simConfig;
     private ResourceBundle myResources;
     private String myFile;
-
     public static final String RESOURCE_PACKAGE = "resources.";
 
     public SimulationModel() {
-
     }
-
 
     public Grid initSimulation(String file) {
         myResources = ResourceBundle.getBundle(RESOURCE_PACKAGE + file);
