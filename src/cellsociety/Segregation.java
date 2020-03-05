@@ -9,6 +9,7 @@ import java.util.Random;
 
 public class Segregation extends Simulation {
 
+    private List<List<Integer>> openSpots;
     private Grid mySimulationGrid;
     private List<Cell> myNeighbors;
     private final double threshold = 0.3; //Double.parseDouble(myResources.getString("SatisfiedThreshold"));
@@ -29,35 +30,42 @@ public class Segregation extends Simulation {
     @Override
     public Grid updateCells() {
         Grid updatedGrid = new Grid(mySimulationGrid.getRows(), mySimulationGrid.getCols());
+        List<Cell> unsatisfiedCells = new ArrayList<>();
         for (int i = 0; i < mySimulationGrid.getRows(); i++) {
             for (int j = 0; j < mySimulationGrid.getCols(); j++) {
                 Cell currCell = mySimulationGrid.getCell(i, j);
-                Cell newCell = new Cell(i, j, currCell.getStatus());
                 if (! currCell.getStatus().equals("empty") && ! isSatisfied(currCell)) {
-                    newCell = moveCell(currCell, findOpenSpot());
-                    updatedGrid.setCell(newCell.getRow(), newCell.getCol(), newCell);
-                    currCell.setStatus("empty");
-                    updatedGrid.setCell(i, j, currCell);
-                }
-                else {
-                    updatedGrid.setCell(i, j, newCell);
+                    unsatisfiedCells.add(currCell);
                 }
             }
         }
+
+        for (Cell c : unsatisfiedCells) {
+            List<Integer> newSpot = findOpenSpot();
+            moveCell(c, newSpot);
+            openSpots.remove(newSpot);
+            updatedGrid.setCell(c.getRow(), c.getCol(), new Cell(c.getRow(), c.getCol(), "empty"));
+            updatedGrid.setCell(newSpot.get(0), newSpot.get(1), c);
+        }
+
         mySimulationGrid = updatedGrid;
         return updatedGrid;
     }
 
+
+
     private boolean isSatisfied(Cell c) {
         int similarNeighbors = mySimulationGrid.countNeighbors(getNeighbors(c.getRow(), c.getCol()), c.getStatus());
-        if ((double) similarNeighbors/myNeighbors.size() >= threshold) {
+        int emptyNeighbors = mySimulationGrid.countNeighbors(getNeighbors(c.getRow(), c.getCol()), "empty");
+        int nonEmptyNeighbors = getNeighbors(c.getRow(), c.getCol()).size() - emptyNeighbors;
+        if ((double) similarNeighbors/nonEmptyNeighbors >= threshold) {
             return true;
         }
         return false;
     }
 
     private List<Integer> findOpenSpot() {
-        List<List<Integer>> openSpots = new ArrayList<>();
+        openSpots = new ArrayList<>();
         for (int i = 0; i < mySimulationGrid.getRows(); i++) {
             for (int j = 0; j < mySimulationGrid.getCols(); j++) {
                 Cell c = mySimulationGrid.getCell(i, j);
