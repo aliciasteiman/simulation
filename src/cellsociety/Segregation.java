@@ -19,7 +19,6 @@ public class Segregation extends Simulation {
     public Segregation() {
         myResources = ResourceBundle.getBundle(RESOURCE_PACKAGE + file);
         threshold = Double.parseDouble(myResources.getString("SatisfiedThreshold"));
-        System.out.println(threshold);
     }
 
     @Override
