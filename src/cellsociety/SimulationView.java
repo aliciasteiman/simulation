@@ -7,8 +7,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -163,7 +162,8 @@ public class SimulationView {
 
         startButton = makeButton("startCommand", e -> setAnimation());
         pauseButton = makeButton("pauseCommand", e -> myAnimation.pause());
-        saveButton = makeButton("saveCommand", e -> simulationModel.writeConfig(myGrid));
+        //saveButton = makeButton("saveCommand", e -> simulationModel.writeConfig(myGrid));
+        saveButton = makeButton("saveCommand", e -> saveConfigDialogBox());
         stepButton = makeButton("stepCommand", e -> step());
         //speedUpButton = makeButton("speedUpCommand", e -> changeSpeed(-5));
 
@@ -239,5 +239,25 @@ public class SimulationView {
         myGrid = simulationModel.initSimulation(file);
         root.setBottom(addButtons());
         handleGridSetUp(500,500);
+    }
+
+    private void saveConfigDialogBox() {
+        TextInputDialog input = new TextInputDialog();
+        input.setTitle("Save Current Configuration");
+        input.setHeaderText("Input the following information for the configuration.");
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        TextField title = new TextField();
+        TextField author = new TextField();
+        TextField description = new TextField();
+        grid.add(new Label("Title"), 0, 0);
+        grid.add(new Label("Author"), 0, 1);
+        grid.add(new Label("Description"), 0, 2);
+        grid.add(title, 1, 0);
+        grid.add(author, 1, 1);
+        grid.add(description, 1, 2);
+        input.getDialogPane().setContent(grid);
+        input.show();
     }
 }
