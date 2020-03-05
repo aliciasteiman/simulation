@@ -7,7 +7,7 @@ public class SimulationModel {
     private Simulation mySimulation;
     private CSVConfiguration simConfig;
     private ResourceBundle myResources;
-    private String myFile;
+
 
     public static final String RESOURCE_PACKAGE = "resources.";
 
@@ -21,12 +21,12 @@ public class SimulationModel {
         String simName = myResources.getString("SimulationType");
         determineSimulation(simName);
         determineFileType();
-        Grid newGrid = initializeConfig(myFile, mySimulation);
+        Grid newGrid = initializeConfig(mySimulation);
         mySimulation.setGrid(newGrid);
         return newGrid;
     }
 
-    public void determineSimulation(String simName) {
+    private void determineSimulation(String simName) {
         if (simName.equals("GameOfLife")) {
             mySimulation = new GameOfLife();
         }
@@ -41,9 +41,17 @@ public class SimulationModel {
         }
     }
 
-    public void determineFileType() {
-        myFile = myResources.getString("FileName");
-        simConfig = new CSVConfiguration();
+    private void determineFileType() {
+        String myFile = myResources.getString("FileName");
+        simConfig = new CSVConfiguration(myFile);
+    }
+
+    public void determineGridType() {
+        //determine cell shape
+
+        //determine neighborhood type
+
+        //determine toroidal
     }
 
     public Grid updateGrid() {
@@ -54,8 +62,8 @@ public class SimulationModel {
         mySimulation.updateCellStyle(c);
     }
 
-    public Grid initializeConfig(String f, Simulation sim) {
-        return simConfig.readConfigFromFile(f, sim);
+    public Grid initializeConfig(Simulation sim) {
+        return simConfig.readConfigFromFile(sim);
     }
 
     public File writeConfig(Grid g) {

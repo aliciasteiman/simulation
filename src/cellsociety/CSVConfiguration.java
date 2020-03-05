@@ -6,9 +6,19 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class CSVConfiguration  {
+    private Scanner input;
+    private String file;
+    private File writtenFile;
 
-    public Grid readConfigFromFile(String f, Simulation sim) {
-        Scanner input = new Scanner(Grid.class.getClassLoader().getResourceAsStream(f));
+    public CSVConfiguration(String f) {
+        file = f;
+        input = new Scanner(Grid.class.getClassLoader().getResourceAsStream(f));
+    }
+
+
+
+    public Grid readConfigFromFile(Simulation sim) {
+        //Scanner input = new Scanner(Grid.class.getClassLoader().getResourceAsStream(f));
         String[] header = input.nextLine().split(",");
         int num_rows = Integer.parseInt(header[0]);
         int num_cols = Integer.parseInt(header[1]);
@@ -28,7 +38,7 @@ public class CSVConfiguration  {
 
 
     public File saveCurrentConfig(Simulation sim, Grid g) {
-        File file = new File("data/new.csv"); //needs to access user inputted file name
+        writtenFile = new File("data/new.csv"); //needs to access user inputted file name
         FileWriter fr = null;
         try {
             fr = new FileWriter(file);
@@ -43,6 +53,6 @@ public class CSVConfiguration  {
         } catch (IOException e) {
             e.printStackTrace(); //need to change this... look at nanobrowser example
         }
-        return file;
+        return writtenFile;
     }
 }
