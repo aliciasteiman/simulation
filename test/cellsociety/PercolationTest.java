@@ -27,7 +27,6 @@ public class PercolationTest {
             for (int c = 0; c < myGrid.getCols();c++) {
                 assertEquals(myGrid.getCell(r,c).getStatus(), states.get(expectedInitGrid[r][c]));
             }
-
         }
     }
 
