@@ -1,4 +1,7 @@
-package cellsociety;
+package cellsociety.configuration;
+
+import cellsociety.Grid;
+import cellsociety.Simulation;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -8,14 +11,11 @@ import java.util.Scanner;
 public class CSVConfiguration  {
     private Scanner input;
     private String file;
-    private File writtenFile;
 
     public CSVConfiguration(String f) {
         file = f;
         input = new Scanner(Grid.class.getClassLoader().getResourceAsStream(f));
     }
-
-
 
     public Grid readConfigFromFile(Simulation sim) {
         //Scanner input = new Scanner(Grid.class.getClassLoader().getResourceAsStream(f));
@@ -37,8 +37,8 @@ public class CSVConfiguration  {
     }
 
 
-    public File saveCurrentConfig(Simulation sim, Grid g) {
-        writtenFile = new File("data/new.csv"); //needs to access user inputted file name
+    public File saveCurrentConfig(Simulation sim, Grid g, String name) {
+        File writtenFile = new File("data/" + name + ".csv"); //needs to access user inputted file name
         FileWriter fr = null;
         try {
             fr = new FileWriter(writtenFile);

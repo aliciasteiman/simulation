@@ -1,5 +1,8 @@
 package cellsociety;
 
+import cellsociety.*;
+import cellsociety.configuration.CSVConfiguration;
+
 import java.io.File;
 import java.util.*;
 
@@ -91,7 +94,7 @@ public class SimulationModel {
         return simConfig.readConfigFromFile(sim);
     }
 
-    public File writeConfig(Grid g) {
-        return simConfig.saveCurrentConfig(mySimulation, g);
+    public File writeConfig(Grid g, String name) {
+        return simConfig.saveCurrentConfig(mySimulation, g, name);
     }
 }
