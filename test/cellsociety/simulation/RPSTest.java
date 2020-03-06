@@ -33,27 +33,13 @@ class RPSTest {
     @Test
     void testUpdateCells() {
         myGrid = myModel.updateGrid();
-        //check for a open cell next to a FULL cell - should become full
-        // check: rock changes to paper
+        // check that winning relationships follow rock > paper > scissors > rock
         assertEquals("paper", myGrid.getCell(0,0).getStatus());
-        // check: paper changes to scissors
         assertEquals("scissors", myGrid.getCell(1,1).getStatus());
-        // check: scissors change to rock
         assertEquals("rock", myGrid.getCell(2,1).getStatus());
         //check that cell doesn't change state if conditions not met
         assertEquals("rock", myGrid.getCell(4,0).getStatus());
         assertEquals("paper", myGrid.getCell(0,1).getStatus());
         assertEquals("scissors", myGrid.getCell(0,2).getStatus());
-
-
     }
 }
-
-//    @Test
-//    void updateCells() {
-//    }
-//
-//    @Test
-//    void getNeighbors() {
-//    }
-//}
