@@ -43,26 +43,26 @@ public class SimulationModel {
     }
 
     private void determineSimulation(String simName) {
+        List<String> simStates = SimulationStatesLists().get(1);
         if (simName.equals("GameOfLife")) {
-            mySimulation = new GameOfLife();
+            mySimulation = new GameOfLife(simStates);
         }
         if (simName.equals("Percolation")) {
-            mySimulation = new Percolate();
+            mySimulation = new Percolate(simStates);
         }
         if (simName.equals("Schelling's Model of Segregation")) {
             double threshold = Double.parseDouble(myResources.getString("SatisfiedThreshold"));
-            mySimulation = new Segregation(threshold);
+            mySimulation = new Segregation(simStates,threshold);
         }
         if (simName.equals("Spreading of Fire")){
             double prob = Double.parseDouble(myResources.getString("ProbabilityCatch"));
-            mySimulation = new SpreadingOfFire(prob);
+            mySimulation = new SpreadingOfFire(simStates,prob);
         }
         if (simName.equals("Rock Paper Scissors")){
             int RPSthreshold = Integer.parseInt(myResources.getString("Threshold"));
-            mySimulation = new RPS(RPSthreshold);
+            mySimulation = new RPS(simStates,RPSthreshold);
         }
         mySimulation.setStateReps(SimulationStatesLists().get(0));
-        mySimulation.setMyStates(SimulationStatesLists().get(1));
         mySimulation.setStatesCSS(SimulationStatesLists().get(2));
     }
 

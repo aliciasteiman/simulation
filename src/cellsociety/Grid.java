@@ -53,8 +53,8 @@ public class Grid {
         return allCells.get(row).get(col);
     }
 
-    public void setCell(int row, int col, Cell c) {
-        allCells.get(row).set(col, c);
+    public void setCell(Cell c) {
+        allCells.get(c.getRow()).set(c.getCol(), c);
     }
 
     /**

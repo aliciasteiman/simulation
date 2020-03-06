@@ -12,19 +12,12 @@ public abstract class Simulation {
     protected List<String> stateReps;
     protected List<String> myStates;
     protected List<String> statesCSS;
+    protected Grid mySimulationGrid;
 
-    public Simulation() { }
-
-    public void setStateReps(List<String> reps) {stateReps = reps;}
-    public void setMyStates(List<String> states) { myStates = states;}
-    public void setStatesCSS(List<String> css) {statesCSS = css;}
-
-    public List<String> getMyStates() {
-        return Collections.unmodifiableList(myStates);
+    public Simulation(List<String> states) {
+        myStates = states;
     }
 
-    public abstract Grid getGrid();
-    public abstract void setGrid(Grid g);
     /**
      * Updates the cell configuration on the grid based on the rules of a certain simulation.
      * @return a Grid object with the updated cell states.
@@ -38,12 +31,6 @@ public abstract class Simulation {
      */
     public abstract List<Cell> getNeighbors(int row, int col);
 
-
-    //public abstract void updateCellStyle(Cell c);
-
-    //public abstract void setCellFromFile(int row, int col, char ch, Grid g);
-
-    //public abstract void writeCellToFile(FileWriter fr, int row, int col, Grid g) throws IOException;
 
     public void writeCellToFile (FileWriter fr, int row, int col, Grid g) throws IOException {
         for (int i = 0; i < myStates.size(); i++) {
@@ -78,6 +65,14 @@ public abstract class Simulation {
             }
         }
     }
+
+    public void setStateReps(List<String> stateRepresentations) { stateReps = stateRepresentations;}
+    public void setStatesCSS(List<String> css) {statesCSS = css;}
+    public List<String> getMyStates() {
+        return Collections.unmodifiableList(myStates);
+    }
+    public Grid getGrid() {return mySimulationGrid;};
+    public void setGrid(Grid g) {mySimulationGrid = g;};
 
 
 }

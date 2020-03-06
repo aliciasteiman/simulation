@@ -12,23 +12,16 @@ import java.util.List;
  * A location's neighbors are any cells in the surrounding eight locations
  */
 public class GameOfLife extends Simulation {
-    protected Grid mySimulationGrid;
-    public static final String ALIVE_STYLE = "GOL-alive-cell";
-    public static final String DEAD_STYLE = "GOL-dead-cell";
+    private final String DEAD;
+    private final String ALIVE;
 
     /**
      * Constructor for a GameOfLife simulation
      */
-    public GameOfLife() {
-
-    }
-
-    @Override
-    public Grid getGrid() { return mySimulationGrid; }
-
-    @Override
-    public void setGrid(Grid g) {
-        mySimulationGrid = g;
+    public GameOfLife(List<String> states) {
+        super(states);
+        DEAD = myStates.get(0);
+        ALIVE = myStates.get(1);
     }
 
     /**
@@ -44,13 +37,13 @@ public class GameOfLife extends Simulation {
         for (int i = 0; i < mySimulationGrid.getRows(); i++) {
             for (int j = 0; j < mySimulationGrid.getCols(); j++) {
                 Cell currCell = mySimulationGrid.getCell(i, j);
-                int numLiveNeighbors = mySimulationGrid.countNeighbors(getNeighbors(i, j), "alive");
-                boolean isAlive = ((currCell.getStatus().equals("alive") && numLiveNeighbors == 2) || numLiveNeighbors == 3);
-                Cell newCell = new Cell(i, j, "dead");
+                int numLiveNeighbors = mySimulationGrid.countNeighbors(getNeighbors(i, j), ALIVE);
+                boolean isAlive = ((currCell.getStatus().equals(ALIVE) && numLiveNeighbors == 2) || numLiveNeighbors == 3);
+                Cell newCell = new Cell(i, j, DEAD);
                 if (isAlive) {
-                    newCell = new Cell(i, j, "alive");
+                    newCell = new Cell(i, j, ALIVE);
                 }
-                updatedGrid.setCell(i, j, newCell);
+                updatedGrid.setCell(newCell);
             }
         }
         mySimulationGrid = updatedGrid;
@@ -74,33 +67,4 @@ public class GameOfLife extends Simulation {
 
     }
 
-//    /**
-//     * Updates the style of a Cell (alive vs. dead)
-//     * @param c - Cell to be updated
-//     */
-//    @Override
-//    public void updateCellStyle(Cell c) {
-//        if (c.getStatus().equals("alive")) {
-//            c.getShape().getStyleClass().add(ALIVE_STYLE);
-//        } else {
-//            c.getShape().getStyleClass().add(DEAD_STYLE);
-//        }
-//    }
-
-//    @Override
-//    public void setCellFromFile(int row, int col, char ch, Grid g) {
-//        if (ch == '1') {
-//            g.getCell(row, col).setStatus("alive");
-//        }
-//    }
-
-//    @Override
-//    public void writeCellToFile(FileWriter fr, int row, int col, Grid g) throws IOException {
-//        if (g.getCell(row, col).getStatus().equals("alive")) {
-//            fr.write(1 + ",");
-//        }
-//        else {
-//            fr.write(0 + ",");
-//        }
-//    }
 }
