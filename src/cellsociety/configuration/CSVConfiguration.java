@@ -17,25 +17,30 @@ public class CSVConfiguration  {
         input = new Scanner(Grid.class.getClassLoader().getResourceAsStream(f));
     }
 
-    public Grid readConfigFromFile(Simulation sim) {
+    public Grid readConfigFromFile(Simulation sim) throws ConfigurationException{
         //Scanner input = new Scanner(Grid.class.getClassLoader().getResourceAsStream(f));
         String[] header = input.nextLine().split(",");
-        int num_rows = Integer.parseInt(header[0]);
-        int num_cols = Integer.parseInt(header[1]);
-        Grid g = new Grid(num_rows, num_cols);
+        int numRows = Integer.parseInt(header[0]);
+        int numCols = Integer.parseInt(header[1]);
+        Grid g = new Grid(numRows, numCols);
         int row = 0;
         while (input.hasNextLine()) {
             String rowConfig = input.nextLine();
             String cells = rowConfig.replaceAll(",", "");
-            for (int col = 0; col < num_cols; col++) {
+            if (cells.length() != numCols) {
+                throw new ConfigurationException("Configuration file does not match given number of columns");
+            }
+            for (int col = 0; col < numCols; col++) {
                 char ch = cells.charAt(col);
                 sim.setCellFromFile(row, col, ch, g);
             }
             row++;
         }
+        if (row != numRows) {
+            throw new ConfigurationException("Configuration file does not match given number of rows");
+        }
         return g;
     }
-
 
     public File saveCurrentConfig(Simulation sim, Grid g, String name) {
         File writtenFile = new File("data/" + name + ".csv"); //needs to access user inputted file name
