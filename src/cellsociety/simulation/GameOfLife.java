@@ -1,7 +1,9 @@
-package cellsociety;
+package cellsociety.simulation;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import cellsociety.Cell;
+import cellsociety.Grid;
+import cellsociety.simulation.Simulation;
+
 import java.util.List;
 
 /**
@@ -72,40 +74,33 @@ public class GameOfLife extends Simulation {
 
     }
 
-    /**
-     * Updates the style of a Cell (alive vs. dead)
-     * @param c - Cell to be updated
-     */
-    @Override
-    public void updateCellStyle(Cell c) {
-        if (c.getStatus().equals("alive")) {
-            c.getShape().getStyleClass().add(ALIVE_STYLE);
-        } else {
-            c.getShape().getStyleClass().add(DEAD_STYLE);
-        }
-    }
+//    /**
+//     * Updates the style of a Cell (alive vs. dead)
+//     * @param c - Cell to be updated
+//     */
+//    @Override
+//    public void updateCellStyle(Cell c) {
+//        if (c.getStatus().equals("alive")) {
+//            c.getShape().getStyleClass().add(ALIVE_STYLE);
+//        } else {
+//            c.getShape().getStyleClass().add(DEAD_STYLE);
+//        }
+//    }
 
-    /**
-     * Used in readGridFromFile() in SimulationModel to set the status of a Cell to true/false depending
-     * on its character representation in the configuration file
-     * @param row - the row that the cell is on
-     * @param col - the column that the cell is on
-     * @param ch  - the character that corresponds to the value that cell will take
-     */
-    @Override
-    public void setCellFromFile(int row, int col, char ch, Grid g) {
-        if (ch == '1') {
-            g.getCell(row, col).setStatus("alive");
-        }
-    }
+//    @Override
+//    public void setCellFromFile(int row, int col, char ch, Grid g) {
+//        if (ch == '1') {
+//            g.getCell(row, col).setStatus("alive");
+//        }
+//    }
 
-    @Override
-    public void writeCellToFile(FileWriter fr, int row, int col, Grid g) throws IOException {
-        if (g.getCell(row, col).getStatus().equals("alive")) {
-            fr.write(1 + ",");
-        }
-        else {
-            fr.write(0 + ",");
-        }
-    }
+//    @Override
+//    public void writeCellToFile(FileWriter fr, int row, int col, Grid g) throws IOException {
+//        if (g.getCell(row, col).getStatus().equals("alive")) {
+//            fr.write(1 + ",");
+//        }
+//        else {
+//            fr.write(0 + ",");
+//        }
+//    }
 }

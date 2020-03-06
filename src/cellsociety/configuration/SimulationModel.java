@@ -1,4 +1,7 @@
-package cellsociety;
+package cellsociety.configuration;
+
+import cellsociety.*;
+import cellsociety.simulation.*;
 
 import java.io.File;
 import java.util.*;
@@ -50,13 +53,20 @@ public class SimulationModel {
             double threshold = Double.parseDouble(myResources.getString("SatisfiedThreshold"));
             mySimulation = new Segregation(threshold);
         }
+<<<<<<< HEAD:src/cellsociety/SimulationModel.java
         if (simName.equals("Spreading of Fire")) {
             mySimulation = new SpreadingOfFire();
+=======
+        if (simName.equals("Spreading of Fire")){
+            double prob = Double.parseDouble(myResources.getString("ProbabilityCatch"));
+            mySimulation = new SpreadingOfFire(prob);
+>>>>>>> master:src/cellsociety/configuration/SimulationModel.java
         }
         if (simName.equals("Rock Paper Scissors")) {
             int RPSthreshold = Integer.parseInt(myResources.getString("Threshold"));
             mySimulation = new RPS(RPSthreshold);
         }
+<<<<<<< HEAD:src/cellsociety/SimulationModel.java
         if (simName.equals("WaTor")) {
             int fishRepTimer = Integer.parseInt(myResources.getString("FishReproductionTimer"));
             int sharkRepTimer = Integer.parseInt(myResources.getString("SharkReproductionTimer"));
@@ -67,6 +77,11 @@ public class SimulationModel {
         mySimulation.stateReps =  createSimulationStatesLists().get(0);
         mySimulation.states = createSimulationStatesLists().get(1);
         mySimulation.statesCSS = createSimulationStatesLists().get(2);
+=======
+        mySimulation.setStateReps(SimulationStatesLists().get(0));
+        mySimulation.setMyStates(SimulationStatesLists().get(1));
+        mySimulation.setStatesCSS(SimulationStatesLists().get(2));
+>>>>>>> master:src/cellsociety/configuration/SimulationModel.java
     }
 
     private void determineFileType() {
@@ -74,7 +89,7 @@ public class SimulationModel {
         simConfig = new CSVConfiguration(myFile);
     }
 
-    public List<List<String>> createSimulationStatesLists() {
+    public List<List<String>> SimulationStatesLists() {
         List<List<String>> ret = new ArrayList<>();
         List<String> stateReps = Arrays.asList(myResources.getString("StateRepresentations").split(","));
         List<String> states = Arrays.asList(myResources.getString("States").split(","));
@@ -97,7 +112,7 @@ public class SimulationModel {
         return simConfig.readConfigFromFile(sim);
     }
 
-    public File writeConfig(Grid g) {
-        return simConfig.saveCurrentConfig(mySimulation, g);
+    public File writeConfig(Grid g, String name) {
+        return simConfig.saveCurrentConfig(mySimulation, g, name);
     }
 }

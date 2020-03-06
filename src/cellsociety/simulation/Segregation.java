@@ -1,7 +1,9 @@
-package cellsociety;
+package cellsociety.simulation;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import cellsociety.Cell;
+import cellsociety.Grid;
+import cellsociety.simulation.Simulation;
+
 import java.util.*;
 
 
@@ -120,39 +122,39 @@ public class Segregation extends Simulation {
         return myNeighbors;
     }
 
-    @Override
-    public void updateCellStyle(Cell c) {
-        if (c.getStatus().equals("empty")) {
-            c.getShape().getStyleClass().add("MOS-empty-cell");
-        } else if (c.getStatus().equals("agent1")){
-            c.getShape().getStyleClass().add("MOS-agent1-cell");
-        } else {
-            c.getShape().getStyleClass().add("MOS-agent2-cell");
-        }
-    }
+//    @Override
+//    public void updateCellStyle(Cell c) {
+//        if (c.getStatus().equals("empty")) {
+//            c.getShape().getStyleClass().add("MOS-empty-cell");
+//        } else if (c.getStatus().equals("agent1")){
+//            c.getShape().getStyleClass().add("MOS-agent1-cell");
+//        } else {
+//            c.getShape().getStyleClass().add("MOS-agent2-cell");
+//        }
+//    }
 
-    @Override
-    public void setCellFromFile(int row, int col, char ch, Grid g) {
-        if (ch == '0') {
-            g.getCell(row, col).setStatus("empty");
-        }
-        if (ch == '1') {
-            g.getCell(row, col).setStatus("agent1");
-        }
-        if (ch == '2') {
-            g.getCell(row, col).setStatus("agent2");
-        }
-    }
+//    @Override
+//    public void setCellFromFile(int row, int col, char ch, Grid g) {
+//        if (ch == '0') {
+//            g.getCell(row, col).setStatus("empty");
+//        }
+//        if (ch == '1') {
+//            g.getCell(row, col).setStatus("agent1");
+//        }
+//        if (ch == '2') {
+//            g.getCell(row, col).setStatus("agent2");
+//        }
+//    }
 
-    @Override
-    public void writeCellToFile(FileWriter fr, int row, int col, Grid g) throws IOException {
-        String currStatus = g.getCell(row, col).getStatus();
-        if (currStatus.equals("empty")) {
-            fr.write(0 + ",");
-        } else if (currStatus.equals("agent1")) {
-            fr.write(1 + ",");
-        } else {
-            fr.write(2 + ",");
-        }
-    }
+//    @Override
+//    public void writeCellToFile(FileWriter fr, int row, int col, Grid g) throws IOException {
+//        String currStatus = g.getCell(row, col).getStatus();
+//        if (currStatus.equals("empty")) {
+//            fr.write(0 + ",");
+//        } else if (currStatus.equals("agent1")) {
+//            fr.write(1 + ",");
+//        } else {
+//            fr.write(2 + ",");
+//        }
+//    }
 }

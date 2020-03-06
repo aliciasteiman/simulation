@@ -1,7 +1,10 @@
 package cellsociety;
 
+import cellsociety.configuration.SimulationModel;
+import cellsociety.visualization.SimulationView;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
@@ -14,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GoLSimulationViewTest extends DukeApplicationTest {
 
-    //private SimulationModel myModel = new GameOfLife("GoL_Test");
     private SimulationModel myModel = new SimulationModel();
     private SimulationView myView;
     private Scene myScene;
@@ -23,6 +25,8 @@ class GoLSimulationViewTest extends DukeApplicationTest {
     private Button mySaveButton;
     private Button myStepButton;
     private List<List<Rectangle>> myGrid;
+    private ComboBox mySimulations;
+    private ComboBox myConfigurations;
 
     private static final int NUM_ROWS = 9;
     private static final int NUM_COLS = 9;
@@ -36,13 +40,17 @@ class GoLSimulationViewTest extends DukeApplicationTest {
 
         myGrid = new ArrayList<>();
 
-        myStartButton = lookup("#startCommand").query();
-        myPauseButton = lookup("#pauseCommand").query();
-        mySaveButton = lookup("#saveCommand").query();
-        myStepButton = lookup("#stepCommand").query();
+        mySimulations = lookup("#SimulationsMenu").query();
+        javafxRun(() -> select(mySimulations, "GameOfLife"));
+        myConfigurations = lookup("#ConfigurationsMenu").query();
+        javafxRun(() -> select(myConfigurations, "GoL_Test"));
 
-        getCellsFromGrid();
+//        myStartButton = lookup("#startCommand").query();
+//        myPauseButton = lookup("#pauseCommand").query();
+//        mySaveButton = lookup("#saveCommand").query();
+//        myStepButton = lookup("#stepCommand").query();
     }
+
 
     /**
      * Test that the initial appearance of the Grid matches the text file
@@ -50,6 +58,7 @@ class GoLSimulationViewTest extends DukeApplicationTest {
      */
     @Test
     void testGridAppearance() {
+        getCellsFromGrid();
         //for initial configuration, testing the appearance of the four corners
         //for row 1, col 1 - cell is dead
         Rectangle cell_1_1 = myGrid.get(0).get(0);
@@ -97,9 +106,8 @@ class GoLSimulationViewTest extends DukeApplicationTest {
      */
     @Test
     void GameOfLifeBlockTest() {
-        //myModel = new GameOfLife("GOL_Block");
-        javafxRun(() -> start(new Stage()));
-
+        myModel.initSimulation("GoL_Block");
+        javafxRun(() -> myView.handleGridSetUp(500,500));
         getCellsFromGrid();
         //initial config - BLOCK IN MIDDLE
         Rectangle cell_1_1 = myGrid.get(1).get(1);
@@ -112,6 +120,19 @@ class GoLSimulationViewTest extends DukeApplicationTest {
         getCellsFromGrid();
         assertEquals("GOL-alive-cell", cell_1_1.getStyleClass().toString());
         assertEquals("GOL-alive-cell", cell_1_2.getStyleClass().toString());
+    }
+
+    /** Checks that the initial block configuration equals the saved file of the block configuration  */
+    @Test
+    void testSaveButton() {
+        getCellsFromGrid();
+        mySaveButton = lookup("#saveCommand").query();
+        javafxRun(() -> clickOn(mySaveButton));
+
+//        Grid g = myModel.initSimulation("GoL_Block");
+//        File f = myModel.writeConfig(g);
+//        File blockFile = new File("data/GOLconfigurations/blockConfig.csv");
+//        Assertions.assertThat(blockFile).hasSameContentAs(f);
     }
 
     /**

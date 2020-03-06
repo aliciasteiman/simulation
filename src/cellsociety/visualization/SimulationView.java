@@ -1,5 +1,8 @@
-package cellsociety;
+package cellsociety.visualization;
 
+import cellsociety.Cell;
+import cellsociety.Grid;
+import cellsociety.configuration.SimulationModel;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -8,17 +11,17 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ComboBox;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.io.*;
+import java.util.*;
 
 /**
  * Class used to display the viewer for a Simulation
@@ -85,9 +88,7 @@ public class SimulationView {
         root.setTop(makeConfigurationsMenu());
     }
 
-    private void handleGridSetUp(int width, int height) {
-        //myCols = myGrid.getCols();
-        //myRows = myGrid.getRows();
+    public void handleGridSetUp(int width, int height) {
         cell_height = (height - 100) / myGrid.getCols();
         cell_width = width/ myGrid.getCols();
         updateGridAppearance();
@@ -102,23 +103,33 @@ public class SimulationView {
         Cell c = myGrid.getCell(row, col);
         c.setShape(new Rectangle(cell_width, cell_height));
         c.getShape().setId("cell" + row + col);
-        //KeyFrame userClickFrame = new KeyFrame(Duration.seconds(SPEED), e -> allowUserClick(c));
-        //myAnimation.getKeyFrames().add(userClickFrame);
-        //myAnimation.play();
         simulationModel.updateCell(c);
+        allowUserClick(c);
         pane.add(c.getShape(), col, row);
     }
 
-//    private void allowUserClick(Cell c) {
-//        EventHandler<MouseEvent> userClick = new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent e) {
-//                c.setStatus(! c.getStatus());
-//                myModel.updateCellStyle(c);
-//            }
-//        };
-//        c.getShape().addEventFilter(MouseEvent.MOUSE_CLICKED, userClick);
-//    }
+    private void allowUserClick(Cell c) {
+        EventHandler<MouseEvent> userClick = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                c.setStatus(chooseStateDialog());
+                simulationModel.updateCell(c);
+            }
+        };
+        c.getShape().addEventFilter(MouseEvent.MOUSE_CLICKED, userClick);
+    }
+    private String chooseStateDialog() {
+        List<String> states = simulationModel.SimulationStatesLists().get(1);
+        ChoiceDialog statesDialog = new ChoiceDialog(states.get(0), states);
+        statesDialog.setHeaderText("Select state");
+        Optional<String> response = statesDialog.showAndWait();
+        String selected = "";
+        if (response.isPresent()) {
+            selected = response.get();
+        }
+        return selected;
+
+    }
 
     /**
      * Loops through through each cell in the grid and updates the individual cell using the helper method
@@ -163,7 +174,7 @@ public class SimulationView {
 
         startButton = makeButton("startCommand", e -> setAnimation());
         pauseButton = makeButton("pauseCommand", e -> myAnimation.pause());
-        saveButton = makeButton("saveCommand", e -> simulationModel.writeConfig(myGrid));
+        saveButton = makeButton("saveCommand", e -> saveConfigDialogBox());
         stepButton = makeButton("stepCommand", e -> step());
         //speedUpButton = makeButton("speedUpCommand", e -> changeSpeed(-5));
 
@@ -218,12 +229,12 @@ public class SimulationView {
             mySimulations.getItems().add(k);
         }
         myConfigurations = new ComboBox();
+        myConfigurations.setId("ConfigurationsMenu");
         top.getChildren().add(myConfigurations);
         mySimulations.valueProperty().addListener((observableValue, oldValue, selected) -> addConfigsBox(simMap.get((String) selected)));
     }
 
     private void addConfigsBox(List<String> configs) {
-        myConfigurations.setId("ConfigurationsMenu");
         myConfigurations.setPromptText(myResources.getString("ConfigurationsMenu"));
         List<Object> list = new ArrayList<>(myConfigurations.getItems());
         myConfigurations.getItems().removeAll(list);
@@ -233,11 +244,57 @@ public class SimulationView {
         myConfigurations.valueProperty().addListener((observableValue, oldValue, selected) -> {if (((String) selected)!=null) {loadNewConfig((String) selected);}});
     }
 
-    private void loadNewConfig(String file) {
+    public void loadNewConfig(String file) {
+        root.setBottom(addButtons());
         pane.getChildren().clear();
         myAnimation.pause();
         myGrid = simulationModel.initSimulation(file);
-        root.setBottom(addButtons());
         handleGridSetUp(500,500);
+    }
+
+    private void makePropertiesFile(List<String> info) {
+        try {
+            String fileName = info.get(0);
+            OutputStream output = new FileOutputStream(new File("src/resources/" + fileName + ".properties"));
+            Properties prop = new Properties();
+            prop.setProperty("Title", info.get(0));
+            prop.setProperty("Author", info.get(1));
+            prop.setProperty("Description", info.get(2));
+            File f = simulationModel.writeConfig(myGrid, info.get(0));
+            prop.setProperty("FileName", String.valueOf(f));
+            prop.store(output, null);
+        } catch (IOException e) {
+            e.printStackTrace(); //obv fix this
+        }
+    }
+
+    private void saveConfigDialogBox() {
+        TextInputDialog input = new TextInputDialog();
+        List<String> userInput = new ArrayList<>();
+        input.setTitle("Save Current Configuration");
+        input.setHeaderText("Input the following information for the configuration.");
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        TextField title = new TextField();
+        TextField author = new TextField();
+        TextField description = new TextField();
+        grid.add(new Label("Title"), 0, 0);
+        grid.add(new Label("Author"), 0, 1);
+        grid.add(new Label("Description"), 0, 2);
+        grid.add(title, 1, 0);
+        grid.add(author, 1, 1);
+        grid.add(description, 1, 2);
+        input.getDialogPane().setContent(grid);
+
+        Optional<String> res = input.showAndWait();
+        if (res.isPresent()) {
+            userInput.add(title.getText());
+            userInput.add(author.getText());
+            userInput.add(description.getText());
+        }
+
+        makePropertiesFile(userInput);
     }
 }
