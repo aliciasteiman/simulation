@@ -50,12 +50,19 @@ public class SimulationModel {
             double threshold = Double.parseDouble(myResources.getString("SatisfiedThreshold"));
             mySimulation = new Segregation(threshold);
         }
-        if (simName.equals("Spreading of Fire")){
+        if (simName.equals("Spreading of Fire")) {
             mySimulation = new SpreadingOfFire();
         }
-        if (simName.equals("Rock Paper Scissors")){
+        if (simName.equals("Rock Paper Scissors")) {
             int RPSthreshold = Integer.parseInt(myResources.getString("Threshold"));
             mySimulation = new RPS(RPSthreshold);
+        }
+        if (simName.equals("WaTor")) {
+            int fishRepTimer = Integer.parseInt(myResources.getString("FishReproductionTimer"));
+            int sharkRepTimer = Integer.parseInt(myResources.getString("SharkReproductionTimer"));
+            int sharkEatingGain = Integer.parseInt(myResources.getString("SharkEatingGain"));
+            int sharkInitEnergy = Integer.parseInt(myResources.getString("SharkInitEnergy"));
+            mySimulation = new WaTor(fishRepTimer, sharkRepTimer, sharkEatingGain, sharkInitEnergy);
         }
         mySimulation.stateReps =  createSimulationStatesLists().get(0);
         mySimulation.states = createSimulationStatesLists().get(1);
