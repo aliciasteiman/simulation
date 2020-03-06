@@ -7,11 +7,17 @@ import java.util.List;
 
 public abstract class Simulation {
     protected List<String> stateReps;
-    protected List<String> states;
+    protected List<String> myStates;
     protected List<String> statesCSS;
 
-    public List<String> getStates() {
-        return Collections.unmodifiableList(states);
+    public Simulation() { }
+
+    public void setStateReps(List<String> reps) {stateReps = reps;}
+    public void setMyStates(List<String> states) { myStates = states;}
+    public void setStatesCSS(List<String> css) {statesCSS = css;}
+
+    public List<String> getMyStates() {
+        return Collections.unmodifiableList(myStates);
     }
 
     public abstract Grid getGrid();
@@ -37,8 +43,8 @@ public abstract class Simulation {
     //public abstract void writeCellToFile(FileWriter fr, int row, int col, Grid g) throws IOException;
 
     public void writeCellToFile (FileWriter fr, int row, int col, Grid g) throws IOException {
-        for (int i = 0; i < states.size();i++) {
-            if (g.getCell(row,col).getStatus().equals(states.get(i))) {
+        for (int i = 0; i < myStates.size(); i++) {
+            if (g.getCell(row,col).getStatus().equals(myStates.get(i))) {
                 fr.write(Integer.parseInt(stateReps.get(i))+",");
             }
         }
@@ -53,7 +59,7 @@ public abstract class Simulation {
     public void setCellFromFile(int row, int col, char ch, Grid g) {
         for (int i = 0; i < stateReps.size(); i++) {
             if (ch == stateReps.get(i).charAt(0)){
-                g.getCell(row, col).setStatus(states.get(i));
+                g.getCell(row, col).setStatus(myStates.get(i));
             }
         }
     }
@@ -63,8 +69,8 @@ public abstract class Simulation {
      * @param c - the cell to be updated
      */
     public void updateCellStyle(Cell c) {
-        for (int i = 0; i < states.size();i++) {
-            if (c.getStatus().equals(states.get(i))) {
+        for (int i = 0; i < myStates.size(); i++) {
+            if (c.getStatus().equals(myStates.get(i))) {
                 c.getShape().getStyleClass().add(statesCSS.get(i));
             }
         }

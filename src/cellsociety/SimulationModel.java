@@ -1,6 +1,5 @@
 package cellsociety;
 
-import cellsociety.*;
 import cellsociety.configuration.CSVConfiguration;
 
 import java.io.File;
@@ -61,9 +60,9 @@ public class SimulationModel {
             int RPSthreshold = Integer.parseInt(myResources.getString("Threshold"));
             mySimulation = new RPS(RPSthreshold);
         }
-        mySimulation.stateReps =  SimulationStatesLists().get(0);
-        mySimulation.states = SimulationStatesLists().get(1);
-        mySimulation.statesCSS = SimulationStatesLists().get(2);
+        mySimulation.setStateReps(SimulationStatesLists().get(0));
+        mySimulation.setMyStates(SimulationStatesLists().get(1));
+        mySimulation.setStatesCSS(SimulationStatesLists().get(2));
     }
 
     private void determineFileType() {
