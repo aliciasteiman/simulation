@@ -74,5 +74,4 @@ public abstract class Simulation {
     public Grid getGrid() {return mySimulationGrid;};
     public void setGrid(Grid g) {mySimulationGrid = g;};
 
-
 }

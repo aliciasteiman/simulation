@@ -3,8 +3,6 @@ package cellsociety.simulation;
 import cellsociety.Cell;
 import cellsociety.Grid;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
 
 public class WaTor extends Simulation {
@@ -47,7 +45,7 @@ public class WaTor extends Simulation {
     }
 
     @Override
-    public Grid updateCells() {
+    public Grid updateCells() { //need to add newCell to the allFish and allShark
         Grid updatedGrid = new Grid(mySimulationGrid.getRows(), mySimulationGrid.getCols());
         for (int i = 0; i < mySimulationGrid.getRows(); i++) {
             for (int j = 0; j < mySimulationGrid.getCols(); j++) {
@@ -56,14 +54,14 @@ public class WaTor extends Simulation {
                 if (currCell.getStatus().equals(FISH)) {
                     allFish.putIfAbsent(currCell, 0);
                     allFish.put(currCell, allFish.get(currCell) + 1);
-                    if (allFish.get(currCell) == fishRepTimer && hasEmptyNeighbor(currCell)) {
-                        newCell = moveCell(newCell, getOpenSpot());
-                        resetRepCount(currCell);
+                    if (allFish.get(currCell) == fishRepTimer && hasStatusNeighbor(currCell, EMPTY)) {
+                        newCell = moveCell(newCell, getSpot(getNeighbors(currCell.getRow(), currCell.getCol()), EMPTY));
+                        allSharks.put(currCell, Arrays.asList(0, allSharks.get(currCell).get(1)));
                         updatedGrid.setCell(currCell);
                         updatedGrid.setCell(newCell);
                     }
-                    else if (hasEmptyNeighbor(currCell)) {
-                        newCell = moveCell(newCell, getOpenSpot());
+                    else if (hasStatusNeighbor(currCell, EMPTY)) {
+                        newCell = moveCell(newCell, getSpot(getNeighbors(currCell.getRow(), currCell.getCol()), EMPTY));
                         updatedGrid.setCell(newCell);
                         currCell.setStatus(EMPTY);
                         updatedGrid.setCell(currCell);
@@ -76,20 +74,20 @@ public class WaTor extends Simulation {
                         newCell.setStatus(EMPTY);
                         updatedGrid.setCell(newCell);
                     }
-                    else if (hasFishNeighbor(currCell)) {
-                        newCell = moveCell(newCell, getOpenSpot());
-                        allSharks.put(currCell, Arrays.asList(allSharks.get(currCell).get(0), allSharks.get(currCell).get(2) + sharkEatingGain));
+                    else if (hasStatusNeighbor(currCell, FISH)) {
+                        newCell = moveCell(newCell, getSpot(getNeighbors(currCell.getRow(), currCell.getCol()), FISH));
+                        allSharks.put(currCell, Arrays.asList(allSharks.get(currCell).get(0), allSharks.get(currCell).get(1) + sharkEatingGain));
                         updatedGrid.setCell(currCell);
                         updatedGrid.setCell(newCell);
                     }
-                    else if (hasEmptyNeighbor() && allSharks.get(currCell).get(1) == sharkRepTimer) {
-                        newCell = moveCell(currCell, getOpenSpot());
-                        allSharks.put(currCell, Arrays.asList(0, allSharks.get(currCell).get(2)));
+                    else if (hasStatusNeighbor(currCell, EMPTY) && allSharks.get(currCell).get(1) == sharkRepTimer) {
+                        newCell = moveCell(currCell, getSpot(getNeighbors(currCell.getRow(), currCell.getCol()), EMPTY));
+                        allSharks.put(currCell, Arrays.asList(0, allSharks.get(currCell).get(1)));
                         updatedGrid.setCell(currCell);
                         updatedGrid.setCell(newCell);
                     }
-                    else if (hasEmptyNeighbor()) {
-                        newCell = moveCell(currCell, getOpenSpot());
+                    else if (hasStatusNeighbor(currCell, EMPTY)) {
+                        newCell = moveCell(currCell, getSpot(getNeighbors(currCell.getRow(), currCell.getCol()), EMPTY));
                         updatedGrid.setCell(newCell);
                         currCell.setStatus("empty");
                         updatedGrid.setCell(currCell);
@@ -99,6 +97,32 @@ public class WaTor extends Simulation {
         }
         mySimulationGrid = updatedGrid;
         return mySimulationGrid;
+    }
+
+    private boolean hasStatusNeighbor(Cell currCell, String status) {
+        int statusNeighbors = mySimulationGrid.countNeighbors(getNeighbors(currCell.getRow(), currCell.getCol()), status);
+        if (statusNeighbors > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    private List<Integer> getSpot(List<Cell> openNeighbors, String status) { //needs to account for things moving
+        List<Cell> statusNeighbors = new ArrayList<>();
+        for (Cell neighbor : openNeighbors) {
+            if (neighbor.getStatus().equals(status)) {
+                statusNeighbors.add(neighbor);
+            }
+        }
+        Random rand = new Random();
+        int randPos = rand.nextInt(statusNeighbors.size());
+        Cell randNeighbor = statusNeighbors.get(randPos);
+        return Arrays.asList(randNeighbor.getRow(), randNeighbor.getCol());
+    }
+
+    private Cell moveCell(Cell c, List<Integer> spot) {
+        Cell movedCell = new Cell(spot.get(0), spot.get(1), c.getStatus());
+        return movedCell;
     }
 
 
