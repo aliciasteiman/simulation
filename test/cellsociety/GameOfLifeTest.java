@@ -13,16 +13,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameOfLifeTest  extends DukeApplicationTest {
 
-    //private SimulationModel myModel;
-    private Cell myFirstCell;
     private Simulation sim;
     private SimulationModel simulationModel;
+    private List<String> states = List.of("dead", "alive");
+    private List<String> stateReps = List.of("0","1");
+    private List<String> stateCSS = List.of("GOL-dead-cell","GOL-alive-cell");
 
 
     @Override
     public void start (Stage stage) {
-        //myModel = new GameOfLife("GoL_Test");
-        sim = new GameOfLife();
+        sim = new GameOfLife(states, stateReps, stateCSS);
         simulationModel = new SimulationModel();
         sim.setGrid(simulationModel.initSimulation("GOL_Test"));
     }

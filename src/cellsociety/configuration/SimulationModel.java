@@ -43,45 +43,37 @@ public class SimulationModel {
     }
 
     private void determineSimulation(String simName) {
+        List<String> simStates = SimulationStatesLists().get(1);
+        List<String> stateReps = SimulationStatesLists().get(0);
+        List<String> stateCSS = SimulationStatesLists().get(2);
         if (simName.equals("GameOfLife")) {
-            mySimulation = new GameOfLife();
+            mySimulation = new GameOfLife(simStates, stateReps, stateCSS);
         }
         if (simName.equals("Percolation")) {
-            mySimulation = new Percolate();
+            mySimulation = new Percolate(simStates, stateReps, stateCSS);
         }
         if (simName.equals("Schelling's Model of Segregation")) {
             double threshold = Double.parseDouble(myResources.getString("SatisfiedThreshold"));
-            mySimulation = new Segregation(threshold);
+            mySimulation = new Segregation(simStates,stateReps, stateCSS, threshold);
         }
-<<<<<<< HEAD:src/cellsociety/SimulationModel.java
-        if (simName.equals("Spreading of Fire")) {
-            mySimulation = new SpreadingOfFire();
-=======
+
         if (simName.equals("Spreading of Fire")){
             double prob = Double.parseDouble(myResources.getString("ProbabilityCatch"));
-            mySimulation = new SpreadingOfFire(prob);
->>>>>>> master:src/cellsociety/configuration/SimulationModel.java
+
+            mySimulation = new SpreadingOfFire(simStates,stateReps, stateCSS,prob);
         }
         if (simName.equals("Rock Paper Scissors")) {
             int RPSthreshold = Integer.parseInt(myResources.getString("Threshold"));
-            mySimulation = new RPS(RPSthreshold);
+            mySimulation = new RPS(simStates,stateReps,stateCSS,RPSthreshold);
         }
-<<<<<<< HEAD:src/cellsociety/SimulationModel.java
+
         if (simName.equals("WaTor")) {
             int fishRepTimer = Integer.parseInt(myResources.getString("FishReproductionTimer"));
             int sharkRepTimer = Integer.parseInt(myResources.getString("SharkReproductionTimer"));
             int sharkEatingGain = Integer.parseInt(myResources.getString("SharkEatingGain"));
             int sharkInitEnergy = Integer.parseInt(myResources.getString("SharkInitEnergy"));
-            mySimulation = new WaTor(fishRepTimer, sharkRepTimer, sharkEatingGain, sharkInitEnergy);
+            mySimulation = new WaTor(simStates, stateReps, stateCSS, fishRepTimer, sharkRepTimer, sharkEatingGain, sharkInitEnergy);
         }
-        mySimulation.stateReps =  createSimulationStatesLists().get(0);
-        mySimulation.states = createSimulationStatesLists().get(1);
-        mySimulation.statesCSS = createSimulationStatesLists().get(2);
-=======
-        mySimulation.setStateReps(SimulationStatesLists().get(0));
-        mySimulation.setMyStates(SimulationStatesLists().get(1));
-        mySimulation.setStatesCSS(SimulationStatesLists().get(2));
->>>>>>> master:src/cellsociety/configuration/SimulationModel.java
     }
 
     private void determineFileType() {

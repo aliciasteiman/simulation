@@ -9,22 +9,17 @@ import java.util.Collections;
 import java.util.List;
 
 public abstract class Simulation {
-    protected List<String> stateReps;
+    protected List<String> myStateReps;
     protected List<String> myStates;
-    protected List<String> statesCSS;
+    protected List<String> myStatesCSS;
+    protected Grid mySimulationGrid;
 
-    public Simulation() { }
-
-    public void setStateReps(List<String> reps) {stateReps = reps;}
-    public void setMyStates(List<String> states) { myStates = states;}
-    public void setStatesCSS(List<String> css) {statesCSS = css;}
-
-    public List<String> getMyStates() {
-        return Collections.unmodifiableList(myStates);
+    public Simulation(List<String> states, List<String> stateReps, List<String> stateCSS) {
+        myStates = states;
+        myStateReps = stateReps;
+        myStatesCSS = stateCSS;
     }
 
-    public abstract Grid getGrid();
-    public abstract void setGrid(Grid g);
     /**
      * Updates the cell configuration on the grid based on the rules of a certain simulation.
      * @return a Grid object with the updated cell states.
@@ -39,16 +34,10 @@ public abstract class Simulation {
     public abstract List<Cell> getNeighbors(int row, int col);
 
 
-    //public abstract void updateCellStyle(Cell c);
-
-    //public abstract void setCellFromFile(int row, int col, char ch, Grid g);
-
-    //public abstract void writeCellToFile(FileWriter fr, int row, int col, Grid g) throws IOException;
-
     public void writeCellToFile (FileWriter fr, int row, int col, Grid g) throws IOException {
         for (int i = 0; i < myStates.size(); i++) {
             if (g.getCell(row,col).getStatus().equals(myStates.get(i))) {
-                fr.write(Integer.parseInt(stateReps.get(i))+",");
+                fr.write(Integer.parseInt(myStateReps.get(i))+",");
             }
         }
     }
@@ -60,8 +49,8 @@ public abstract class Simulation {
      * @param g - Grid that cell is being set in
      */
     public void setCellFromFile(int row, int col, char ch, Grid g) {
-        for (int i = 0; i < stateReps.size(); i++) {
-            if (ch == stateReps.get(i).charAt(0)){
+        for (int i = 0; i < myStateReps.size(); i++) {
+            if (ch == myStateReps.get(i).charAt(0)){
                 g.getCell(row, col).setStatus(myStates.get(i));
             }
         }
@@ -74,10 +63,16 @@ public abstract class Simulation {
     public void updateCellStyle(Cell c) {
         for (int i = 0; i < myStates.size(); i++) {
             if (c.getStatus().equals(myStates.get(i))) {
-                c.getShape().getStyleClass().add(statesCSS.get(i));
+                c.getShape().getStyleClass().add(myStatesCSS.get(i));
             }
         }
     }
+
+    public List<String> getMyStates() {
+        return Collections.unmodifiableList(myStates);
+    }
+    public Grid getGrid() {return mySimulationGrid;};
+    public void setGrid(Grid g) {mySimulationGrid = g;};
 
 
 }

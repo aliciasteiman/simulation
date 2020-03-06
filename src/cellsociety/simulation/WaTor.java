@@ -19,7 +19,8 @@ public class WaTor extends Simulation {
     private int fishRepTimer;
     private int sharkRepTimer;
 
-    public WaTor(int fishTimer, int sharkTimer, int shEatingGain, int shInitEnergy) {
+    public WaTor(List<String> states, List<String> stateReps, List<String> stateCSS, int fishTimer, int sharkTimer, int shEatingGain, int shInitEnergy) {
+        super(states, stateReps, stateCSS);
         fishRepTimer = fishTimer;
         sharkRepTimer = sharkTimer;
         sharkEatingGain = shEatingGain;
@@ -93,7 +94,7 @@ public class WaTor extends Simulation {
                         }
                     }
                 }
-                updatedGrid.setCell(newCell.getRow(), newCell.getCol(), newCell);
+                updatedGrid.setCell(newCell);
             }
         }
         mySimulationGrid = updatedGrid;
@@ -113,7 +114,7 @@ public class WaTor extends Simulation {
         reproductionCounts.put(newCell, currReproductionCount);
         reproductionCounts.remove(currCell);
         currCell.setStatus("empty");
-        updatedGrid.setCell(currCell.getRow(), currCell.getCol(), currCell);
+        updatedGrid.setCell(currCell);
     }
 
     private Cell moveCellToNeighbor(int i, int j, String neighborState, String myState) {

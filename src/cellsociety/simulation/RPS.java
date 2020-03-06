@@ -9,23 +9,21 @@ import java.util.List;
 
 public class RPS extends Simulation {
     private int threshold;
-    private Grid mySimulationGrid;
     private HashMap<String, String> relations;
+    private final String ROCK;
+    private final String PAPER;
+    private final String SCISSORS;
 
-    public RPS(int thresh) {
+    public RPS(List<String> states, List<String> stateReps, List<String> stateCSS, int thresh) {
+        super(states, stateReps, stateCSS);
+        ROCK = myStates.get(0);
+        PAPER = myStates.get(1);
+        SCISSORS = myStates.get(2);
         threshold = thresh;
         relations = new HashMap<>();
-        relations.put("rock", "paper");
-        relations.put("paper", "scissors");
-        relations.put("scissors", "rock");
-    }
-
-    @Override
-    public Grid getGrid() { return mySimulationGrid; }
-
-    @Override
-    public void setGrid(Grid g) {
-        mySimulationGrid = g;
+        relations.put(ROCK, PAPER);
+        relations.put(PAPER, SCISSORS);
+        relations.put(SCISSORS, ROCK);
     }
 
     @Override
@@ -40,7 +38,7 @@ public class RPS extends Simulation {
                 if (numWinningNeighbors >= threshold) {
                     newCell = new Cell(i, j, winningState);
                 }
-                updatedGrid.setCell(i, j, newCell);
+                updatedGrid.setCell(newCell);
             }
         }
         mySimulationGrid = updatedGrid;
@@ -55,42 +53,4 @@ public class RPS extends Simulation {
         return mySimulationGrid.getSpecifiedNeighbors(row, col, indexR, indexC, mySimulationGrid);
     }
 
-//    @Override
-//    public void updateCellStyle(Cell c) {
-//        if (c.getStatus().equals("rock")) {
-//            c.getShape().getStyleClass().add("RPS-rock-cell");
-//        } else if (c.getStatus().equals("paper")) {
-//            c.getShape().getStyleClass().add("RPS-paper-cell");
-//        }
-//        else {
-//            c.getShape().getStyleClass().add("RPS-scissors-cell");
-//        }
-//    }
-
-
-//    @Override
-//    public void setCellFromFile(int row, int col, char ch, Grid g ) {
-//        if (ch == '0') {
-//            g.getCell(row, col).setStatus("rock");
-//        }
-//        if (ch == '1') {
-//            g.getCell(row, col).setStatus("paper");
-//        }
-//        if (ch == '2') {
-//            g.getCell(row, col).setStatus("scissors");
-//        }
-//    }
-
-//    @Override
-//    public void writeCellToFile(FileWriter fr, int row, int col, Grid g) throws IOException {
-//        String currStatus = g.getCell(row, col).getStatus();
-//        if (currStatus.equals("rock")) {
-//            fr.write(0 + ",");
-//        }
-//        else if (currStatus.equals("paper")) {
-//            fr.write(1 + ",");
-//        } else {
-//            fr.write(2 + ",");
-//        }
-//    }
 }

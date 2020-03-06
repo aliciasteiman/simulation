@@ -8,30 +8,21 @@ import java.util.*;
 
 
 public class Segregation extends Simulation {
-
     private List<List<Integer>> openSpots;
-    private Grid mySimulationGrid;
     private List<Cell> myNeighbors;
+
     private final double threshold;
+    private final String EMPTY;
+    private final String AGENT1;
+    private final String AGENT2;
 
-//    private ResourceBundle myResources;
-//    public static final String RESOURCE_PACKAGE = "resources.";
-//    private String file = "MOS_Test";
 
-    public Segregation(double thresh) {
+    public Segregation(List<String> states, List<String> stateReps, List<String> stateCSS, double thresh) {
+        super(states, stateReps, stateCSS);
+        EMPTY = myStates.get(0);
+        AGENT1 = myStates.get(1);
+        AGENT2 = myStates.get(2);
         threshold = thresh;
-//        myResources = ResourceBundle.getBundle(RESOURCE_PACKAGE + file);
-//        threshold = Double.parseDouble(myResources.getString("SatisfiedThreshold"));
-    }
-
-    @Override
-    public Grid getGrid() {
-        return mySimulationGrid;
-    }
-
-    @Override
-    public void setGrid(Grid g) {
-        mySimulationGrid = g;
     }
 
     @Override
@@ -42,17 +33,17 @@ public class Segregation extends Simulation {
             for (int j = 0; j < mySimulationGrid.getCols(); j++) {
                 Cell currCell = mySimulationGrid.getCell(i, j);
                 Cell newCell = new Cell(i, j, currCell.getStatus());
-                if (! currCell.getStatus().equals("empty") && ! isSatisfied(currCell)) {
+                if (! currCell.getStatus().equals(EMPTY) && ! isSatisfied(currCell)) {
                     newCell = moveCell(newCell, getOpenSpot(openSpots));
-                    updatedGrid.setCell(newCell.getRow(), newCell.getCol(), newCell);
-                    currCell.setStatus("empty");
-                    updatedGrid.setCell(i, j, currCell);
+                    updatedGrid.setCell(newCell);
+                    currCell.setStatus(EMPTY);
+                    updatedGrid.setCell(currCell);
                 }
-                else if (! currCell.getStatus().equals("empty") && isSatisfied(currCell)) {
-                    updatedGrid.setCell(i, j, newCell);
+                else if (! currCell.getStatus().equals(EMPTY) && isSatisfied(currCell)) {
+                    updatedGrid.setCell(newCell);
                 }
-                else if (currCell.getStatus().equals("empty") && openSpots.contains(Arrays.asList(currCell.getRow(), currCell.getCol()))) {
-                    updatedGrid.setCell(i, j, newCell);
+                else if (currCell.getStatus().equals(EMPTY) && openSpots.contains(Arrays.asList(currCell.getRow(), currCell.getCol()))) {
+                    updatedGrid.setCell(newCell);
                 }
                 else {
                     continue;
@@ -65,7 +56,7 @@ public class Segregation extends Simulation {
 
     private boolean isSatisfied(Cell c) {
         int similarNeighbors = mySimulationGrid.countNeighbors(getNeighbors(c.getRow(), c.getCol()), c.getStatus());
-        int emptyNeighbors = mySimulationGrid.countNeighbors(getNeighbors(c.getRow(), c.getCol()), "empty");
+        int emptyNeighbors = mySimulationGrid.countNeighbors(getNeighbors(c.getRow(), c.getCol()), EMPTY);
         int nonEmptyNeighbors = getNeighbors(c.getRow(), c.getCol()).size() - emptyNeighbors;
         if ((double) similarNeighbors/nonEmptyNeighbors >= threshold) {
             return true;
@@ -78,7 +69,7 @@ public class Segregation extends Simulation {
         for (int i = 0; i < g.getRows(); i++) {
             for (int j = 0; j < g.getCols(); j++) {
                 Cell c = g.getCell(i, j);
-                if (c.getStatus().equals("empty")) {
+                if (c.getStatus().equals(EMPTY)) {
                     List<Integer> position = new ArrayList<>();
                     position.add(c.getRow());
                     position.add(c.getCol());
@@ -122,39 +113,4 @@ public class Segregation extends Simulation {
         return myNeighbors;
     }
 
-//    @Override
-//    public void updateCellStyle(Cell c) {
-//        if (c.getStatus().equals("empty")) {
-//            c.getShape().getStyleClass().add("MOS-empty-cell");
-//        } else if (c.getStatus().equals("agent1")){
-//            c.getShape().getStyleClass().add("MOS-agent1-cell");
-//        } else {
-//            c.getShape().getStyleClass().add("MOS-agent2-cell");
-//        }
-//    }
-
-//    @Override
-//    public void setCellFromFile(int row, int col, char ch, Grid g) {
-//        if (ch == '0') {
-//            g.getCell(row, col).setStatus("empty");
-//        }
-//        if (ch == '1') {
-//            g.getCell(row, col).setStatus("agent1");
-//        }
-//        if (ch == '2') {
-//            g.getCell(row, col).setStatus("agent2");
-//        }
-//    }
-
-//    @Override
-//    public void writeCellToFile(FileWriter fr, int row, int col, Grid g) throws IOException {
-//        String currStatus = g.getCell(row, col).getStatus();
-//        if (currStatus.equals("empty")) {
-//            fr.write(0 + ",");
-//        } else if (currStatus.equals("agent1")) {
-//            fr.write(1 + ",");
-//        } else {
-//            fr.write(2 + ",");
-//        }
-//    }
 }
