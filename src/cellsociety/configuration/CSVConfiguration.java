@@ -27,11 +27,9 @@ public class CSVConfiguration  {
         while (input.hasNextLine()) {
             String rowConfig = input.nextLine();
             String cells = rowConfig.replaceAll(",", "");
-
             if (cells.length() != numCols) {
                 throw new ConfigurationException("Configuration file does not match given number of columns");
             }
-
             for (int col = 0; col < numCols; col++) {
                 char ch = cells.charAt(col);
                 sim.setCellFromFile(row, col, ch, g);
@@ -43,7 +41,6 @@ public class CSVConfiguration  {
         }
         return g;
     }
-
 
     public File saveCurrentConfig(Simulation sim, Grid g, String name) {
         File writtenFile = new File("data/" + name + ".csv"); //needs to access user inputted file name
