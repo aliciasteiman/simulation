@@ -15,8 +15,8 @@ public class SpreadingOfFire extends Simulation {
     private final String TREE = myStates.get(1);
     private final String BURNING = myStates.get(2);
 
-    public SpreadingOfFire(List<String> states,double prob) {
-        super(states);
+    public SpreadingOfFire(List<String> states, List<String> stateReps, List<String> stateCSS, double prob) {
+        super(states, stateReps, stateCSS);
         probCatch = prob;
     }
 

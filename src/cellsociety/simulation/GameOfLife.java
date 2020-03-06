@@ -18,8 +18,8 @@ public class GameOfLife extends Simulation {
     /**
      * Constructor for a GameOfLife simulation
      */
-    public GameOfLife(List<String> states) {
-        super(states);
+    public GameOfLife(List<String> states, List<String> stateReps, List<String> stateCSS) {
+        super(states, stateReps, stateCSS);
         DEAD = myStates.get(0);
         ALIVE = myStates.get(1);
     }

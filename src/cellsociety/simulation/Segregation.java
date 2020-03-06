@@ -17,8 +17,8 @@ public class Segregation extends Simulation {
     private final String AGENT2;
 
 
-    public Segregation(List<String> states,double thresh) {
-        super(states);
+    public Segregation(List<String> states, List<String> stateReps, List<String> stateCSS, double thresh) {
+        super(states, stateReps, stateCSS);
         EMPTY = myStates.get(0);
         AGENT1 = myStates.get(1);
         AGENT2 = myStates.get(2);

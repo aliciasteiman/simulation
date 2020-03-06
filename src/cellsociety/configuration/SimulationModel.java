@@ -44,26 +44,27 @@ public class SimulationModel {
 
     private void determineSimulation(String simName) {
         List<String> simStates = SimulationStatesLists().get(1);
+        List<String> stateReps = SimulationStatesLists().get(0);
+        List<String> stateCSS = SimulationStatesLists().get(2);
         if (simName.equals("GameOfLife")) {
-            mySimulation = new GameOfLife(simStates);
+            mySimulation = new GameOfLife(simStates, stateReps, stateCSS);
         }
         if (simName.equals("Percolation")) {
-            mySimulation = new Percolate(simStates);
+            mySimulation = new Percolate(simStates, stateReps, stateCSS);
         }
         if (simName.equals("Schelling's Model of Segregation")) {
             double threshold = Double.parseDouble(myResources.getString("SatisfiedThreshold"));
-            mySimulation = new Segregation(simStates,threshold);
+            mySimulation = new Segregation(simStates,stateReps, stateCSS, threshold);
         }
         if (simName.equals("Spreading of Fire")){
             double prob = Double.parseDouble(myResources.getString("ProbabilityCatch"));
-            mySimulation = new SpreadingOfFire(simStates,prob);
+            mySimulation = new SpreadingOfFire(simStates,stateReps, stateCSS,prob);
         }
         if (simName.equals("Rock Paper Scissors")){
             int RPSthreshold = Integer.parseInt(myResources.getString("Threshold"));
-            mySimulation = new RPS(simStates,RPSthreshold);
+            mySimulation = new RPS(simStates,stateReps,stateCSS,RPSthreshold);
         }
-        mySimulation.setStateReps(SimulationStatesLists().get(0));
-        mySimulation.setStatesCSS(SimulationStatesLists().get(2));
+
     }
 
     private void determineFileType() {

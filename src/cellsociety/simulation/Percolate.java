@@ -11,8 +11,8 @@ public class Percolate extends Simulation {
     private final String OPEN;
     private final String FULL;
 
-    public Percolate(List<String> states) {
-        super(states);
+    public Percolate(List<String> states,List<String> stateReps, List<String> stateCSS) {
+        super(states, stateReps, stateCSS);
         BLOCKED = myStates.get(0);
         OPEN = myStates.get(1);
         FULL = myStates.get(2);

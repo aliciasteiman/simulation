@@ -37,14 +37,11 @@ class GoLSimulationViewTest extends DukeApplicationTest {
         myScene = myView.makeScene(400,600);
         stage.setScene(myScene);
         stage.show();
-
         myGrid = new ArrayList<>();
-
         mySimulations = lookup("#SimulationsMenu").query();
         javafxRun(() -> select(mySimulations, "GameOfLife"));
         myConfigurations = lookup("#ConfigurationsMenu").query();
         javafxRun(() -> select(myConfigurations, "GoL_Test"));
-
 //        myStartButton = lookup("#startCommand").query();
 //        myPauseButton = lookup("#pauseCommand").query();
 //        mySaveButton = lookup("#saveCommand").query();
@@ -122,17 +119,30 @@ class GoLSimulationViewTest extends DukeApplicationTest {
         assertEquals("GOL-alive-cell", cell_1_2.getStyleClass().toString());
     }
 
-    /** Checks that the initial block configuration equals the saved file of the block configuration  */
     @Test
     void testSaveButton() {
-//        getCellsFromGrid();
-//        mySaveButton = lookup("#saveCommand").query();
-//        javafxRun(() -> clickOn(mySaveButton));
+        myConfigurations = lookup("#ConfigurationsMenu").query();
+        javafxRun(() -> select(myConfigurations, "GoL_Test"));
 
-//        Grid g = myModel.initSimulation("GoL_Block");
-//        File f = myModel.writeConfig(g);
-//        File blockFile = new File("data/GOLconfigurations/blockConfig.csv");
-//        Assertions.assertThat(blockFile).hasSameContentAs(f);
+        myStartButton = lookup("#startCommand").query();
+        clickOn(myStartButton);
+
+        javafxRun(() -> myView.step());
+
+        mySaveButton = lookup("#saveCommand").query();
+//        clickOn(mySaveButton);
+//        write(lookup(".dialog-pane .text-field ").query(), "hello");
+//        write(lookup(".dialog-pane .text-field ").query(), "please");
+//        write(lookup(".dialog-pane .text-field ").query(), "work");
+    }
+
+    @Test
+    void testChooseSimulationAndConfig() {
+        mySimulations = lookup("#SimulationsMenu").query();
+        assertTrue(mySimulations.getItems().size()>0);
+        javafxRun(() -> select(mySimulations, "GameOfLife"));
+        myConfigurations = lookup("#ConfigurationsMenu").query();
+        assertTrue(myConfigurations.getItems().size()>0);
     }
 
     /**

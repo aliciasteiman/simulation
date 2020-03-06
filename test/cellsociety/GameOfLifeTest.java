@@ -16,11 +16,13 @@ class GameOfLifeTest  extends DukeApplicationTest {
     private Simulation sim;
     private SimulationModel simulationModel;
     private List<String> states = List.of("dead", "alive");
+    private List<String> stateReps = List.of("0","1");
+    private List<String> stateCSS = List.of("GOL-dead-cell","GOL-alive-cell");
 
 
     @Override
     public void start (Stage stage) {
-        sim = new GameOfLife(states);
+        sim = new GameOfLife(states, stateReps, stateCSS);
         simulationModel = new SimulationModel();
         sim.setGrid(simulationModel.initSimulation("GOL_Test"));
     }

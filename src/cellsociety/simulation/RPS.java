@@ -14,8 +14,8 @@ public class RPS extends Simulation {
     private final String PAPER;
     private final String SCISSORS;
 
-    public RPS(List<String> states, int thresh) {
-        super(states);
+    public RPS(List<String> states, List<String> stateReps, List<String> stateCSS, int thresh) {
+        super(states, stateReps, stateCSS);
         ROCK = myStates.get(0);
         PAPER = myStates.get(1);
         SCISSORS = myStates.get(2);
