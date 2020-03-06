@@ -53,17 +53,35 @@ public class SimulationModel {
             double threshold = Double.parseDouble(myResources.getString("SatisfiedThreshold"));
             mySimulation = new Segregation(threshold);
         }
+<<<<<<< HEAD:src/cellsociety/SimulationModel.java
+        if (simName.equals("Spreading of Fire")) {
+            mySimulation = new SpreadingOfFire();
+=======
         if (simName.equals("Spreading of Fire")){
             double prob = Double.parseDouble(myResources.getString("ProbabilityCatch"));
             mySimulation = new SpreadingOfFire(prob);
+>>>>>>> master:src/cellsociety/configuration/SimulationModel.java
         }
-        if (simName.equals("Rock Paper Scissors")){
+        if (simName.equals("Rock Paper Scissors")) {
             int RPSthreshold = Integer.parseInt(myResources.getString("Threshold"));
             mySimulation = new RPS(RPSthreshold);
         }
+<<<<<<< HEAD:src/cellsociety/SimulationModel.java
+        if (simName.equals("WaTor")) {
+            int fishRepTimer = Integer.parseInt(myResources.getString("FishReproductionTimer"));
+            int sharkRepTimer = Integer.parseInt(myResources.getString("SharkReproductionTimer"));
+            int sharkEatingGain = Integer.parseInt(myResources.getString("SharkEatingGain"));
+            int sharkInitEnergy = Integer.parseInt(myResources.getString("SharkInitEnergy"));
+            mySimulation = new WaTor(fishRepTimer, sharkRepTimer, sharkEatingGain, sharkInitEnergy);
+        }
+        mySimulation.stateReps =  createSimulationStatesLists().get(0);
+        mySimulation.states = createSimulationStatesLists().get(1);
+        mySimulation.statesCSS = createSimulationStatesLists().get(2);
+=======
         mySimulation.setStateReps(SimulationStatesLists().get(0));
         mySimulation.setMyStates(SimulationStatesLists().get(1));
         mySimulation.setStatesCSS(SimulationStatesLists().get(2));
+>>>>>>> master:src/cellsociety/configuration/SimulationModel.java
     }
 
     private void determineFileType() {

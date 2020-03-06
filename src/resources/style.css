@@ -96,3 +96,23 @@
     -fx-stroke-width: 0.5;
 }
 
+.WAT-empty-cell {
+    -fx-fill: white;
+    -fx-stroke-type: outside;
+    -fx-stroke: gray;
+    -fx-stroke-width: 0.5;
+}
+
+.WAT-fish-cell {
+    -fx-fill: green;
+    -fx-stroke-type: outside;
+    -fx-stroke: gray;
+    -fx-stroke-width: 0.5;
+}
+
+.WAT-shark-cell {
+    -fx-fill: blue;
+    -fx-stroke-type: outside;
+    -fx-stroke: gray;
+    -fx-stroke-width: 0.5;
+}
