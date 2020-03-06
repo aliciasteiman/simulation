@@ -14,10 +14,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.io.*;
+import java.util.*;
 
 /**
  * Class used to display the viewer for a Simulation
@@ -241,23 +239,41 @@ public class SimulationView {
         handleGridSetUp(500,500);
     }
 
+    private void makePropertiesFile(Optional<String> info) {
+        try {
+            String fileName = info.get();
+            OutputStream output = new FileOutputStream(new File("src/resources/" + fileName + ".properties"));
+            Properties prop = new Properties();
+            prop.setProperty("Title", info.get());
+            prop.setProperty("Author", info.get());
+            prop.setProperty("Description", info.get());
+            prop.store(output, null);
+        } catch (IOException e) {
+            e.printStackTrace(); //obv fix this
+        }
+    }
+
     private void saveConfigDialogBox() {
         TextInputDialog input = new TextInputDialog();
         input.setTitle("Save Current Configuration");
         input.setHeaderText("Input the following information for the configuration.");
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        TextField title = new TextField();
-        TextField author = new TextField();
-        TextField description = new TextField();
-        grid.add(new Label("Title"), 0, 0);
-        grid.add(new Label("Author"), 0, 1);
-        grid.add(new Label("Description"), 0, 2);
-        grid.add(title, 1, 0);
-        grid.add(author, 1, 1);
-        grid.add(description, 1, 2);
-        input.getDialogPane().setContent(grid);
-        input.show();
+        input.setContentText("Test");
+//        GridPane grid = new GridPane();
+//        grid.setHgap(10);
+//        grid.setVgap(10);
+//        TextField title = new TextField();
+//        TextField author = new TextField();
+//        TextField description = new TextField();
+//        grid.add(new Label("Title"), 0, 0);
+//        grid.add(new Label("Author"), 0, 1);
+//        grid.add(new Label("Description"), 0, 2);
+//        grid.add(title, 1, 0);
+//        grid.add(author, 1, 1);
+//        grid.add(description, 1, 2);
+//        input.getDialogPane().setContent(grid);
+        Optional<String> result = input.showAndWait();
+        if (result.isPresent()) {
+            makePropertiesFile(result);
+        }
     }
 }
