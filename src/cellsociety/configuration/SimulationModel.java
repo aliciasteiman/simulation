@@ -56,15 +56,24 @@ public class SimulationModel {
             double threshold = Double.parseDouble(myResources.getString("SatisfiedThreshold"));
             mySimulation = new Segregation(simStates,stateReps, stateCSS, threshold);
         }
+
         if (simName.equals("Spreading of Fire")){
             double prob = Double.parseDouble(myResources.getString("ProbabilityCatch"));
+
             mySimulation = new SpreadingOfFire(simStates,stateReps, stateCSS,prob);
         }
-        if (simName.equals("Rock Paper Scissors")){
+        if (simName.equals("Rock Paper Scissors")) {
             int RPSthreshold = Integer.parseInt(myResources.getString("Threshold"));
             mySimulation = new RPS(simStates,stateReps,stateCSS,RPSthreshold);
         }
 
+        if (simName.equals("WaTor")) {
+            int fishRepTimer = Integer.parseInt(myResources.getString("FishReproductionTimer"));
+            int sharkRepTimer = Integer.parseInt(myResources.getString("SharkReproductionTimer"));
+            int sharkEatingGain = Integer.parseInt(myResources.getString("SharkEatingGain"));
+            int sharkInitEnergy = Integer.parseInt(myResources.getString("SharkInitEnergy"));
+            mySimulation = new WaTor(simStates, stateReps, stateCSS, fishRepTimer, sharkRepTimer, sharkEatingGain, sharkInitEnergy);
+        }
     }
 
     private void determineFileType() {
