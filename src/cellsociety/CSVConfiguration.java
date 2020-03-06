@@ -41,7 +41,7 @@ public class CSVConfiguration  {
         writtenFile = new File("data/new.csv"); //needs to access user inputted file name
         FileWriter fr = null;
         try {
-            fr = new FileWriter(file);
+            fr = new FileWriter(writtenFile);
             fr.write(g.getRows() + "," + g.getCols() + "\n");
             for (int i = 0; i < g.getRows(); i++) {
                 for (int j = 0; j < g.getCols(); j++) {

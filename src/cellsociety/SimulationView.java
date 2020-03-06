@@ -8,17 +8,16 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ComboBox;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Class used to display the viewer for a Simulation
@@ -85,9 +84,7 @@ public class SimulationView {
         root.setTop(makeConfigurationsMenu());
     }
 
-    private void handleGridSetUp(int width, int height) {
-        //myCols = myGrid.getCols();
-        //myRows = myGrid.getRows();
+    public void handleGridSetUp(int width, int height) {
         cell_height = (height - 100) / myGrid.getCols();
         cell_width = width/ myGrid.getCols();
         updateGridAppearance();
@@ -102,23 +99,33 @@ public class SimulationView {
         Cell c = myGrid.getCell(row, col);
         c.setShape(new Rectangle(cell_width, cell_height));
         c.getShape().setId("cell" + row + col);
-        //KeyFrame userClickFrame = new KeyFrame(Duration.seconds(SPEED), e -> allowUserClick(c));
-        //myAnimation.getKeyFrames().add(userClickFrame);
-        //myAnimation.play();
         simulationModel.updateCell(c);
+        allowUserClick(c);
         pane.add(c.getShape(), col, row);
     }
 
-//    private void allowUserClick(Cell c) {
-//        EventHandler<MouseEvent> userClick = new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent e) {
-//                c.setStatus(! c.getStatus());
-//                myModel.updateCellStyle(c);
-//            }
-//        };
-//        c.getShape().addEventFilter(MouseEvent.MOUSE_CLICKED, userClick);
-//    }
+    private void allowUserClick(Cell c) {
+        EventHandler<MouseEvent> userClick = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                c.setStatus(chooseStateDialog());
+                simulationModel.updateCell(c);
+            }
+        };
+        c.getShape().addEventFilter(MouseEvent.MOUSE_CLICKED, userClick);
+    }
+    private String chooseStateDialog() {
+        List<String> states = simulationModel.SimulationStatesLists().get(1);
+        ChoiceDialog statesDialog = new ChoiceDialog(states.get(0), states);
+        statesDialog.setHeaderText("Select state");
+        Optional<String> response = statesDialog.showAndWait();
+        String selected = "";
+        if (response.isPresent()) {
+            selected = response.get();
+        }
+        return selected;
+
+    }
 
     /**
      * Loops through through each cell in the grid and updates the individual cell using the helper method
@@ -218,12 +225,12 @@ public class SimulationView {
             mySimulations.getItems().add(k);
         }
         myConfigurations = new ComboBox();
+        myConfigurations.setId("ConfigurationsMenu");
         top.getChildren().add(myConfigurations);
         mySimulations.valueProperty().addListener((observableValue, oldValue, selected) -> addConfigsBox(simMap.get((String) selected)));
     }
 
     private void addConfigsBox(List<String> configs) {
-        myConfigurations.setId("ConfigurationsMenu");
         myConfigurations.setPromptText(myResources.getString("ConfigurationsMenu"));
         List<Object> list = new ArrayList<>(myConfigurations.getItems());
         myConfigurations.getItems().removeAll(list);
@@ -233,11 +240,11 @@ public class SimulationView {
         myConfigurations.valueProperty().addListener((observableValue, oldValue, selected) -> {if (((String) selected)!=null) {loadNewConfig((String) selected);}});
     }
 
-    private void loadNewConfig(String file) {
+    public void loadNewConfig(String file) {
+        root.setBottom(addButtons());
         pane.getChildren().clear();
         myAnimation.pause();
         myGrid = simulationModel.initSimulation(file);
-        root.setBottom(addButtons());
         handleGridSetUp(500,500);
     }
 }

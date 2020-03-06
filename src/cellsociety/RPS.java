@@ -53,42 +53,42 @@ public class RPS extends Simulation {
         return mySimulationGrid.getSpecifiedNeighbors(row, col, indexR, indexC, mySimulationGrid);
     }
 
-    @Override
-    public void updateCellStyle(Cell c) {
-        if (c.getStatus().equals("rock")) {
-            c.getShape().getStyleClass().add("RPS-rock-cell");
-        } else if (c.getStatus().equals("paper")) {
-            c.getShape().getStyleClass().add("RPS-paper-cell");
-        }
-        else {
-            c.getShape().getStyleClass().add("RPS-scissors-cell");
-        }
-    }
+//    @Override
+//    public void updateCellStyle(Cell c) {
+//        if (c.getStatus().equals("rock")) {
+//            c.getShape().getStyleClass().add("RPS-rock-cell");
+//        } else if (c.getStatus().equals("paper")) {
+//            c.getShape().getStyleClass().add("RPS-paper-cell");
+//        }
+//        else {
+//            c.getShape().getStyleClass().add("RPS-scissors-cell");
+//        }
+//    }
 
 
-    @Override
-    public void setCellFromFile(int row, int col, char ch, Grid g ) {
-        if (ch == '0') {
-            g.getCell(row, col).setStatus("rock");
-        }
-        if (ch == '1') {
-            g.getCell(row, col).setStatus("paper");
-        }
-        if (ch == '2') {
-            g.getCell(row, col).setStatus("scissors");
-        }
-    }
+//    @Override
+//    public void setCellFromFile(int row, int col, char ch, Grid g ) {
+//        if (ch == '0') {
+//            g.getCell(row, col).setStatus("rock");
+//        }
+//        if (ch == '1') {
+//            g.getCell(row, col).setStatus("paper");
+//        }
+//        if (ch == '2') {
+//            g.getCell(row, col).setStatus("scissors");
+//        }
+//    }
 
-    @Override
-    public void writeCellToFile(FileWriter fr, int row, int col, Grid g) throws IOException {
-        String currStatus = g.getCell(row, col).getStatus();
-        if (currStatus.equals("rock")) {
-            fr.write(0 + ",");
-        }
-        else if (currStatus.equals("paper")) {
-            fr.write(1 + ",");
-        } else {
-            fr.write(2 + ",");
-        }
-    }
+//    @Override
+//    public void writeCellToFile(FileWriter fr, int row, int col, Grid g) throws IOException {
+//        String currStatus = g.getCell(row, col).getStatus();
+//        if (currStatus.equals("rock")) {
+//            fr.write(0 + ",");
+//        }
+//        else if (currStatus.equals("paper")) {
+//            fr.write(1 + ",");
+//        } else {
+//            fr.write(2 + ",");
+//        }
+//    }
 }

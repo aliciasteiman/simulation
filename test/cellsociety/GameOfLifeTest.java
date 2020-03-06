@@ -63,15 +63,6 @@ class GameOfLifeTest  extends DukeApplicationTest {
         assertEquals(sim.getGrid().getCell(2,0), middleCellNeighbors.get(7));
     }
 
-    /** Checks that the initial block configuration equals the saved file of the block configuration  */
-    @Test
-    void testSaveCurrConfig() {
-//        SimulationModel sm = new GameOfLife("GOL_Block");
-//        Grid g = sm.getMySimulationGrid();
-//        File f = sm.saveCurrentConfig(g);
-//        File f1 = new File("data/GOLconfigurations/blockConfig.csv");
-//        Assertions.assertThat(f1).hasSameContentAs(f);
-    }
 
     /** Check if cell at a particular i,j position is updated to alive if passed in a '1' */
     @Test

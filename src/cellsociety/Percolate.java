@@ -45,42 +45,42 @@ public class Percolate extends Simulation {
         return mySimulationGrid.getSpecifiedNeighbors(row, col, indexR, indexC, mySimulationGrid);
     }
 
-    @Override
-    public void updateCellStyle(Cell c) {
-        if (c.getStatus().equals("blocked")) {
-            c.getShape().getStyleClass().add("PERC-blocked-cell");
-        } else if (c.getStatus().equals("open")) {
-            c.getShape().getStyleClass().add("PERC-open-cell");
-        }
-        else {
-            c.getShape().getStyleClass().add("PERC-full-cell");
-        }
-    }
+//    @Override
+//    public void updateCellStyle(Cell c) {
+//        if (c.getStatus().equals("blocked")) {
+//            c.getShape().getStyleClass().add("PERC-blocked-cell");
+//        } else if (c.getStatus().equals("open")) {
+//            c.getShape().getStyleClass().add("PERC-open-cell");
+//        }
+//        else {
+//            c.getShape().getStyleClass().add("PERC-full-cell");
+//        }
+//    }
 
 
-    @Override
-    public void setCellFromFile(int row, int col, char ch, Grid g ) {
-        if (ch == '0') {
-            g.getCell(row, col).setStatus("blocked");
-        }
-        if (ch == '1') {
-            g.getCell(row, col).setStatus("open");
-        }
-        if (ch == '2') {
-            g.getCell(row, col).setStatus("full");
-        }
-    }
+//    @Override
+//    public void setCellFromFile(int row, int col, char ch, Grid g ) {
+//        if (ch == '0') {
+//            g.getCell(row, col).setStatus("blocked");
+//        }
+//        if (ch == '1') {
+//            g.getCell(row, col).setStatus("open");
+//        }
+//        if (ch == '2') {
+//            g.getCell(row, col).setStatus("full");
+//        }
+//    }
 
-    @Override
-    public void writeCellToFile(FileWriter fr, int row, int col, Grid g) throws IOException {
-        String currStatus = g.getCell(row, col).getStatus();
-        if (currStatus.equals("blocked")) {
-            fr.write(0 + ",");
-        }
-        else if (currStatus.equals("open")) {
-            fr.write(1 + ",");
-        } else {
-            fr.write(2 + ",");
-        }
-    }
+//    @Override
+//    public void writeCellToFile(FileWriter fr, int row, int col, Grid g) throws IOException {
+//        String currStatus = g.getCell(row, col).getStatus();
+//        if (currStatus.equals("blocked")) {
+//            fr.write(0 + ",");
+//        }
+//        else if (currStatus.equals("open")) {
+//            fr.write(1 + ",");
+//        } else {
+//            fr.write(2 + ",");
+//        }
+//    }
 }

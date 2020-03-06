@@ -51,15 +51,16 @@ public class SimulationModel {
             mySimulation = new Segregation(threshold);
         }
         if (simName.equals("Spreading of Fire")){
-            mySimulation = new SpreadingOfFire();
+            double prob = Double.parseDouble(myResources.getString("ProbabilityCatch"));
+            mySimulation = new SpreadingOfFire(prob);
         }
         if (simName.equals("Rock Paper Scissors")){
             int RPSthreshold = Integer.parseInt(myResources.getString("Threshold"));
             mySimulation = new RPS(RPSthreshold);
         }
-        mySimulation.stateReps =  createSimulationStatesLists().get(0);
-        mySimulation.states = createSimulationStatesLists().get(1);
-        mySimulation.statesCSS = createSimulationStatesLists().get(2);
+        mySimulation.stateReps =  SimulationStatesLists().get(0);
+        mySimulation.states = SimulationStatesLists().get(1);
+        mySimulation.statesCSS = SimulationStatesLists().get(2);
     }
 
     private void determineFileType() {
@@ -67,7 +68,7 @@ public class SimulationModel {
         simConfig = new CSVConfiguration(myFile);
     }
 
-    public List<List<String>> createSimulationStatesLists() {
+    public List<List<String>> SimulationStatesLists() {
         List<List<String>> ret = new ArrayList<>();
         List<String> stateReps = Arrays.asList(myResources.getString("StateRepresentations").split(","));
         List<String> states = Arrays.asList(myResources.getString("States").split(","));

@@ -10,9 +10,10 @@ public class SpreadingOfFire extends Simulation {
 
     private Grid mySimulationGrid;
     private List<Cell> myNeighbors;
-    private final double probCatch = 0.55; //Double.parseDouble(myResources.getString("ProbabilityCatch"));
+    private double probCatch; // = 0.55; //Double.parseDouble(myResources.getString("ProbabilityCatch"));
 
-    public SpreadingOfFire() {
+    public SpreadingOfFire(double prob) {
+        probCatch = prob;
     }
 
     @Override
@@ -56,41 +57,41 @@ public class SpreadingOfFire extends Simulation {
         return mySimulationGrid.getSpecifiedNeighbors(row, col, indexR, indexC, mySimulationGrid);
     }
 
-    @Override
-    public void updateCellStyle(Cell c) {
-        if (c.getStatus().equals("empty")) {
-            c.getShape().getStyleClass().add("SOF-empty-cell");
-        } else if (c.getStatus().equals("tree")){
-            c.getShape().getStyleClass().add("SOF-tree-cell");
-        } else {
-            c.getShape().getStyleClass().add("SOF-burning-cell");
-        }
-    }
+//    @Override
+//    public void updateCellStyle(Cell c) {
+//        if (c.getStatus().equals("empty")) {
+//            c.getShape().getStyleClass().add("SOF-empty-cell");
+//        } else if (c.getStatus().equals("tree")){
+//            c.getShape().getStyleClass().add("SOF-tree-cell");
+//        } else {
+//            c.getShape().getStyleClass().add("SOF-burning-cell");
+//        }
+//    }
 
 
-    @Override
-    public void setCellFromFile(int row, int col, char ch, Grid g) {
-        if (ch == '0') {
-            g.getCell(row, col).setStatus("empty");
-        }
-        if (ch == '1') {
-            g.getCell(row, col).setStatus("tree");
-        }
-        if (ch == '2') {
-            g.getCell(row, col).setStatus("burning");
-        }
-    }
+//    @Override
+//    public void setCellFromFile(int row, int col, char ch, Grid g) {
+//        if (ch == '0') {
+//            g.getCell(row, col).setStatus("empty");
+//        }
+//        if (ch == '1') {
+//            g.getCell(row, col).setStatus("tree");
+//        }
+//        if (ch == '2') {
+//            g.getCell(row, col).setStatus("burning");
+//        }
+//    }
 
-    @Override
-    public void writeCellToFile(FileWriter fr, int row, int col, Grid g) throws IOException {
-        String currStatus = g.getCell(row, col).getStatus();
-        if (currStatus.equals("empty")) {
-            fr.write(0 + ",");
-        }
-        else if (currStatus.equals("tree")) {
-            fr.write(1 + ",");
-        } else {
-            fr.write(2 + ",");
-        }
-    }
+//    @Override
+//    public void writeCellToFile(FileWriter fr, int row, int col, Grid g) throws IOException {
+//        String currStatus = g.getCell(row, col).getStatus();
+//        if (currStatus.equals("empty")) {
+//            fr.write(0 + ",");
+//        }
+//        else if (currStatus.equals("tree")) {
+//            fr.write(1 + ",");
+//        } else {
+//            fr.write(2 + ",");
+//        }
+//    }
 }
