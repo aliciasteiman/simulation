@@ -1,7 +1,7 @@
 package cellsociety.configuration;
 
 import cellsociety.Grid;
-import cellsociety.Simulation;
+import cellsociety.simulation.Simulation;
 
 import java.io.File;
 import java.io.FileWriter;

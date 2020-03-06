@@ -1,21 +1,16 @@
-package cellsociety;
+package cellsociety.simulation;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.HashMap;
+import cellsociety.Cell;
+import cellsociety.Grid;
+import cellsociety.simulation.Simulation;
+
 import java.util.List;
 
-public class RPS extends Simulation {
-    private int threshold;
-    private Grid mySimulationGrid;
-    private HashMap<String, String> relations;
+public class Percolate extends Simulation {
 
-    public RPS(int thresh) {
-        threshold = thresh;
-        relations = new HashMap<>();
-        relations.put("rock", "paper");
-        relations.put("paper", "scissors");
-        relations.put("scissors", "rock");
+    private Grid mySimulationGrid;
+    public Percolate() {
+
     }
 
     @Override
@@ -32,11 +27,10 @@ public class RPS extends Simulation {
         for (int i = 0; i < mySimulationGrid.getRows(); i++) {
             for (int j = 0; j < mySimulationGrid.getCols(); j++) {
                 Cell currCell = mySimulationGrid.getCell(i, j);
-                String winningState = relations.get(currCell.getStatus());
-                int numWinningNeighbors = mySimulationGrid.countNeighbors(getNeighbors(i, j), winningState);
+                int numFullNeighbors = mySimulationGrid.countNeighbors(getNeighbors(i, j), "full");
                 Cell newCell = new Cell(i, j, currCell.getStatus());
-                if (numWinningNeighbors >= threshold) {
-                    newCell = new Cell(i, j, winningState);
+                if (currCell.getStatus().equals("open") && numFullNeighbors >= 1) {
+                    newCell = new Cell(i, j, "full");
                 }
                 updatedGrid.setCell(i, j, newCell);
             }
@@ -48,20 +42,20 @@ public class RPS extends Simulation {
     @Override
     public List<Cell> getNeighbors(int row, int col) {
 
-        int[] indexR = {-1, 0, 1, -1, 1, -1, 0, 1};
-        int[] indexC = {1, 1, 1, 0, 0, -1, -1, -1};
+        int[] indexR = {1, -1, 0, 0};
+        int[] indexC = {0, 0, 1, -1};
         return mySimulationGrid.getSpecifiedNeighbors(row, col, indexR, indexC, mySimulationGrid);
     }
 
 //    @Override
 //    public void updateCellStyle(Cell c) {
-//        if (c.getStatus().equals("rock")) {
-//            c.getShape().getStyleClass().add("RPS-rock-cell");
-//        } else if (c.getStatus().equals("paper")) {
-//            c.getShape().getStyleClass().add("RPS-paper-cell");
+//        if (c.getStatus().equals("blocked")) {
+//            c.getShape().getStyleClass().add("PERC-blocked-cell");
+//        } else if (c.getStatus().equals("open")) {
+//            c.getShape().getStyleClass().add("PERC-open-cell");
 //        }
 //        else {
-//            c.getShape().getStyleClass().add("RPS-scissors-cell");
+//            c.getShape().getStyleClass().add("PERC-full-cell");
 //        }
 //    }
 
@@ -69,23 +63,23 @@ public class RPS extends Simulation {
 //    @Override
 //    public void setCellFromFile(int row, int col, char ch, Grid g ) {
 //        if (ch == '0') {
-//            g.getCell(row, col).setStatus("rock");
+//            g.getCell(row, col).setStatus("blocked");
 //        }
 //        if (ch == '1') {
-//            g.getCell(row, col).setStatus("paper");
+//            g.getCell(row, col).setStatus("open");
 //        }
 //        if (ch == '2') {
-//            g.getCell(row, col).setStatus("scissors");
+//            g.getCell(row, col).setStatus("full");
 //        }
 //    }
 
 //    @Override
 //    public void writeCellToFile(FileWriter fr, int row, int col, Grid g) throws IOException {
 //        String currStatus = g.getCell(row, col).getStatus();
-//        if (currStatus.equals("rock")) {
+//        if (currStatus.equals("blocked")) {
 //            fr.write(0 + ",");
 //        }
-//        else if (currStatus.equals("paper")) {
+//        else if (currStatus.equals("open")) {
 //            fr.write(1 + ",");
 //        } else {
 //            fr.write(2 + ",");

@@ -1,5 +1,6 @@
 package cellsociety;
 
+import cellsociety.configuration.SimulationModel;
 import cellsociety.visualization.SimulationView;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -7,13 +8,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
-import org.testfx.assertions.api.Assertions;
 import util.DukeApplicationTest;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 

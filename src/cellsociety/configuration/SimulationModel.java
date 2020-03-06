@@ -1,6 +1,7 @@
-package cellsociety;
+package cellsociety.configuration;
 
-import cellsociety.configuration.CSVConfiguration;
+import cellsociety.*;
+import cellsociety.simulation.*;
 
 import java.io.File;
 import java.util.*;

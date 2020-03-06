@@ -2,7 +2,7 @@ package cellsociety.visualization;
 
 import cellsociety.Cell;
 import cellsociety.Grid;
-import cellsociety.SimulationModel;
+import cellsociety.configuration.SimulationModel;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;

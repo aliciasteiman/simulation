@@ -1,5 +1,8 @@
 package cellsociety;
 
+import cellsociety.configuration.SimulationModel;
+import cellsociety.simulation.GameOfLife;
+import cellsociety.simulation.Simulation;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;

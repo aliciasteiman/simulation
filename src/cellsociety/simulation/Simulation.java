@@ -1,4 +1,7 @@
-package cellsociety;
+package cellsociety.simulation;
+
+import cellsociety.Cell;
+import cellsociety.Grid;
 
 import java.io.FileWriter;
 import java.io.IOException;
