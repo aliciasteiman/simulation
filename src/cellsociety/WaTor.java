@@ -2,14 +2,12 @@ package cellsociety;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class WaTor extends Simulation {
 
     private Grid mySimulationGrid;
+    private HashMap<Cell, String> updatedCellStatuses;
     private HashMap<Cell, Integer> fishReproductionCounts;
     private HashMap<Cell, Integer> sharkReproductionCounts;
     private HashMap<Cell, Integer> sharkEnergies;
@@ -26,6 +24,7 @@ public class WaTor extends Simulation {
         sharkReproductionCounts = new HashMap<>();
         sharkEnergies = new HashMap<>();
         sharkInitEnergy = shInitEnergy;
+        updatedCellStatuses = new HashMap<>();
     }
 
     @Override
@@ -47,54 +46,47 @@ public class WaTor extends Simulation {
                 if (currCell.getStatus().equals("fish")) {
                     fishReproductionCounts.put(currCell, fishReproductionCounts.get(currCell) + 1);
                     if (numEmptyNeighbors > 0) {
-                        int reproductionCount = fishReproductionCounts.get(currCell);
-                        Cell randEmptyNeighbor = getRandomNeighbor(getNeighborByStatus(getNeighbors(i, j), "empty"));
-                        newCell = new Cell(randEmptyNeighbor.getRow(), randEmptyNeighbor.getCol(), "fish");
-//                        updatedGrid.setCell(randEmptyNeighbor.getRow(), randEmptyNeighbor.getCol(), newCell);
+                        int currReproductionCount = fishReproductionCounts.get(currCell);
+                        newCell = moveCellToNeighbor(i, j, "empty", currCell.getStatus());
 
-                        if (reproductionCount == fishRepTimer) {
+                        if (currReproductionCount == fishRepTimer) {
                             fishReproductionCounts.put(currCell, 0);
                             fishReproductionCounts.put(newCell, 0);
 
                         } else {
-                            fishReproductionCounts.put(newCell, reproductionCount);
-                            fishReproductionCounts.remove(currCell);
-                            currCell.setStatus("empty");
-                            updatedGrid.setCell(i, j, currCell);
+                            vacateCell(updatedGrid, newCell, currCell, fishReproductionCounts, currReproductionCount);
                         }
+                        updatedCellStatuses.put(currCell, currCell.getStatus());
                     }
                 }
                 if (currCell.getStatus().equals("shark")) {
                     sharkEnergies.put(currCell, sharkEnergies.get(currCell) - 1);
                     if (sharkEnergies.get(currCell) <= 0) {
+                        // TODO could use vacateCell here instead
                         newCell = new Cell(i, j, "empty");
+                        updatedCellStatuses.put(currCell, "empty");
                     }
                     else {
                         sharkReproductionCounts.put(currCell, sharkReproductionCounts.get(currCell) + 1);
+                        int currReproductionCount = sharkReproductionCounts.get(currCell);
                         int numFishNeighbors = mySimulationGrid.countNeighbors(getNeighbors(i, j), "fish");
                         boolean reproduce = false;
                         if (numFishNeighbors > 0) {
-                            Cell randFishNeighbor = getRandomNeighbor(getNeighborByStatus(getNeighbors(i, j), "fish"));
-                            newCell = new Cell(randFishNeighbor.getRow(), randFishNeighbor.getCol(), "shark");
+                            newCell = moveCellToNeighbor(i, j, "fish", currCell.getStatus());
                             sharkEnergies.put(newCell, sharkEnergies.get(currCell) + sharkEatingGain);
                         } else if (numEmptyNeighbors > 0) {
-                            Cell randEmptyNeighbor = getRandomNeighbor(getNeighborByStatus(getNeighbors(i, j), "empty"));
-                            newCell = new Cell(randEmptyNeighbor.getRow(), randEmptyNeighbor.getCol(), "shark");
+                            newCell = moveCellToNeighbor(i, j, "empty", currCell.getStatus());
                             sharkEnergies.put(newCell, sharkEnergies.get(currCell));
 
-                            if (sharkReproductionCounts.get(currCell) == sharkRepTimer) {
+                            if (currReproductionCount == sharkRepTimer) {
                                 sharkReproductionCounts.put(currCell, 0);
                                 sharkReproductionCounts.put(newCell, 0);
                                 sharkEnergies.put(currCell, sharkInitEnergy);
-                                reproduce = true;
+                            } else {
+                                sharkEnergies.remove(currCell);
+                                vacateCell(updatedGrid, newCell, currCell, sharkReproductionCounts, currReproductionCount);
+                                updatedCellStatuses.put(currCell, "empty");
                             }
-                        }
-                        if (!reproduce) {
-                            sharkReproductionCounts.put(newCell, sharkReproductionCounts.get(currCell));
-                            sharkReproductionCounts.remove(currCell);
-                            sharkEnergies.remove(currCell);
-                            currCell.setStatus("empty");
-                            updatedGrid.setCell(i, j, currCell);
                         }
                     }
                 }
@@ -102,6 +94,7 @@ public class WaTor extends Simulation {
             }
         }
         mySimulationGrid = updatedGrid;
+        updatedCellStatuses.clear();
         return mySimulationGrid;
     }
     /** If fish adjacent: move shark to random adjacent square with a fish
@@ -113,10 +106,26 @@ public class WaTor extends Simulation {
      reproduction
      */
 
+    private void vacateCell(Grid updatedGrid, Cell newCell, Cell currCell, HashMap<Cell, Integer> reproductionCounts, int currReproductionCount) {
+        reproductionCounts.put(newCell, currReproductionCount);
+        reproductionCounts.remove(currCell);
+        currCell.setStatus("empty");
+        updatedGrid.setCell(currCell.getRow(), currCell.getCol(), currCell);
+    }
+
+    private Cell moveCellToNeighbor(int i, int j, String neighborState, String myState) {
+        Cell randEmptyNeighbor = getRandomNeighbor(getNeighborByStatus(getNeighbors(i, j), neighborState));
+        return new Cell(randEmptyNeighbor.getRow(), randEmptyNeighbor.getCol(), myState);
+    }
+
     private List<Cell> getNeighborByStatus(List<Cell> neighbors, String status) {
         List<Cell> statusNeighbors = new ArrayList<>();
         for (Cell n : neighbors) {
-            if (n.getStatus().equals(status)) {
+            String nStatus = n.getStatus();
+            if (updatedCellStatuses.containsKey(n)) {
+                nStatus = updatedCellStatuses.get(n);
+            }
+            if (nStatus.equals(status)) {
                 statusNeighbors.add(n);
             }
         }
