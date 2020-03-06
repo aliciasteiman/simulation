@@ -163,7 +163,6 @@ public class SimulationView {
 
         startButton = makeButton("startCommand", e -> setAnimation());
         pauseButton = makeButton("pauseCommand", e -> myAnimation.pause());
-        //saveButton = makeButton("saveCommand", e -> simulationModel.writeConfig(myGrid));
         saveButton = makeButton("saveCommand", e -> saveConfigDialogBox());
         stepButton = makeButton("stepCommand", e -> step());
         //speedUpButton = makeButton("speedUpCommand", e -> changeSpeed(-5));
@@ -242,14 +241,16 @@ public class SimulationView {
         handleGridSetUp(500,500);
     }
 
-    private void makePropertiesFile(Optional<String> info) {
+    private void makePropertiesFile(List<String> info) {
         try {
-            String fileName = info.get();
+            String fileName = info.get(0);
             OutputStream output = new FileOutputStream(new File("src/resources/" + fileName + ".properties"));
             Properties prop = new Properties();
-            prop.setProperty("Title", info.get());
-            prop.setProperty("Author", info.get());
-            prop.setProperty("Description", info.get());
+            prop.setProperty("Title", info.get(0));
+            prop.setProperty("Author", info.get(1));
+            prop.setProperty("Description", info.get(2));
+            File f = simulationModel.writeConfig(myGrid, info.get(0));
+            prop.setProperty("FileName", String.valueOf(f));
             prop.store(output, null);
         } catch (IOException e) {
             e.printStackTrace(); //obv fix this
@@ -258,28 +259,31 @@ public class SimulationView {
 
     private void saveConfigDialogBox() {
         TextInputDialog input = new TextInputDialog();
-//        List<String> userInput = new ArrayList<>();
+        List<String> userInput = new ArrayList<>();
         input.setTitle("Save Current Configuration");
         input.setHeaderText("Input the following information for the configuration.");
-        input.setContentText("Test");
 
-//        GridPane grid = new GridPane();
-//        grid.setHgap(10);
-//        grid.setVgap(10);
-//        TextField title = new TextField();
-//        TextField author = new TextField();
-//        TextField description = new TextField();
-//        grid.add(new Label("Title"), 0, 0);
-//        grid.add(new Label("Author"), 0, 1);
-//        grid.add(new Label("Description"), 0, 2);
-//        grid.add(title, 1, 0);
-//        grid.add(author, 1, 1);
-//        grid.add(description, 1, 2);
-//        input.getDialogPane().setContent(grid);
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        TextField title = new TextField();
+        TextField author = new TextField();
+        TextField description = new TextField();
+        grid.add(new Label("Title"), 0, 0);
+        grid.add(new Label("Author"), 0, 1);
+        grid.add(new Label("Description"), 0, 2);
+        grid.add(title, 1, 0);
+        grid.add(author, 1, 1);
+        grid.add(description, 1, 2);
+        input.getDialogPane().setContent(grid);
 
         Optional<String> res = input.showAndWait();
         if (res.isPresent()) {
-            System.out.println(res.get());
+            userInput.add(title.getText());
+            userInput.add(author.getText());
+            userInput.add(description.getText());
         }
+
+        makePropertiesFile(userInput);
     }
 }

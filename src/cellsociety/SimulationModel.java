@@ -93,7 +93,7 @@ public class SimulationModel {
         return simConfig.readConfigFromFile(sim);
     }
 
-    public File writeConfig(Grid g) {
-        return simConfig.saveCurrentConfig(mySimulation, g);
+    public File writeConfig(Grid g, String name) {
+        return simConfig.saveCurrentConfig(mySimulation, g, name);
     }
 }
