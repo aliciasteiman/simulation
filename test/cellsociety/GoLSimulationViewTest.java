@@ -122,7 +122,7 @@ class GoLSimulationViewTest extends DukeApplicationTest {
         assertEquals("GOL-alive-cell", cell_1_2.getStyleClass().toString());
     }
 
-    /** Checks that the initial block configuration equals the saved file of the block configuration  */
+    /** Checks that the initial block configuration equals the saved file of the block configuration
     @Test
     void testSaveButton() {
         getCellsFromGrid();
@@ -134,6 +134,7 @@ class GoLSimulationViewTest extends DukeApplicationTest {
 //        File blockFile = new File("data/GOLconfigurations/blockConfig.csv");
 //        Assertions.assertThat(blockFile).hasSameContentAs(f);
     }
+    */
 
     /**
      * Helper method that finds the new cells by query after
