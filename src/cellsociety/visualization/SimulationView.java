@@ -1,5 +1,8 @@
-package cellsociety;
+package cellsociety.visualization;
 
+import cellsociety.Cell;
+import cellsociety.Grid;
+import cellsociety.SimulationModel;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -255,9 +258,11 @@ public class SimulationView {
 
     private void saveConfigDialogBox() {
         TextInputDialog input = new TextInputDialog();
+//        List<String> userInput = new ArrayList<>();
         input.setTitle("Save Current Configuration");
         input.setHeaderText("Input the following information for the configuration.");
         input.setContentText("Test");
+
 //        GridPane grid = new GridPane();
 //        grid.setHgap(10);
 //        grid.setVgap(10);
@@ -271,9 +276,10 @@ public class SimulationView {
 //        grid.add(author, 1, 1);
 //        grid.add(description, 1, 2);
 //        input.getDialogPane().setContent(grid);
-        Optional<String> result = input.showAndWait();
-        if (result.isPresent()) {
-            makePropertiesFile(result);
+
+        Optional<String> res = input.showAndWait();
+        if (res.isPresent()) {
+            System.out.println(res.get());
         }
     }
 }

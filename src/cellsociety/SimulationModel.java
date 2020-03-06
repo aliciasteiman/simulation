@@ -1,5 +1,8 @@
 package cellsociety;
 
+import cellsociety.*;
+import cellsociety.configuration.CSVConfiguration;
+
 import java.io.File;
 import java.util.*;
 

@@ -1,5 +1,6 @@
 package cellsociety;
 
+import cellsociety.visualization.SimulationView;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.shape.Rectangle;
