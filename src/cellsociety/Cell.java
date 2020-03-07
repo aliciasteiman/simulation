@@ -12,6 +12,8 @@ public class Cell {
     private String myState;
     private int myRow;
     private int myCol;
+    private int myRep;
+    private int myEnergy;
 
     /**
      * Constructor for a Cell object, sets the status of a Cell (dead, alive) and its position (row, col)
@@ -63,4 +65,15 @@ public class Cell {
     public void setStatus(String newStatus) {
         myState = newStatus;
     }
+
+
+    //will change these later when creating cell subclasses -- need for wa-tor
+    public void setRepCount(int num) {myRep = num; }
+
+    public int getRepCount() {return myRep; }
+
+    public void setEnergy(int num) {myEnergy = num; }
+
+    public int getEnergy() {return myEnergy; }
+
 }
