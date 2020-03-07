@@ -25,7 +25,7 @@ public class GameOfLife extends Simulation {
     }
 
     /**
-     * Loops through the Cell objects in the Grid and updates the Cell according to the RULES:
+     * Loops through the Cell objects in the Grid and updates the Cell/Grid according to the RULES:
      * Any live cell with two or three neighbors survives
      * Any dead cell with three live neighbors comes back to life
      * All other live cells die, and all other dead cells stay dead
@@ -53,7 +53,6 @@ public class GameOfLife extends Simulation {
     /**
      * Creates a List<Cell> where each Cell represents the neighbors of the Cell at the passed in row, col
      * Checks for 8 adjacent neighbors (up, down, left, right, diagonals)
-     * Passed into countAliveNeighbors() in Grid
      * @param row - the current row the cell is on
      * @param col - the current column the cell is on
      * @return

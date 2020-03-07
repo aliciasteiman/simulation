@@ -34,14 +34,8 @@ public class WaTor extends Simulation {
         SHARK = myStates.get(2);
     }
 
-    @Override
-    public Grid getGrid() { return mySimulationGrid; }
-
-    @Override
-    public void setGrid(Grid g) {
-        mySimulationGrid = g;
-    }
-
+    // is kind-of a mess, needs to be refactored/fixed before the next deadline
+    // logic is there, implementation is off
     @Override
     public Grid updateCells() { //need to add newCell to the allFish and allShark
         Grid updatedGrid = new Grid(mySimulationGrid.getRows(), mySimulationGrid.getCols());

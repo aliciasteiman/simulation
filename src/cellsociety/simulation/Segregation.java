@@ -17,6 +17,14 @@ public class Segregation extends Simulation {
     private final String AGENT2;
 
 
+    /**
+     * Constructor for a Schelling's Model of Segregation -- shows how agents who differ choose to segregate
+     * themselves over time, even if they "didn't mind" being surrounded by agents of another type
+     * @param states
+     * @param stateReps
+     * @param stateCSS
+     * @param thresh -- represents the willingness of an agent to be surrounded by agents of another type
+     */
     public Segregation(List<String> states, List<String> stateReps, List<String> stateCSS, double thresh) {
         super(states, stateReps, stateCSS);
         EMPTY = myStates.get(0);
@@ -25,6 +33,12 @@ public class Segregation extends Simulation {
         threshold = thresh;
     }
 
+    /**
+     * Loops through the Cell objects in the Grid and updates the Cell according to the RULES:
+     * If a Cell is not satisfied (see isSatisfied() method), the Cell will randomly move to an open spot
+     * If a Cell is satisfied, it will remain where it is
+     * @return
+     */
     @Override
     public Grid updateCells() {
         Grid updatedGrid = new Grid(mySimulationGrid.getRows(), mySimulationGrid.getCols());
@@ -54,6 +68,12 @@ public class Segregation extends Simulation {
         return updatedGrid;
     }
 
+    /**
+     * Determines if a cell is "satisfied" i.e. if the number of similar neighbors (same status) surrounding
+     * a cell divided by the total number of NON-EMPTY cells is greater than the threshold
+     * @param c
+     * @return
+     */
     private boolean isSatisfied(Cell c) {
         int similarNeighbors = mySimulationGrid.countNeighbors(getNeighbors(c.getRow(), c.getCol()), c.getStatus());
         int emptyNeighbors = mySimulationGrid.countNeighbors(getNeighbors(c.getRow(), c.getCol()), EMPTY);
@@ -64,6 +84,14 @@ public class Segregation extends Simulation {
         return false;
     }
 
+    /**
+     * Given a grid, counts the number of cells who are EMPTY
+     * These spots represent the open spots that an unsatisfied cell can move to
+     * Method is called at the start of each call to update()
+     * @param g
+     * @return a List of Lists where each element is a list with a cell's row index as the first element and a cell's
+     * column index as the second element
+     */
     private List<List<Integer>> findOpenSpots(Grid g) {
         List<List<Integer>> open = new ArrayList<>();
         for (int i = 0; i < g.getRows(); i++) {
@@ -80,13 +108,26 @@ public class Segregation extends Simulation {
         return open;
     }
 
+    /**
+     * Given a list of open spots, randomly selects an open spot
+     * Used to determine which spot an unsatisfied cell will move to
+     * @param open
+     * @return
+     */
     private List<Integer> getOpenSpot(List<List<Integer>> open) {
-        //findOpenSpot();
         Random rand = new Random();
         int randPos = rand.nextInt(open.size());
         return open.get(randPos);
     }
 
+    /**
+     * Given a cell and an open spot, create/return a new Cell object at that open spot with the same status
+     * as the cell passed in; removes the open spot from the list of open spots in a Grid and adds the cell's
+     * old position to the list
+     * @param c
+     * @param openSpot
+     * @return
+     */
     private Cell moveCell(Cell c, List<Integer> openSpot) {
         openSpots.remove(openSpot);
         List<Integer> position = new ArrayList<>();
@@ -97,6 +138,12 @@ public class Segregation extends Simulation {
         return movedCell;
     }
 
+    /**
+     * Gets the 8 neighbors of a Cell (up, down, left, right, and all four diagonals)
+     * @param row - the current row the cell is on
+     * @param col - the current column the cell is on
+     * @return
+     */
     @Override
     public List<Cell> getNeighbors(int row, int col) {
         myNeighbors = new ArrayList<>();

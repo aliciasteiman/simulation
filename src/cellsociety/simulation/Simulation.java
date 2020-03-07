@@ -34,6 +34,16 @@ public abstract class Simulation {
     public abstract List<Cell> getNeighbors(int row, int col);
 
 
+    /**
+     * Given a Grid, translate the cell states into an integer and create the configuration file
+     * where each line represents a row of cells (integers are chosen based on a cell's state index
+     * in the list of all states specific to a simulation)
+     * @param fr
+     * @param row
+     * @param col
+     * @param g
+     * @throws IOException
+     */
     public void writeCellToFile (FileWriter fr, int row, int col, Grid g) throws IOException {
         for (int i = 0; i < myStates.size(); i++) {
             if (g.getCell(row,col).getStatus().equals(myStates.get(i))) {
@@ -41,6 +51,7 @@ public abstract class Simulation {
             }
         }
     }
+
     /**
      * Sets the cell to the desired state based on the values read in from a CSV file
      * @param row - the row that the cell is on

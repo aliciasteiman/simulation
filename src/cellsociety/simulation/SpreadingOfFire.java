@@ -15,11 +15,26 @@ public class SpreadingOfFire extends Simulation {
     private final String TREE = myStates.get(1);
     private final String BURNING = myStates.get(2);
 
+    /**
+     * Constructor for a Spreading of Fire simulation -- models the probability of trees catching on fire
+     * when the probability of a tree catching on fire from a burning neighbor is predetermined
+     * i.e. if probability of catch = 50%, due to humidity (for example), the fire is likely to spread rampantly
+     * or die out quickly
+     */
     public SpreadingOfFire(List<String> states, List<String> stateReps, List<String> stateCSS, double prob) {
         super(states, stateReps, stateCSS);
         probCatch = prob;
     }
 
+    /**
+     * Loops through the Cell objects in the Grid and updates the Cell according to the RULES:
+     * If a cell is EMPTY, it remains empty
+     * If a cell is BURNING, it becomes empty
+     * If a cell is a TREE and at least one neighbor is BURNING and if a randomly generated number is greater
+     * than or equal to probCatch (probability that a tree will catch on fire), it becomes BURNING
+     * If the randomly generated number is less than probCatch, the cell remains a TREE
+     * @return
+     */
     @Override
     public Grid updateCells() {
         Grid updatedGrid = new Grid(mySimulationGrid.getRows(), mySimulationGrid.getCols());
@@ -42,6 +57,12 @@ public class SpreadingOfFire extends Simulation {
         return mySimulationGrid;
     }
 
+    /**
+     * Gets 4 cardinal neighbors (north, south, east, west) aka (up, down, left, right)
+     * @param row - the current row the cell is on
+     * @param col - the current column the cell is on
+     * @return
+     */
     @Override
     public List<Cell> getNeighbors(int row, int col) {
         myNeighbors = new ArrayList<>();
