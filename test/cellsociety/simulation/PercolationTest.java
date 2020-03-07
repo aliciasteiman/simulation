@@ -1,4 +1,5 @@
-package cellsociety;
+package cellsociety.simulation;
+import cellsociety.Grid;
 import cellsociety.configuration.SimulationModel;
 import org.junit.jupiter.api.Test;
 
@@ -21,16 +22,17 @@ public class PercolationTest {
         {1,0,1,0,1,1,1,1},
         {1,1,1,1,0,1,0,0}};
 
+    //testing initial config for Percolation.
     @Test
     void testInitialPercConfig() {
         for (int r = 0; r < myGrid.getRows(); r++) {
             for (int c = 0; c < myGrid.getCols();c++) {
                 assertEquals(myGrid.getCell(r,c).getStatus(), states.get(expectedInitGrid[r][c]));
             }
-
         }
     }
 
+    //testing that the Percolation rules hold.
     @Test
     void testUpdateCells() {
         myGrid = myModel.updateGrid();

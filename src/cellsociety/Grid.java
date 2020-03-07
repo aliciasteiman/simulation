@@ -73,6 +73,15 @@ public class Grid {
         return count;
     }
 
+    /**
+     * Based on two lists passed in, this method helps calculate the specified number of neighbors.
+     * @param row - row of current cell
+     * @param col - column of current cell
+     * @param indexR - all the index locations in the row that should be considered neighbors
+     * @param indexC - all the index locations in the column that should be considered neighbors
+     * @param g - the Grid from which the cell's neighbors will be calculated from
+     * @return - list of Cells representing the neighbors
+     */
     public List<Cell> getSpecifiedNeighbors(int row, int col, int[] indexR, int[] indexC, Grid g) {
         List<Cell> myNeighbors = new ArrayList<>();
         for (int i = 0; i < indexR.length; i++) {

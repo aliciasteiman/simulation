@@ -2,23 +2,30 @@ package cellsociety.configuration;
 
 import cellsociety.Grid;
 import cellsociety.simulation.Simulation;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * This class is responsible for reading CSV configurations.
+ */
 public class CSVConfiguration  {
-    private Scanner input;
-    private String file;
+    private Simulation mySimulation;
 
-    public CSVConfiguration(String f) {
-        file = f;
-        input = new Scanner(Grid.class.getClassLoader().getResourceAsStream(f));
+    public CSVConfiguration(Simulation sim) {
+        mySimulation = sim;
+
     }
 
-    public Grid readConfigFromFile(Simulation sim) throws ConfigurationException{
-        //Scanner input = new Scanner(Grid.class.getClassLoader().getResourceAsStream(f));
+    /**
+     * This method reads an initial grid configuration from a CSV file.
+     * @param f - CSV file
+     * @return - Grid based on the CSV configuration
+     * @throws ConfigurationException
+     */
+    public Grid readConfigFromFile(String f) throws ConfigurationException{
+        Scanner input = new Scanner(Grid.class.getClassLoader().getResourceAsStream(f));
         String[] header = input.nextLine().split(",");
         int numRows = Integer.parseInt(header[0]);
         int numCols = Integer.parseInt(header[1]);
@@ -32,7 +39,7 @@ public class CSVConfiguration  {
             }
             for (int col = 0; col < numCols; col++) {
                 char ch = cells.charAt(col);
-                sim.setCellFromFile(row, col, ch, g);
+                mySimulation.setCellFromFile(row, col, ch, g);
             }
             row++;
         }
@@ -42,7 +49,13 @@ public class CSVConfiguration  {
         return g;
     }
 
-    public File saveCurrentConfig(Simulation sim, Grid g, String name) {
+    /**
+     * This method saves a current configuration to a csv file.
+     * @param name - name of file
+     * @return - file that is saved
+     */
+    public File saveCurrentConfig(String name) {
+        Grid g = mySimulation.getGrid();
         File writtenFile = new File("data/" + name + ".csv"); //needs to access user inputted file name
         FileWriter fr = null;
         try {
@@ -50,7 +63,7 @@ public class CSVConfiguration  {
             fr.write(g.getRows() + "," + g.getCols() + "\n");
             for (int i = 0; i < g.getRows(); i++) {
                 for (int j = 0; j < g.getCols(); j++) {
-                    sim.writeCellToFile(fr, i, j, g);
+                    mySimulation.writeCellToFile(fr, i, j, g);
                 }
                 fr.write("\n");
             }

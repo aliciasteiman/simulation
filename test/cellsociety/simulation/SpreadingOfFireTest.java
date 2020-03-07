@@ -1,5 +1,6 @@
-package cellsociety;
+package cellsociety.simulation;
 
+import cellsociety.Grid;
 import cellsociety.configuration.SimulationModel;
 import org.junit.jupiter.api.Test;
 
@@ -23,6 +24,7 @@ public class SpreadingOfFireTest {
             {0,0,0,0,0,0,0,0,0}
             };
 
+    //testing that the initial SOF config is correct.
     @Test
     void initialSOFConfig() {
         for (int r = 0; r < myGrid.getRows(); r++) {
@@ -32,6 +34,7 @@ public class SpreadingOfFireTest {
         }
     }
 
+    //testing that SOF follows the rules properly.
     @Test
     void testSOFUpdateCells() {
         myGrid = myModel.updateGrid();
