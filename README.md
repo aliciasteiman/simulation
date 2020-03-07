@@ -38,7 +38,7 @@ Features implemented:
     - Spreading of Fire
     - WaTor
 - UI interactions to select simulation type and configuration
-- Starting, saving and stepping through simulations
+- Starting, saving, stepping, speeding up and slowing down simulations
 - Changing the simulation type 
 
 ### Notes/Assumptions

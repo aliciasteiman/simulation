@@ -31,11 +31,20 @@ public class SimulationModel {
      * @return - a map of simulations (keys) and configurations (values) that the SimulationView will
      * use to populate its drop down menus.
      */
-    public Map<String, List<String>> getSimulationsMap() {
-        List<String> sims = Arrays.asList(mySimulationResources.getString("Simulations").split(","));
+    public Map<String, List<String>> getSimulationsMap() throws ResourceKeyException {
+        List<String> sims = null;
+        try {
+            sims = Arrays.asList(mySimulationResources.getString("Simulations").split(","));
+        } catch (Exception e) {
+            throw new ResourceKeyException("Key does not exist in resource file " + SIMULATION_FILE + ".properties");
+        }
         for (String s :sims) {
             simulationsMap.putIfAbsent(s, new ArrayList<String>());
-            simulationsMap.put(s, Arrays.asList(mySimulationResources.getString(s).split(",")));
+            try {
+                simulationsMap.put(s, Arrays.asList(mySimulationResources.getString(s).split(",")));
+            } catch (Exception e) {
+                throw new ResourceKeyException("Key " + s + " does not exist in resource file " + SIMULATION_FILE + ".properties");
+            }
         }
         return simulationsMap;
     }
@@ -43,9 +52,14 @@ public class SimulationModel {
     /**
      * Initializes a simulation from a file.
      */
-    public Grid initSimulation(String file) {
+    public Grid initSimulation(String file) throws ResourceKeyException {
+        String simName = "";
         myResources = ResourceBundle.getBundle(RESOURCE_PACKAGE + file);
-        String simName = myResources.getString("SimulationType");
+        try {
+            simName = myResources.getString("SimulationType");
+        } catch (Exception e) {
+            throw new ResourceKeyException("Key does not exist in resource file " + file + ".properties");
+        }
         determineSimulation(simName);
         String f = determineFileType();
         csvConfig = new CSVConfiguration(mySimulation);
@@ -58,34 +72,36 @@ public class SimulationModel {
         List<String> simStates = SimulationStatesLists().get(1);
         List<String> stateReps = SimulationStatesLists().get(0);
         List<String> stateCSS = SimulationStatesLists().get(2);
-        if (simName.equals("GameOfLife")) {
-            mySimulation = new GameOfLife(simStates, stateReps, stateCSS);
-        }
-        if (simName.equals("Percolation")) {
-            mySimulation = new Percolate(simStates, stateReps, stateCSS);
-        }
-        if (simName.equals("Schelling's Model of Segregation")) {
-            double threshold = Double.parseDouble(myResources.getString("SatisfiedThreshold"));
-            mySimulation = new Segregation(simStates,stateReps, stateCSS, threshold);
+
+        switch (simName) {
+            case "GameOfLife":
+                mySimulation = new GameOfLife(simStates, stateReps, stateCSS);
+                break;
+            case "Percolation":
+                mySimulation = new Percolate(simStates, stateReps, stateCSS);
+                break;
+            case "Schelling's Model of Segregation":
+                double threshold = Double.parseDouble(myResources.getString("SatisfiedThreshold"));
+                mySimulation = new Segregation(simStates, stateReps, stateCSS, threshold);
+                break;
+            case "Spreading of Fire":
+                double prob = Double.parseDouble(myResources.getString("ProbabilityCatch"));
+
+                mySimulation = new SpreadingOfFire(simStates, stateReps, stateCSS, prob);
+                break;
+            case "Rock Paper Scissors":
+                int RPSthreshold = Integer.parseInt(myResources.getString("Threshold"));
+                mySimulation = new RPS(simStates, stateReps, stateCSS, RPSthreshold);
+                break;
+            case "WaTor":
+                int fishRepTimer = Integer.parseInt(myResources.getString("FishReproductionTimer"));
+                int sharkRepTimer = Integer.parseInt(myResources.getString("SharkReproductionTimer"));
+                int sharkEatingGain = Integer.parseInt(myResources.getString("SharkEatingGain"));
+                int sharkInitEnergy = Integer.parseInt(myResources.getString("SharkInitEnergy"));
+                mySimulation = new WaTor(simStates, stateReps, stateCSS, fishRepTimer, sharkRepTimer, sharkEatingGain, sharkInitEnergy);
+                break;
         }
 
-        if (simName.equals("Spreading of Fire")){
-            double prob = Double.parseDouble(myResources.getString("ProbabilityCatch"));
-
-            mySimulation = new SpreadingOfFire(simStates,stateReps, stateCSS,prob);
-        }
-        if (simName.equals("Rock Paper Scissors")) {
-            int RPSthreshold = Integer.parseInt(myResources.getString("Threshold"));
-            mySimulation = new RPS(simStates,stateReps,stateCSS,RPSthreshold);
-        }
-
-        if (simName.equals("WaTor")) {
-            int fishRepTimer = Integer.parseInt(myResources.getString("FishReproductionTimer"));
-            int sharkRepTimer = Integer.parseInt(myResources.getString("SharkReproductionTimer"));
-            int sharkEatingGain = Integer.parseInt(myResources.getString("SharkEatingGain"));
-            int sharkInitEnergy = Integer.parseInt(myResources.getString("SharkInitEnergy"));
-            mySimulation = new WaTor(simStates, stateReps, stateCSS, fishRepTimer, sharkRepTimer, sharkEatingGain, sharkInitEnergy);
-        }
     }
 
     private String determineFileType() {

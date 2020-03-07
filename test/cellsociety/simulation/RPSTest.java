@@ -12,7 +12,7 @@ class RPSTest {
 
     private List<String> states = List.of("rock","paper","scissors");
     SimulationModel myModel = new SimulationModel();
-    private Grid myGrid = myModel.initSimulation("RPS");
+    private Grid myGrid = myModel.initSimulation("RPS_Test");
     int[][] expectedInitGrid = {
             {0,1,2,1,0},
             {1,1,2,1,1},
