@@ -6,14 +6,18 @@ import cellsociety.simulation.*;
 import java.io.File;
 import java.util.*;
 
+/**
+ * This class is responsible for holding all the back-end information about the simulation
+ * for the view. It determines the initial configuration, the Simulation type, and communicates changes
+ * about Grid updates to SimulationView.
+ */
 public class SimulationModel {
 
     private Simulation mySimulation;
-    private CSVConfiguration simConfig;
+    private CSVConfiguration csvConfig;
     private ResourceBundle myResources;
     private ResourceBundle mySimulationResources;
     private Map<String, List<String>> simulationsMap;
-    private List<String> simulations;
 
     public static final String RESOURCE_PACKAGE = "resources.";
     public static final String SIMULATION_FILE = "Simulations";
@@ -23,6 +27,10 @@ public class SimulationModel {
         mySimulationResources = ResourceBundle.getBundle(RESOURCE_PACKAGE + SIMULATION_FILE);
     }
 
+    /**
+     * @return - a map of simulations (keys) and configurations (values) that the SimulationView will
+     * use to populate its drop down menus.
+     */
     public Map<String, List<String>> getSimulationsMap() {
         List<String> sims = Arrays.asList(mySimulationResources.getString("Simulations").split(","));
         for (String s :sims) {
@@ -32,12 +40,16 @@ public class SimulationModel {
         return simulationsMap;
     }
 
+    /**
+     * Initializes a simulation from a file.
+     */
     public Grid initSimulation(String file) {
         myResources = ResourceBundle.getBundle(RESOURCE_PACKAGE + file);
         String simName = myResources.getString("SimulationType");
         determineSimulation(simName);
-        determineFileType();
-        Grid newGrid = initializeConfig(mySimulation);
+        String f = determineFileType();
+        csvConfig = new CSVConfiguration(mySimulation);
+        Grid newGrid = initializeConfig(f, mySimulation);
         mySimulation.setGrid(newGrid);
         return newGrid;
     }
@@ -76,11 +88,16 @@ public class SimulationModel {
         }
     }
 
-    private void determineFileType() {
+    private String determineFileType() {
         String myFile = myResources.getString("FileName");
-        simConfig = new CSVConfiguration(myFile);
+        return myFile;
     }
 
+    /**
+     * @return a List of Lists, with each List representing an aspect of a Simulation. The first list
+     * is the state representations (ex. 0,1,2), the second list is the states (ex. blocked, empty, etc),
+     * and the third list is the CSS styles corresponding to each state.
+     */
     public List<List<String>> SimulationStatesLists() {
         List<List<String>> ret = new ArrayList<>();
         List<String> stateReps = Arrays.asList(myResources.getString("StateRepresentations").split(","));
@@ -92,19 +109,38 @@ public class SimulationModel {
         return ret;
     }
 
+    /**
+     * Updates the Grid. Called by SimulationView.
+     */
     public Grid updateGrid() {
         return mySimulation.updateCells();
     }
 
+    /**
+     * Updates each cell in the Grid. Called by SimulationView.
+     * @param c
+     */
     public void updateCell(Cell c) {
         mySimulation.updateCellStyle(c);
     }
 
-    public Grid initializeConfig(Simulation sim) {
-        return simConfig.readConfigFromFile(sim);
+    /**
+     * Initializes the starting Grid for the simulation.
+     * @param f - File from which the initial config will be read.
+     * @param sim - the Simulation corresponding to the Grid
+     * @return - the Grid read from the file
+     */
+    public Grid initializeConfig(String f, Simulation sim) {
+        return csvConfig.readConfigFromFile(f);
     }
 
-    public File writeConfig(Grid g, String name) {
-        return simConfig.saveCurrentConfig(mySimulation, g, name);
+    /**
+     * Writes the configuration to a CSV and a properties file.
+     * @param name - name of file
+     * @param userInput - list of items to be added to properties file.
+     */
+    public void writeConfig(String name, List<String> userInput) {
+         File f = csvConfig.saveCurrentConfig(name);
+         new PropertiesConfiguration().makePropertiesFile(f, userInput);
     }
 }

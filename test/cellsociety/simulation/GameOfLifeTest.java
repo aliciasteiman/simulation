@@ -1,5 +1,6 @@
-package cellsociety;
+package cellsociety.simulation;
 
+import cellsociety.Cell;
 import cellsociety.configuration.SimulationModel;
 import cellsociety.simulation.GameOfLife;
 import cellsociety.simulation.Simulation;

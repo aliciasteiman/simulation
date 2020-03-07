@@ -1,5 +1,6 @@
-package cellsociety;
+package cellsociety.simulation;
 
+import cellsociety.Grid;
 import cellsociety.configuration.SimulationModel;
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +26,7 @@ class SegregationTest {
             {2,0,2,2,2},
             {2,0,0,2,0}};
 
-
+    //testing initial config for Percolation.
     @Test
     void testInitialConfig() {
         for (int r = 0; r < myGrid.getRows(); r++) {
@@ -35,6 +36,7 @@ class SegregationTest {
         }
     }
 
+    //testing that Segregation follows the appropriate rules.
     @Test
     void testSegregationUpdateCells() {
         myGrid = myModel.updateGrid();

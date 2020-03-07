@@ -24,6 +24,9 @@ class GridTest {
         }
     }
 
+    /**
+     * Testing that the getCell() method returns the cell in the proper row/column.
+     */
     @Test
     void testGetCell() {
         Cell c = g.getCell(4,5);
@@ -31,6 +34,9 @@ class GridTest {
         assertEquals(5, c.getCol());
     }
 
+    /**
+     * Testing that the setCell() method updates the cell to what it was set to.
+     */
     @Test
     void testSetCell() {
         Cell c = new Cell(2,3,"dead");

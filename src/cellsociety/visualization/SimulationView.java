@@ -2,6 +2,7 @@ package cellsociety.visualization;
 
 import cellsociety.Cell;
 import cellsociety.Grid;
+import cellsociety.configuration.PropertiesConfiguration;
 import cellsociety.configuration.SimulationModel;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -40,6 +41,7 @@ public class SimulationView {
     private Button pauseButton;
     private Button stepButton;
     private Button speedUpButton;
+    private Button slowDownButton;
     private int BUTTON_SPACING;
     private ComboBox mySimulations;
     private ComboBox myConfigurations;
@@ -52,7 +54,7 @@ public class SimulationView {
 
     public final int FRAMES_PER_SECOND = 60;
     public double SECOND_DELAY = 20.0;
-    public double SPEED = SECOND_DELAY / FRAMES_PER_SECOND;
+    public double SPEED;
 
     /**
      * Constructs the view of a given SimulationModel
@@ -71,7 +73,7 @@ public class SimulationView {
      */
     public Scene makeScene(int width, int height) {
         myScreen = new BorderPane();
-        BUTTON_SPACING = width/15;
+        BUTTON_SPACING = width/20;
         handleScreenSetUp();
         myScene = new Scene(myScreen, width, height);
         myScene.getStylesheets().add(CELL_STYLESHEET);
@@ -87,6 +89,11 @@ public class SimulationView {
         myScreen.setTop(makeConfigurationsMenu());
     }
 
+    /**
+     * Determines the cell width, height, and updates the Grid appearance.
+     * @param width
+     * @param height
+     */
     public void handleGridSetUp(int width, int height) {
         cellHeight = (height - 100) / myGrid.getCols();
         cellWidth = width/ myGrid.getCols();
@@ -147,10 +154,8 @@ public class SimulationView {
         updateGridAppearance();
     }
 
-    /**
-     * Sets the animation for the simulation, where the step (updating the cells) occurs indefinitely
-     */
     private void setAnimation() {
+        SPEED = SECOND_DELAY / FRAMES_PER_SECOND;
         KeyFrame frame = new KeyFrame(Duration.seconds(SPEED), e -> step());
         myAnimation = new Timeline();
         myAnimation.setCycleCount(Timeline.INDEFINITE);
@@ -172,21 +177,23 @@ public class SimulationView {
         pauseButton = makeButton("pauseCommand", e -> myAnimation.pause());
         saveButton = makeButton("saveCommand", e -> saveConfigDialogBox());
         stepButton = makeButton("stepCommand", e -> step());
-        //speedUpButton = makeButton("speedUpCommand", e -> changeSpeed(-5));
+        speedUpButton = makeButton("speedUpCommand", e -> changeSpeed(-10));
+        slowDownButton = makeButton("slowDownCommand", e -> changeSpeed(10));
 
         userButtons.getChildren().add(startButton);
         userButtons.getChildren().add(pauseButton);
         userButtons.getChildren().add(saveButton);
         userButtons.getChildren().add(stepButton);
-        //userButtons.getChildren().add(speedUpButton);
-
+        userButtons.getChildren().add(speedUpButton);
+        userButtons.getChildren().add(slowDownButton);
         return userButtons;
     }
 
-//    private void changeSpeed(int speed) {
-//        SECOND_DELAY += speed;
-//        setAnimation();
-//    }
+    private void changeSpeed(int speed) {
+        SECOND_DELAY += speed;
+        myAnimation.stop();
+        setAnimation();
+    }
 
     /**
      * Helper method to create a button given an identifying name and setting an event to occur on action
@@ -198,7 +205,7 @@ public class SimulationView {
     private Button makeButton(String name, EventHandler<ActionEvent> handler) {
         Button b = new Button();
         b.setText(myButtons.getString(name));
-        b.setMaxSize(60,20);
+        b.setMaxSize(100,20);
         b.setId(name);
         b.setOnAction(handler);
         return b;
@@ -240,28 +247,16 @@ public class SimulationView {
         myConfigurations.valueProperty().addListener((observableValue, oldValue, selected) -> {if (((String) selected)!=null) {loadNewConfig((String) selected);}});
     }
 
+    /**
+     * Loads a new configuration based on the file selected by the user.
+     * @param file
+     */
     public void loadNewConfig(String file) {
         myScreen.setBottom(addButtons());
         gridPane.getChildren().clear();
         myAnimation.pause();
         myGrid = simulationModel.initSimulation(file);
         handleGridSetUp(500,500);
-    }
-
-    private void makePropertiesFile(List<String> info) {
-        try {
-            String fileName = info.get(0);
-            OutputStream output = new FileOutputStream(new File("src/resources/" + fileName + ".properties"));
-            Properties prop = new Properties();
-            prop.setProperty("Title", info.get(0));
-            prop.setProperty("Author", info.get(1));
-            prop.setProperty("Description", info.get(2));
-            File f = simulationModel.writeConfig(myGrid, info.get(0));
-            prop.setProperty("FileName", String.valueOf(f));
-            prop.store(output, null);
-        } catch (IOException e) {
-            e.printStackTrace(); //obv fix this
-        }
     }
 
     private void saveConfigDialogBox() {
@@ -283,10 +278,13 @@ public class SimulationView {
             userInput.add(title.getText());
             userInput.add(author.getText());
             userInput.add(description.getText());
-            makePropertiesFile(userInput);
+            simulationModel.writeConfig(userInput.get(0), userInput);
         }
     }
 
+    /**
+     * Helper function to make a text box.
+     */
     private TextField makeTextBox(String str, int colIdx, int rowIdx, GridPane gp) {
         TextField tf = new TextField();
         gp.add(new Label(str), colIdx, rowIdx);

@@ -1,4 +1,4 @@
-package cellsociety;
+package cellsociety.visualization;
 
 import cellsociety.configuration.SimulationModel;
 import cellsociety.visualization.SimulationView;
@@ -42,10 +42,6 @@ class GoLSimulationViewTest extends DukeApplicationTest {
         javafxRun(() -> select(mySimulations, "GameOfLife"));
         myConfigurations = lookup("#ConfigurationsMenu").query();
         javafxRun(() -> select(myConfigurations, "GoL_Test"));
-//        myStartButton = lookup("#startCommand").query();
-//        myPauseButton = lookup("#pauseCommand").query();
-//        mySaveButton = lookup("#saveCommand").query();
-//        myStepButton = lookup("#stepCommand").query();
     }
 
 
@@ -120,7 +116,9 @@ class GoLSimulationViewTest extends DukeApplicationTest {
     }
 
 
-    /** Checks that the initial block configuration equals the saved file of the block configuration
+    /**
+     *  testing that the save button saves a configuration AND csv file.
+     */
     @Test
     void testSaveButton() {
         myConfigurations = lookup("#ConfigurationsMenu").query();
@@ -138,6 +136,10 @@ class GoLSimulationViewTest extends DukeApplicationTest {
 //        write(lookup(".dialog-pane .text-field ").query(), "work");
     }
 
+    /**
+     * testing that the SimulationDropDown and ConfigurationsDropDown provide the user with
+     * simulation options and configuration options, respectively.
+     */
     @Test
     void testChooseSimulationAndConfig() {
         mySimulations = lookup("#SimulationsMenu").query();
@@ -146,7 +148,7 @@ class GoLSimulationViewTest extends DukeApplicationTest {
         myConfigurations = lookup("#ConfigurationsMenu").query();
         assertTrue(myConfigurations.getItems().size()>0);
     }
-    */
+
 
     /**
      * Helper method that finds the new cells by query after
