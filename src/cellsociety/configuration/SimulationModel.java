@@ -23,8 +23,10 @@ public class SimulationModel {
     public SimulationModel() { }
 
     /**
-     * This method is responsible for providing data about all the possible simulations and their
+     * PURPOSE: This method is responsible for providing data about all the possible simulations and their
      * corresponding configurations to the view.
+     * ASSUMPTIONS: any information about the simulations and their configurations should be in the
+     * Simulation.Properties file.
      * @return - a map of simulations (keys) and configurations (values) that the SimulationView will
      * use to populate its drop down menus.
      */
@@ -34,10 +36,10 @@ public class SimulationModel {
     }
 
     /**
-     * Initializes a simulation from a Properties file.
-     * In order to initialize a simulation, this method determines
-     * what kind of simulation it is, reads the initial configuration from a CSV file,
-     * and returns a Grid that represents this starting configuration.
+     * PURPOSE: Initializes a simulation from a Properties file. In order to initialize a simulation,
+     * this method determines what kind of simulation it is, reads the initial configuration
+     * from a CSV file, and returns a Grid that represents this starting configuration.
+     * ASSUMPTION: the keys for the SimulationType and File are present in the Properties file.
      * @return - Grid with starting states based on the CSV file. The View will use the
      * data contained in this Grid object to handle the appearance/style of the grid that the
      * user sees.
@@ -94,8 +96,9 @@ public class SimulationModel {
 
 
     /**
-     * Responsible for giving the View the information about all the states for a
-     * specific simulation. NOTE: the getMyStates() method from the Simulation class
+     * PURPOSE: Responsible for giving the View the information about all the states for a
+     * specific simulation.
+     * ASSUMPTIONS: the getMyStates() method from the Simulation class
      * returns an unmodifiable list to make sure no other class can tamper with the info.
      * @return an UNMODIFIABLE List of Strings that represent the states for a simulation.
      */
@@ -104,7 +107,7 @@ public class SimulationModel {
     }
 
     /**
-     * Updates the Grid. Called by SimulationView and prevents the SimulationView
+     * PURPOSE: Updates the Grid. Called by SimulationView and prevents the SimulationView
      * from having to access a Simulation object.
      * @return Grid - the updated Grid object after the rules for a specific
      * simulation have been applied ONCE.
@@ -114,8 +117,9 @@ public class SimulationModel {
     }
 
     /**
-     * Updates each cell in the Grid. Called by SimulationView and encapsulates
+     * PURPOSE: Updates each cell in the Grid. Called by SimulationView and encapsulates
      * the Simulation object.
+     * ASSUMPTIONS: the Properties file read contains all the CSS styles for the simulation.
      * @param c - Cell object whose style needs to be updated
      */
     public void updateCell(Cell c) {
@@ -123,8 +127,9 @@ public class SimulationModel {
     }
 
     /**
-     * Initializes the starting Grid based on a CSV file. Prevents the SimulationView
+     * PURPOSE: Initializes the starting Grid based on a CSV file. Prevents the SimulationView
      * from having to access the a CSVConfiguration object.
+     * ASSUMPTIONS: CSV file f is not empty, Simulation type has already been determined.
      * @param f - CSV File from which the initial config will be read.
      * @param sim - the Simulation that the user wants to run (ex. GoL, Percolation, etc.)
      * @return - the Grid read from the file
@@ -134,7 +139,8 @@ public class SimulationModel {
     }
 
     /**
-     * Writes the current configuration to a CSV and a properties file.
+     * PURPOSE: Writes the current configuration to a CSV and a properties file.
+     * ASSUMPTIONS: userInput is NOT empty.
      * @param name - desired name of file
      * @param userInput - list of items to be added to properties file.
      */

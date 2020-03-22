@@ -10,7 +10,7 @@ public class WaTorPropertiesConfiguration extends PropertiesConfiguration{
 
     /**
      * @return - a Map containing the specific values relevant to a WaTor simulation.
-     * @throws ResourceKeyException if the key for that specific value is NOT in the file. 
+     * @throws ResourceKeyException if the key for that specific value is NOT in the file.
      */
     @Override
     public Map<String, Number> getSpecialVals() {
