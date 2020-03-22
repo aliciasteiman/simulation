@@ -20,7 +20,7 @@ public abstract class Simulation {
     protected List<String> myStateReps; //how the states are represented in a file (ex. 0,1,2,etc)
     protected List<String> myStates; //the different forms a Cell can take (ex. Alive, Dead, etc.)
     protected List<String> myStatesCSS; //the CSS styling for each state (ex. GoL-Alive-Cell)
-    protected Grid mySimulationGrid; //the Grid object that each type of simulation will operate on 
+    protected Grid mySimulationGrid; //the Grid object that each type of simulation will operate on
 
     public Simulation(List<String> states, List<String> stateReps, List<String> stateCSS) {
         myStates = states;
