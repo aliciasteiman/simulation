@@ -8,11 +8,19 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * This abstract class is responsible for maintaining all the information and performing
+ * all the actions for a Simulation. It is abstract because each Simulation will apply
+ * rules and calculate neighbors differently, but follows the same general pattern to set a
+ * Cell from the file, write a Cell to a file, and update the Cell style. All simulations also
+ * share the ability to communicate changes about their Grid objects and provide information
+ * about their states.
+ */
 public abstract class Simulation {
-    protected List<String> myStateReps;
-    protected List<String> myStates;
-    protected List<String> myStatesCSS;
-    protected Grid mySimulationGrid;
+    protected List<String> myStateReps; //how the states are represented in a file (ex. 0,1,2,etc)
+    protected List<String> myStates; //the different forms a Cell can take (ex. Alive, Dead, etc.)
+    protected List<String> myStatesCSS; //the CSS styling for each state (ex. GoL-Alive-Cell)
+    protected Grid mySimulationGrid; //the Grid object that each type of simulation will operate on 
 
     public Simulation(List<String> states, List<String> stateReps, List<String> stateCSS) {
         myStates = states;
@@ -38,10 +46,10 @@ public abstract class Simulation {
      * Given a Grid, translate the cell states into an integer and create the configuration file
      * where each line represents a row of cells (integers are chosen based on a cell's state index
      * in the list of all states specific to a simulation)
-     * @param fr
-     * @param row
-     * @param col
-     * @param g
+     * @param fr - FileWriter to write to the CSV file.
+     * @param row - current row
+     * @param col - current col
+     * @param g - Grid object that is being written to the file.
      * @throws IOException
      */
     public void writeCellToFile (FileWriter fr, int row, int col, Grid g) throws IOException {
@@ -79,10 +87,21 @@ public abstract class Simulation {
         }
     }
 
+    /**
+     * @return an UNMODIFIABLE list of states for the current Simulation.
+     */
     public List<String> getMyStates() {
         return Collections.unmodifiableList(myStates);
     }
-    public Grid getGrid() {return mySimulationGrid;};
+
+    /**
+     * @return the current Grid object that the Simulation holds.
+     */
+    public Grid getGrid() {return mySimulationGrid;}
+
+    /**
+     * @param g - updated Grid object that the Simulation object will now act on.
+     */
     public void setGrid(Grid g) {mySimulationGrid = g;};
 
 }
