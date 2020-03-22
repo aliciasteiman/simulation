@@ -7,6 +7,11 @@ public class RPSPropertiesConfiguration extends PropertiesConfiguration {
     public RPSPropertiesConfiguration(String f) {
         super(f);
     }
+
+    /**
+     * @return - a Map containing the specific values relevant to a RPS simulation.
+     * @throws ResourceKeyException if the key for that specific value is NOT in the file.
+     */
     @Override
     public Map<String, Number> getSpecialVals() {
         if (!allInfo.keySet().contains("Threshold")) {

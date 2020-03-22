@@ -8,6 +8,10 @@ public class SOFPropertiesConfiguration extends PropertiesConfiguration{
         super(f);
     }
 
+    /**
+     * @return - a Map containing the specific values relevant to a Spreading of Fire simulation.
+     * @throws ResourceKeyException if the key for that specific value is NOT in the file.
+     */
     @Override
     public Map<String, Number> getSpecialVals() {
         if (!allInfo.keySet().contains("ProbabilityCatch")) {
