@@ -12,7 +12,7 @@ class PropertiesConfigurationTest {
     //testing that a properties file is made and the keys match the inputs entered.
     @Test
     void testMakePropertiesFile() {
-        PropertiesConfiguration propertiesConfiguration = new PropertiesConfiguration();
+        PropertiesConfiguration propertiesConfiguration = new PropertiesConfiguration("GoL_Blinker");
         List<String> input = List.of("TestConfigurationsWrite", "Jessica", "This file is for testing the make properties function.");
         File f = new File("testProperties.csv");
         propertiesConfiguration.makePropertiesFile(f,input);

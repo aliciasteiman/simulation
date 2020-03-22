@@ -134,7 +134,7 @@ public class SimulationView {
     }
 
     private String chooseStateDialog() {
-        List<String> states = simulationModel.SimulationStatesLists().get(1);
+        List<String> states = simulationModel.returnSimulationStates();
         ChoiceDialog statesDialog = new ChoiceDialog(states.get(0), states);
         statesDialog.setHeaderText("Select state");
         Optional<String> response = statesDialog.showAndWait();
