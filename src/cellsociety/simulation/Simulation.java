@@ -2,11 +2,14 @@ package cellsociety.simulation;
 
 import cellsociety.Cell;
 import cellsociety.Grid;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.Paint;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This abstract class is responsible for maintaining all the information and performing
@@ -79,10 +82,17 @@ public abstract class Simulation {
      * Updates the APPEARANCE of a single cell based on is status
      * @param c - the cell to be updated
      */
-    public void updateCellStyle(Cell c) {
+    public void updateCellStyle(Map<String, ImagePattern> images, Map<String, String> overriddenColors, Cell c) {
         for (int i = 0; i < myStates.size(); i++) {
             if (c.getStatus().equals(myStates.get(i))) {
-                c.getShape().getStyleClass().add(myStatesCSS.get(i));
+                if (images != null && images.keySet().contains(c.getStatus())) {
+                    c.getShape().setFill(images.get(c.getStatus()));
+                }
+                else if (overriddenColors != null && overriddenColors.keySet().contains(c.getStatus())) {
+                    c.getShape().setFill(Paint.valueOf(overriddenColors.get(c.getStatus())));
+                } else {
+                    c.getShape().getStyleClass().add(myStatesCSS.get(i));
+                }
             }
         }
     }

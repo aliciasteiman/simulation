@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class SpreadingOfFireTest {
     private List<String> states = List.of("empty","tree","burning");
     SimulationModel myModel = new SimulationModel();
-    private Grid myGrid = myModel.initSimulation("SoF_Test");
+    private Grid myGrid = myModel.initializeSimulationGrid("SoF_Test");
     int[][] sofConfig = {
             {0,0,0,0,0,0,0,0,0},
             {0,1,1,1,1,1,1,1,0},

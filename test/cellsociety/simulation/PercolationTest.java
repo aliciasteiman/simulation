@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PercolationTest {
     private List<String> states = List.of("blocked","open","full");
     SimulationModel myModel = new SimulationModel();
-    private Grid myGrid = myModel.initSimulation("Percolate_Test");
+    private Grid myGrid = myModel.initializeSimulationGrid("Percolate_Test");
     int[][] expectedInitGrid = {
         {0,0,2,1,1,0,0,0},
         {1,0,0,1,1,1,1,1},

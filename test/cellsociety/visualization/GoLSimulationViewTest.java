@@ -1,7 +1,6 @@
 package cellsociety.visualization;
 
 import cellsociety.configuration.SimulationModel;
-import cellsociety.visualization.SimulationView;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -99,8 +98,8 @@ class GoLSimulationViewTest extends DukeApplicationTest {
      */
     @Test
     void GameOfLifeBlockTest() {
-        myModel.initSimulation("GoL_Block");
-        javafxRun(() -> myView.handleGridSetUp(500,500));
+        myModel.initializeSimulationGrid("GoL_Block");
+        javafxRun(() -> myView.updateGridAppearance());
         getCellsFromGrid();
         //initial config - BLOCK IN MIDDLE
         Rectangle cell_1_1 = myGrid.get(1).get(1);

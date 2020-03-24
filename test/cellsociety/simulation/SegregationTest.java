@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SegregationTest {
     private List<String> states = List.of("empty","agent1","agent2");
     SimulationModel myModel = new SimulationModel();
-    private Grid myGrid = myModel.initSimulation("MOS_Test");
+    private Grid myGrid = myModel.initializeSimulationGrid("MOS_Test");
     int[][] initSegConfig = {
             {2,2,1,2,1},
             {0,1,1,1,1},

@@ -2,8 +2,6 @@ package cellsociety.simulation;
 
 import cellsociety.Cell;
 import cellsociety.configuration.SimulationModel;
-import cellsociety.simulation.GameOfLife;
-import cellsociety.simulation.Simulation;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import util.DukeApplicationTest;
@@ -25,7 +23,7 @@ class GameOfLifeTest  extends DukeApplicationTest {
     public void start (Stage stage) {
         sim = new GameOfLife(states, stateReps, stateCSS);
         simulationModel = new SimulationModel();
-        sim.setGrid(simulationModel.initSimulation("GOL_Test"));
+        sim.setGrid(simulationModel.initializeSimulationGrid("GOL_Test"));
     }
 
     /** Tests to check if the correct neighbors are returned for:

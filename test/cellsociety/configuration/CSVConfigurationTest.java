@@ -1,8 +1,6 @@
 package cellsociety.configuration;
 
 import cellsociety.Grid;
-import cellsociety.configuration.CSVConfiguration;
-import cellsociety.configuration.SimulationModel;
 import cellsociety.simulation.GameOfLife;
 import cellsociety.simulation.Simulation;
 import org.junit.jupiter.api.Test;
@@ -23,7 +21,7 @@ class CSVConfigurationTest {
     //testing that the configuration is saved properly to a new.csv File.
     @Test
     void testSaveConfig() {
-        Grid g = myModel.initSimulation("GoL_Block");
+        Grid g = myModel.initializeSimulationGrid("GoL_Block");
         gameOfLife.setGrid(g);
         File f = csvConfig.saveCurrentConfig("new");
         File blockFile = new File("data/GOLconfigurations/blockConfig.csv");

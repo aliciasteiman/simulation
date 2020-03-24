@@ -2,6 +2,7 @@ package cellsociety.configuration;
 
 import cellsociety.*;
 import cellsociety.simulation.*;
+import javafx.scene.paint.ImagePattern;
 
 import java.io.File;
 import java.util.*;
@@ -158,13 +159,13 @@ public class SimulationModel {
 
     /**
      * PURPOSE: Updates each cell in the Grid. Called by SimulationView and encapsulates
-     * the Simulation object.
-     * ASSUMPTIONS: the Properties file read contains all the CSS styles for the simulation.
+     * the Simulation object. Cell appearance can be overridden by user-chosen images/colors.
+     * ASSUMPTIONS: the Properties file read contains all the CSS styles for the simulation,
+     * images and overriddenColors are NOT empty.
      * @param c - Cell object whose style needs to be updated
      */
-    public void updateCell(Cell c) {
-        currSimulation.updateCellStyle(c);
-    }
+    public void updateCell(Map<String, ImagePattern> images, Map<String, String> overriddenColors, Cell c) {
+        currSimulation.updateCellStyle(images, overriddenColors, c); }
 
     /**
      * PURPOSE: Initializes the starting Grid based on a CSV file. Prevents the SimulationView
