@@ -49,6 +49,10 @@ Interesting data files:
 
 Known Bugs:
 
+- Wa-Tor world simulation currently not running correctly. 
+    - Current implementation not able to correctly keep track of energy/reproduction counts for a cell. 
+    - Would have fixed/refactored this in the Complete implementation. 
+
 Extra credit:
 
 
