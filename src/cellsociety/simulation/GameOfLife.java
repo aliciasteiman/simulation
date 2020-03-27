@@ -2,7 +2,6 @@ package cellsociety.simulation;
 
 import cellsociety.Cell;
 import cellsociety.Grid;
-import cellsociety.simulation.Simulation;
 
 import java.util.List;
 
@@ -61,9 +60,6 @@ public class GameOfLife extends Simulation {
     public List<Cell> getNeighbors(int row, int col) {
         int[] indexR = {-1, 0, 1, -1, 1, -1, 0, 1};
         int[] indexC = {1, 1, 1, 0, 0, -1, -1, -1};
-
         return mySimulationGrid.getSpecifiedNeighbors(row, col, indexR, indexC, mySimulationGrid);
-
     }
-
 }

@@ -8,6 +8,14 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * The purpose of this class is to hold the abstract methods to be implemented by the specific simulations.
+ * The goal of a "simulation" is to update a simulation grid based on the specific rules of a simulation and
+ * execute methods (such as getNeighbors) to assist with implementing the rules. A simulation also holds the
+ * information needed to communicate with the model/view what color to represent a cell of a given state as in
+ * the user interface. It is also capable of translating cell states to numbers in a CSV file representing
+ * the configuration and vice versa.
+ */
 public abstract class Simulation {
     protected List<String> myStateReps;
     protected List<String> myStates;
@@ -79,10 +87,6 @@ public abstract class Simulation {
         }
     }
 
-    public List<String> getMyStates() {
-        return Collections.unmodifiableList(myStates);
-    }
     public Grid getGrid() {return mySimulationGrid;};
     public void setGrid(Grid g) {mySimulationGrid = g;};
-
 }

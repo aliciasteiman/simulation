@@ -71,5 +71,4 @@ public class SpreadingOfFire extends Simulation {
 
         return mySimulationGrid.getSpecifiedNeighbors(row, col, indexR, indexC, mySimulationGrid);
     }
-
 }

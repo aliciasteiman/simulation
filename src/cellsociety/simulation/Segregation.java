@@ -7,6 +7,12 @@ import cellsociety.simulation.Simulation;
 import java.util.*;
 
 
+/**
+ * Simulation sub-class for Schelling's Model of Segregation. Implements the abstract methods updateCells() and
+ * getNeighbors() to appropriately reflect the rules of the simulation. Constructor accesses the appropriate states
+ * (and state representations) for the simulation and sets the threshold of satisfaction based on a value given
+ * by the properties file.
+ */
 public class Segregation extends Simulation {
     private List<List<Integer>> openSpots;
     private List<Cell> myNeighbors;
@@ -159,5 +165,4 @@ public class Segregation extends Simulation {
         }
         return myNeighbors;
     }
-
 }
