@@ -10,9 +10,16 @@ import java.util.List;
 public class RPS extends Simulation {
     private int threshold;
     private HashMap<String, String> relations;
-    private final String ROCK;
-    private final String PAPER;
-    private final String SCISSORS;
+
+    /**
+     * This Simulation subclass is useful to consider because it shows how flexible Simulation is to adding new Simulations
+     * with differing constraints. updateCells originally was part of SimulationModel, but this final design lends itself
+     * to extension and allows each simulation to write its own rules. Rock paper scissors's constraints are defined as
+     * relationships that cause each agent to win against an one agent and lose to another. This design is made more
+     * flexible by the added defineRelations helper method which prevents the relationships from being hardcoded. RPS
+     * can now be used for as many relationships or agents as defined in the properties file, such as to create
+     * rock-paper-scissors-lizard-spock.
+     */
 
     /**
      * Constructor for a Rock Paper Scissors simulation where each Cell object is a "player" who is either
@@ -20,19 +27,23 @@ public class RPS extends Simulation {
      * @param states list of states the cells can take as dictated by its properties file
      * @param stateReps states as represented in the csv files (0,1,2)
      * @param stateCSS CSS style corresponding to each state
-     * @param thresh threshold that dictates how many of a cell's neighbors need to be of its opposing state
-     *               for it to lose
+     * @param thresh threshold that dictates how many of a cell's neighbors need to be of its opposing state for it to lose
      */
     public RPS(List<String> states, List<String> stateReps, List<String> stateCSS, int thresh) {
         super(states, stateReps, stateCSS);
-        ROCK = myStates.get(0);
-        PAPER = myStates.get(1);
-        SCISSORS = myStates.get(2);
         threshold = thresh;
         relations = new HashMap<>();
-        relations.put(ROCK, PAPER);
-        relations.put(PAPER, SCISSORS);
-        relations.put(SCISSORS, ROCK);
+        defineRelations();
+    }
+
+    private void defineRelations() {
+        for (int i = 0; i < myStates.size(); i++) {
+            int j = i+1;
+            if (i+1 == myStates.size()) {
+                j = 0;
+            }
+            relations.put(myStates.get(i), myStates.get(j));
+        }
     }
 
     /**
@@ -63,10 +74,9 @@ public class RPS extends Simulation {
     }
 
     /**
-     * Gets the 8 Moore neighbors of the current cell
      * @param row - the current row the cell is on
      * @param col - the current column the cell is on
-     * @return
+     * @return the specific 8 neighbors of the cell
      */
     @Override
     public List<Cell> getNeighbors(int row, int col) {
@@ -74,5 +84,4 @@ public class RPS extends Simulation {
         int[] indexC = {1, 1, 1, 0, 0, -1, -1, -1};
         return mySimulationGrid.getSpecifiedNeighbors(row, col, indexR, indexC, mySimulationGrid);
     }
-
 }

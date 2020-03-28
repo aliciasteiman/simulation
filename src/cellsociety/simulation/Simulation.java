@@ -15,7 +15,13 @@ public abstract class Simulation {
     protected Grid mySimulationGrid;
 
     /**
-     * This abstract class provides a framework for all the various simulations to perform cell and grid updates
+     * This abstract class provides a framework for all the various simulations to perform cell and grid updates. It shows
+     * good design because it effectively uses abstraction to allow its subclasses control over their grids while providing
+     * them with key functions and serving as the intermediary between them and SimulationModel, thus hiding exactly which
+     * simulation is running after it has been set up. This design is important to note because it has evolved significantly
+     * over the course of the project, gaining some of the functionality that originally belonged to SimulationModel but was
+     * extracted here to make SimulationModel function as a separate sort of overarching controller without exposing all the
+     * inner workings of its grid to SimulationModel.
      * @param states list of states the cells can take as dictated by its properties file
      * @param stateReps states as represented in the csv files (0,1)
      * @param stateCSS CSS style corresponding to each state
@@ -87,10 +93,6 @@ public abstract class Simulation {
         }
     }
 
-    public List<String> getMyStates() {
-        return Collections.unmodifiableList(myStates);
-    }
-
     /**
      * @return the simulation's grid
      */
@@ -101,5 +103,4 @@ public abstract class Simulation {
      * @param g grid to set mySimulationGrid to
      */
     public void setGrid(Grid g) {mySimulationGrid = g;};
-
 }
