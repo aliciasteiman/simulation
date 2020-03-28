@@ -14,9 +14,9 @@ public class Percolate extends Simulation {
     /**
      * Constructor for a Percolate simulation -- models water flowing through a system
      * Cells can either be open, full (of water), or blocked (meaning water cannot go through them)
-     * @param states
-     * @param stateReps
-     * @param stateCSS
+     * @param states list of states the cells can take as dictated by its properties file
+     * @param stateReps states as represented in the csv files (0,1,2)
+     * @param stateCSS CSS style corresponding to each state
      */
     public Percolate(List<String> states,List<String> stateReps, List<String> stateCSS) {
         super(states, stateReps, stateCSS);
@@ -27,9 +27,9 @@ public class Percolate extends Simulation {
 
     /**
      * Loops through the Cell objects in the Grid and updates the Cell/Grid according to the RULES:
-     * If a Cell is empty and has a full neighbor, Cell becomes full
-     * Water percolates through the system when there is a path of water (full cells) from top to bottom
-     * @return
+         * If a Cell is empty and has a full neighbor, Cell becomes full
+         * Water percolates through the system when there is a path of water (full cells) from top to bottom
+     * @return a new grid that contains the updated cells
      */
     @Override
     public Grid updateCells() {
@@ -53,7 +53,7 @@ public class Percolate extends Simulation {
      * Gets the four cardinal neighbors (north, south, east, west) of a Cell given its row, col
      * @param row - the current row the cell is on
      * @param col - the current column the cell is on
-     * @return
+     * @return the cell's four cardinal neighbors
      */
     @Override
     public List<Cell> getNeighbors(int row, int col) {

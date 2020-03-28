@@ -8,6 +8,11 @@ public class Grid {
     private int NUM_COLS;
     private List<List<Cell>> allCells;
 
+    /**
+     * Represents the grid object used by the simulations
+     * @param rows number of rows
+     * @param cols number of columns
+     */
     public Grid(int rows, int cols) {
         NUM_ROWS = rows;
         NUM_COLS = cols;
@@ -17,7 +22,6 @@ public class Grid {
 
     /**
      * Initializes the Grid to have all empty cells
-     * GOL - empty = dead
      */
     private void initialGrid() {
         for (int r = 0; r < NUM_ROWS; r++) {
@@ -59,9 +63,12 @@ public class Grid {
 
     /**
      * Given a List of Cell objects representing all of a single cell's neighbors, count how many neighbors
-     * are full/alive (i.e. cell.getStatus() == true)
-     * @param neighbors
-     * @return count - represents the number of alive neighbors
+     * are of a specific states
+     * eg: countNeighbors is called by a rock cell in RPS to determine how many of its 8 neighbors are paper cells
+     * eg: countNeighbors is called by a live cell in Game of Life to determine whether enough of its neighbors are alive
+     * for it to live on
+     * @param neighbors specific neighbors to be considered
+     * @return a count of neighbors matching the specified status
      */
     public int countNeighbors(List<Cell> neighbors, String status) {
         int count  = 0;
@@ -74,7 +81,7 @@ public class Grid {
     }
 
     /**
-     * Based on two lists passed in, this method helps calculate the specified number of neighbors.
+     * Based on two lists passed in, this method helps get the neighbors at specific adjacent locations
      * @param row - row of current cell
      * @param col - column of current cell
      * @param indexR - all the index locations in the row that should be considered neighbors

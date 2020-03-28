@@ -8,7 +8,8 @@ import java.io.IOException;
 import java.util.Scanner;
 
 /**
- * This class is responsible for reading CSV configurations.
+ * This class is responsible for reading CSV configurations to set up a grid's initial cell configuration and writing
+ * a current configuration to a new file
  */
 public class CSVConfiguration  {
     private Simulation mySimulation;
@@ -19,7 +20,8 @@ public class CSVConfiguration  {
     }
 
     /**
-     * This method reads an initial grid configuration from a CSV file.
+     * This method reads an initial grid configuration from a CSV file and communicates it to the simulation to set
+     * up the initial cell statuses.
      * @param f - CSV file
      * @return - Grid based on the CSV configuration
      * @throws ConfigurationException

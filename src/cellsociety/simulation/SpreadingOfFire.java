@@ -20,6 +20,9 @@ public class SpreadingOfFire extends Simulation {
      * when the probability of a tree catching on fire from a burning neighbor is predetermined
      * i.e. if probability of catch = 50%, due to humidity (for example), the fire is likely to spread rampantly
      * or die out quickly
+     * @param states list of states the cells can take as dictated by its properties file
+     * @param stateReps states as represented in the csv files (0,1,2)
+     * @param stateCSS CSS style corresponding to each state*
      */
     public SpreadingOfFire(List<String> states, List<String> stateReps, List<String> stateCSS, double prob) {
         super(states, stateReps, stateCSS);
@@ -28,12 +31,12 @@ public class SpreadingOfFire extends Simulation {
 
     /**
      * Loops through the Cell objects in the Grid and updates the Cell according to the RULES:
-     * If a cell is EMPTY, it remains empty
-     * If a cell is BURNING, it becomes empty
-     * If a cell is a TREE and at least one neighbor is BURNING and if a randomly generated number is greater
-     * than or equal to probCatch (probability that a tree will catch on fire), it becomes BURNING
-     * If the randomly generated number is less than probCatch, the cell remains a TREE
-     * @return
+         * If a cell is EMPTY, it remains empty
+         * If a cell is BURNING, it becomes empty
+         * If a cell is a TREE and at least one neighbor is BURNING and if a randomly generated number is greater
+         * than or equal to probCatch (probability that a tree will catch on fire), it becomes BURNING
+         * If the randomly generated number is less than probCatch, the cell remains a TREE
+     * @return a new grid that contains the updated cells
      */
     @Override
     public Grid updateCells() {
@@ -61,7 +64,7 @@ public class SpreadingOfFire extends Simulation {
      * Gets 4 cardinal neighbors (north, south, east, west) aka (up, down, left, right)
      * @param row - the current row the cell is on
      * @param col - the current column the cell is on
-     * @return
+     * @return a list containing the four neighbors
      */
     @Override
     public List<Cell> getNeighbors(int row, int col) {

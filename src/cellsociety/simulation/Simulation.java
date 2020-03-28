@@ -14,6 +14,13 @@ public abstract class Simulation {
     protected List<String> myStatesCSS;
     protected Grid mySimulationGrid;
 
+    /**
+     * This abstract class provides a framework for all the various simulations to perform cell and grid updates
+     * @param states list of states the cells can take as dictated by its properties file
+     * @param stateReps states as represented in the csv files (0,1)
+     * @param stateCSS CSS style corresponding to each state
+     */
+
     public Simulation(List<String> states, List<String> stateReps, List<String> stateCSS) {
         myStates = states;
         myStateReps = stateReps;
@@ -21,7 +28,7 @@ public abstract class Simulation {
     }
 
     /**
-     * Updates the cell configuration on the grid based on the rules of a certain simulation.
+     * Implemented by each simulation to updates the cell statuses in the grid based on that simulation's rules
      * @return a Grid object with the updated cell states.
      */
     public abstract Grid updateCells();
@@ -30,6 +37,7 @@ public abstract class Simulation {
      * Returns all the neighbors of a certain cell in the Grid.
      * @param row - the current row the cell is on
      * @param col - the current column the cell is on
+     * @return list of neighbors of the cell
      */
     public abstract List<Cell> getNeighbors(int row, int col);
 
@@ -38,10 +46,10 @@ public abstract class Simulation {
      * Given a Grid, translate the cell states into an integer and create the configuration file
      * where each line represents a row of cells (integers are chosen based on a cell's state index
      * in the list of all states specific to a simulation)
-     * @param fr
-     * @param row
-     * @param col
-     * @param g
+     * @param fr Filewriter for file to be written to
+     * @param row row of that cell
+     * @param col column of that cell
+     * @param g grid
      * @throws IOException
      */
     public void writeCellToFile (FileWriter fr, int row, int col, Grid g) throws IOException {
@@ -82,7 +90,16 @@ public abstract class Simulation {
     public List<String> getMyStates() {
         return Collections.unmodifiableList(myStates);
     }
+
+    /**
+     * @return the simulation's grid
+     */
     public Grid getGrid() {return mySimulationGrid;};
+
+    /**
+     * Sets the simulation's grid to an inputted grid
+     * @param g grid to set mySimulationGrid to
+     */
     public void setGrid(Grid g) {mySimulationGrid = g;};
 
 }

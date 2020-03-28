@@ -7,7 +7,7 @@ import cellsociety.simulation.Simulation;
 import java.util.List;
 
 /**
- * Game of Life simulation -- models the life cycle of bacteria
+ * Game of Life simulation -- models the life cycle of bacteria based on Conway's Game of Life
  * Each grid location is either empty (dead) or occupied by a single cell (alive)
  * A location's neighbors are any cells in the surrounding eight locations
  */
@@ -17,6 +17,9 @@ public class GameOfLife extends Simulation {
 
     /**
      * Constructor for a GameOfLife simulation
+     * @param states list of states the cells can take as dictated by its properties file
+     * @param stateReps states as represented in the csv files (0,1)
+     * @param stateCSS CSS style corresponding to each state
      */
     public GameOfLife(List<String> states, List<String> stateReps, List<String> stateCSS) {
         super(states, stateReps, stateCSS);
@@ -26,10 +29,10 @@ public class GameOfLife extends Simulation {
 
     /**
      * Loops through the Cell objects in the Grid and updates the Cell/Grid according to the RULES:
-     * Any live cell with two or three neighbors survives
-     * Any dead cell with three live neighbors comes back to life
-     * All other live cells die, and all other dead cells stay dead
-     * @return
+         * Any live cell with two or three neighbors survives
+         * Any dead cell with three live neighbors comes back to life
+         * All other live cells die, and all other dead cells stay dead
+     * @return a new grid that contains the updated cells
      */
     @Override
     public Grid updateCells() {
@@ -53,9 +56,9 @@ public class GameOfLife extends Simulation {
     /**
      * Creates a List<Cell> where each Cell represents the neighbors of the Cell at the passed in row, col
      * Checks for 8 adjacent neighbors (up, down, left, right, diagonals)
-     * @param row - the current row the cell is on
-     * @param col - the current column the cell is on
-     * @return
+     * @param row - the row of the current cell
+     * @param col - the column the current cell
+     * @return the 8 Moore neighbors of the current cell
      */
     @Override
     public List<Cell> getNeighbors(int row, int col) {

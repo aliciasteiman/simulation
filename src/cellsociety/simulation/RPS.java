@@ -17,10 +17,11 @@ public class RPS extends Simulation {
     /**
      * Constructor for a Rock Paper Scissors simulation where each Cell object is a "player" who is either
      * a Rock, Paper, or Scissors
-     * @param states
-     * @param stateReps
-     * @param stateCSS
-     * @param thresh
+     * @param states list of states the cells can take as dictated by its properties file
+     * @param stateReps states as represented in the csv files (0,1,2)
+     * @param stateCSS CSS style corresponding to each state
+     * @param thresh threshold that dictates how many of a cell's neighbors need to be of its opposing state
+     *               for it to lose
      */
     public RPS(List<String> states, List<String> stateReps, List<String> stateCSS, int thresh) {
         super(states, stateReps, stateCSS);
@@ -36,11 +37,11 @@ public class RPS extends Simulation {
 
     /**
      * Loops through the Cell objects in the Grid and updates the Cell/Grid according to the RULES:
-     * Current cell goes against its 8 neighbors
-     * If the neighbor count of cells that can beat currCell is greater than than a threshold value, then the
-     * current cell becomes the winner (i.e. the type that defeated it)
+         * Current cell goes against its 8 neighbors
+         * If the neighbor count of cells that can beat currCell is greater than than a threshold value, then the
+         * current cell becomes the winner (i.e. the type that defeated it)
      * E.g. if currCell = scissors, threshold = 3, 4 rocks surround currCell, currCell -> rock
-     * @return
+     * @return a new grid that contains the updated cells
      */
     @Override
     public Grid updateCells() {
@@ -62,7 +63,7 @@ public class RPS extends Simulation {
     }
 
     /**
-     * Gets the 8 neighbors (up, down, left, right, and the four diagonals)
+     * Gets the 8 Moore neighbors of the current cell
      * @param row - the current row the cell is on
      * @param col - the current column the cell is on
      * @return

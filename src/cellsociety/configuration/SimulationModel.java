@@ -28,8 +28,11 @@ public class SimulationModel {
     }
 
     /**
+     * This method is used to create a map of all the possible existing simulation types as indicated by the Simulation
+     * properties file
      * @return - a map of simulations (keys) and configurations (values) that the SimulationView will
      * use to populate its drop down menus.
+     * @throws ResourceKeyException if a key being queried is not found in the properties file
      */
     public Map<String, List<String>> getSimulationsMap() throws ResourceKeyException {
         List<String> sims = null;
@@ -50,7 +53,9 @@ public class SimulationModel {
     }
 
     /**
-     * Initializes a simulation from a file.
+     * Initializes a simulation from a file and makes calls to read in and configure its initial grid.
+     * @return Initial grid
+     * @throws ResourceKeyException if a key being queried is not found in the properties file
      */
     public Grid initSimulation(String file) throws ResourceKeyException {
         String simName = "";
@@ -134,7 +139,7 @@ public class SimulationModel {
 
     /**
      * Updates each cell in the Grid. Called by SimulationView.
-     * @param c
+     * @param c cell to be updated
      */
     public void updateCell(Cell c) {
         mySimulation.updateCellStyle(c);
@@ -152,7 +157,7 @@ public class SimulationModel {
 
     /**
      * Writes the configuration to a CSV and a properties file.
-     * @param name - name of file
+     * @param name - name of file to be written to
      * @param userInput - list of items to be added to properties file.
      */
     public void writeConfig(String name, List<String> userInput) {
